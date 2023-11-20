@@ -1,11 +1,11 @@
-<mxfile host="app.diagrams.net" modified="2023-11-20T15:01:47.085Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36 Edg/119.0.0.0" etag="7NxnDKJT8pvEI_064U67" version="22.1.3" type="github">
+<mxfile host="app.diagrams.net" modified="2023-11-20T15:03:27.492Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36 Edg/119.0.0.0" etag="2_UUAjIq-MaRxhZMNGtH" version="22.1.3" type="github">
   <diagram name="第 1 页" id="pR2CvmZpHDpMrfUjj5Pc">
-    <mxGraphModel dx="1386" dy="781" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="2213" dy="781" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="wleDwTEwPIvJDNHKYaG6-1" value="&lt;b&gt;&lt;font style=&quot;font-size: 18px;&quot;&gt;初始頁面&lt;/font&gt;&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="354" y="370" width="120" height="60" as="geometry" />
+        <mxCell id="wleDwTEwPIvJDNHKYaG6-1" value="&lt;b&gt;&lt;font style=&quot;font-size: 18px;&quot;&gt;初始頁面&lt;/font&gt;&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="-170" y="80" width="120" height="60" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
