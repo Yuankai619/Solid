@@ -1,0 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+body{
+    background-color: #222222;
+    
+}
+.title{
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    color: #EEEEEE;
+}
+.input-field{
+    color:#EEEEEE;
+    border-color: #EEEEEE;
+}
