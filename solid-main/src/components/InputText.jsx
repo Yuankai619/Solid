@@ -7,11 +7,12 @@ function InputText(props) {
     <ThemeProvider theme={TextFieldTheme}>
         <TextField
             // focused 
+            id={props.id}
+            onChange={props.onChange}
             error = {props.iserror ? true : false}
             helperText={props.iserror ? props.errorText : ""}
             fullWidth 
             required = {props.isrequired ? true : false}
-            id="outlined-required"
             label= {props.label}
             defaultValue=""
             />

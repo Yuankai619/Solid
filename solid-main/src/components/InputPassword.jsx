@@ -20,9 +20,12 @@ function InputPassword(props) {
     return(       
         <ThemeProvider theme={TextFieldTheme}>
             <TextField
+                id={props.id}
                 fullWidth 
+                onChange={props.onChange}
                 required={props.isrequired}
-                id="outlined-required"
+                error = {props.iserror ? true : false}
+                helperText={props.iserror ? props.errorText : ""}
                 label={props.label}
                 type={showPassword ? 'text' : 'password'}
                 defaultValue=""

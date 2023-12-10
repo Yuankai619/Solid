@@ -8,7 +8,7 @@ function CheckboxStatement(props) {
   return(       
     <ThemeProvider theme={CheckboxTheme}>
         <FormGroup>
-            <FormControlLabel control={<Checkbox />}   label={props.statement} />
+            <FormControlLabel control={<Checkbox />}   label={props.statement} id={props.id} onChange={props.onChange}/>
         </FormGroup>
     </ThemeProvider>
   );
