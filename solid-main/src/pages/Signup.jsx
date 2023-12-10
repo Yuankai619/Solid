@@ -69,7 +69,8 @@ function SignupPage() {
   const isPad = useMediaQuery(curtheme.breakpoints.down('md'));
   const boxGap = "45px";
   return (
-      <Container maxWidth="sm" sx={{py:"75px", px: isMobile ? "45px":(isPad ? "144px":"360px") }}>
+    <div className="signup-page">
+      <Container maxWidth="sm" sx={{py:"75px", px: isMobile ? "45px":(isPad ? "144px":"360px") } }>
           <Box my={boxGap}>
           <h1 className="title">Create account</h1>
           </Box>
@@ -135,6 +136,7 @@ function SignupPage() {
             ></SignupButton>
           </Box>
       </Container>
+    </div>
   );
 }
 

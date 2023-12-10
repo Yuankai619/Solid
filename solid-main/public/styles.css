@@ -1,7 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
-body{
+.signup-page{
     background-color: #222222;
-    
+}
+.login-page{
+    background: linear-gradient(129deg, #36414F -1.34%, #121419 51.8%, #040404 101.7%);
 }
 .title{
     font-family: 'Poppins', sans-serif;
