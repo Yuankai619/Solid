@@ -8,7 +8,7 @@ import Container from '@mui/material/Container';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme} from '@mui/material/styles';
 function SignupPage() {
-
+  document.body.style.backgroundColor = "#222222";
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -26,7 +26,7 @@ function SignupPage() {
     event.preventDefault();
   
     // 確保密碼和確認密碼相同
-    if (String(password) != String(confirmPassword)) {
+    if (String(password) !== String(confirmPassword)) {
       setConfirmpasswordError(true);
       return;
     }else{
@@ -69,8 +69,7 @@ function SignupPage() {
   const isPad = useMediaQuery(curtheme.breakpoints.down('md'));
   const boxGap = "45px";
   return (
-    <div className="signup-page">
-      <Container maxWidth="sm" sx={{py:"75px", px: isMobile ? "45px":(isPad ? "144px":"360px") } }>
+      <Container  maxWidth="sm" sx={{py:"75px", px: isMobile ? "45px":(isPad ? "144px":"360px") } }>
           <Box my={boxGap}>
           <h1 className="title">Create account</h1>
           </Box>
@@ -94,7 +93,7 @@ function SignupPage() {
               iserror={confirmpasswordError} errorText={"password is different"} isrequired={true} label="confirm password"
               onChange={(e) => {
                 setConfirmPassword( e.target.value);
-                if (!confirmpasswordError && String(password)==String(confirmPassword)) {
+                if (!confirmpasswordError && String(password)===String(confirmPassword)) {
                   setConfirmpasswordError(true); 
                 } 
               }}
@@ -136,7 +135,6 @@ function SignupPage() {
             ></SignupButton>
           </Box>
       </Container>
-    </div>
   );
 }
 
