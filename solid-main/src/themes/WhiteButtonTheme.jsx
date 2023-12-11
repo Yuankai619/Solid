@@ -1,5 +1,5 @@
 import {createTheme} from '@mui/material/styles';
-const ButtonTheme = createTheme({
+const WhiteButtonTheme = createTheme({
     typography: {
       fontFamily: [
         'Poppins', // 您選擇的 Google 字體
@@ -10,6 +10,7 @@ const ButtonTheme = createTheme({
       MuiButton:{
         styleOverrides:{
           root: {
+            fontWeight:'bold',
             borderRadius: 6,
             backgroundColor: '#EEEEEE', // 背景顏色
             color: '#2D6CB6', // 文字顏色
@@ -23,4 +24,4 @@ const ButtonTheme = createTheme({
     },
 });
 
-export default ButtonTheme;
+export default WhiteButtonTheme;

@@ -2,48 +2,32 @@ import React,{useState}from "react";
 import InputText from "../components/InputText";
 import InputPassword from "../components/InputPassword";
 import SignupButton from "../components/SignupButton";
-import CheckboxStatement from "../components/CheckboxStatement";
+import LoginButton from "../components/LoginButton";
 import Box from '@mui/material/Box';
+import Divider from '@mui/material/Divider';
 import Container from '@mui/material/Container';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme,ThemeProvider,createTheme } from '@mui/material/styles';
+import DividerTheme from "../themes/DividerTheme";
+import GoogleLoginButton from "../components/GoogleLoginButton";
 function LoginPage(){
-    document.body.style.background="linear-gradient(-45deg, #141E30, #243B55,#434343)";
+    document.body.style.background="linear-gradient(-45deg, #141E30, #243B55,#1B1c1E)";
     document.body.style.backgroundSize=" 400% 400%";
-    document.body.style.animation=" gradient 30s ease infinite";
-    document.body.style.height= "100vh";
+    document.body.style.animation=" gradient 10s ease infinite";
+
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
-    const [realName, setRealName] = useState('');
-    const [studentId, setStudentId] = useState('');
-    const [email, setEmail] = useState('');
-    const [isTermsAccepted, setIsTermsAccepted] = useState(false);
     const [usernameError, setUsernameError] = useState(false);
     const [passwordError, setPasswordError] = useState(false);
-    const [confirmpasswordError, setConfirmpasswordError] = useState(false);
-    const [realnameError, setRealnameError] = useState(false);
-    const [studentIdError, setStudentIdError] = useState(false);
-    const [emailError, setEmailError] = useState(false);
+
     const handleSubmit = async (event) => {
     event.preventDefault();
   
-    // 確保密碼和確認密碼相同
-    if (String(password) !== String(confirmPassword)) {
-      setConfirmpasswordError(true);
-      return;
-    }else{
-      setConfirmpasswordError(false);
-    }
-  
+
     // 創建要提交的數據對象
     const userData = {
       username,
       password,
-      realName,
-      studentId,
-      email,
-      isTermsAccepted
     };
     console.log(userData);
     // try {
@@ -67,96 +51,152 @@ function LoginPage(){
   };
   
 
-    const curtheme = useTheme();
-    const isMobile = useMediaQuery(curtheme.breakpoints.down('sm'));
-    const isPad = useMediaQuery(curtheme.breakpoints.down('md'));
-    const boxGap = "45px";
-    const theme = createTheme({
-        components: {
-          MuiContainer: {
-            styleOverrides: {
-              root: {
-                backgroundColor: '#222222', // 自定義背景顏色
-                borderRadius: '24px',      // 自定義邊框圓角
-                color: '#EEEEEE',
-                opacity: '0.8',
-                boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)', 
-                // 可以添加更多的自定義樣式
-              }
+  const ContainerTheme = createTheme({
+      components: {
+        MuiContainer: {
+          defaultProps: {
+            [`@media (max-width:600px)`]: { // 對應 sm 斷點
+              // width:"100px",
+              // maxHeight:"sx",
+                // sx:{{ maxWidth: '1280px' }},
+                // padding: '45px', // 在小屏幕上的內邊距
+              },
+              // [`@media (max-width:900px)`]: { // 對應 md 斷點
+              //   maxWidth:"sm",
+              //   // padding: '144px', // 在中等屏幕上的內邊距
+              // },
+              [`@media (min-width:900px)`]: { // 對應 md 斷點
+                maxWidth:"sm",
+                // padding: '360px', // 在中等屏幕上的內邊距
+              },
+          // 设置默认的最大宽度
+          maxWidth: 'sm', // 例如: 'xs', 'sm', 'md', 'lg', 'xl'
+        },
+          styleOverrides: {
+            root: {
+              [`@media (max-width:600px)`]: { // 對應 sm 斷點
+                // marginLeft: '46px',
+                // marginRight: '46px',
+                // sx:{{ maxWidth: '1280px' }},
+                // padding: '45px', // 在小屏幕上的內邊距
+              },
+              // [`@media (max-width:900px)`]: { // 對應 md 斷點
+              //   maxWidth:"sm",
+              //   // padding: '144px', // 在中等屏幕上的內邊距
+              // },
+              [`@media (min-width:900px)`]: { // 對應 md 斷點
+                // maxWidth:"sm",
+                // padding: '360px', // 在中等屏幕上的內邊距
+              },
+              backgroundColor: '#222222', // 自定義背景顏色
+              borderRadius: '24px',      // 自定義邊框圓角
+              color: '#EEEEEE',
+
+              paddingTop: '5px',
+              paddingBottom: '30px',
+              boxShadow: '0px 4px 15px rgba(0, 0, 0, 1)', 
+              width:"300px",
+              // [`@media (max-width:600px)`]: { // 對應 sm 斷點
+              //   maxWidth:"sm",
+              //   // padding: '45px', // 在小屏幕上的內邊距
+              // },
+              // [`@media (max-width:900px)`]: { // 對應 md 斷點
+              //   maxWidth:"sm",
+              //   // padding: '144px', // 在中等屏幕上的內邊距
+              // },
+              // [`@media (min-width:90px)`]: { // 對應 md 斷點
+              //   maxWidth:"sm",
+              //   // padding: '360px', // 在中等屏幕上的內邊距
+              // }
+              // marginTop 
+              // 可以添加更多的自定義樣式
             }
-          }
-        }
-    });
+          },
+        },
+
+      }
+  });
+  const boxGap = "45px";
+  const btnPading = '90px';
+  const BoxTheme={
+    my:boxGap,
+    // px:btnPading,
+    // px:btnPading,
+    // px:"80px",
+    [`@media (max-width:600px)`]: { // 對應 sm 斷點
+      btnPading:"30px",
+      // px:"12px",
+      // padding: '45px', // 在小屏幕上的內邊距
+    },
+    // [`@media (max-width:900px)`]: { // 對應 md 斷點
+    //   maxWidth:"sm",
+    //   // padding: '144px', // 在中等屏幕上的內邊距
+    // },
+    [`@media (min-width:601px)`]: { // 對應 md 斷點
+      btnPading:"100px",
+      // px:"80px",
+      // padding: '360px', // 在中等屏幕上的內邊距
+    },
+  }
+
     return(
-        <ThemeProvider theme={theme}>
-        <Container  maxWidth="sm" sx={{py:"75px", px: isMobile ? "45px":(isPad ? "144px":"360px") } } backgroundColor="#222222" >
-          <Box my={boxGap}>
-          <h1 className="title">Create account</h1>
+      
+        <ThemeProvider theme={ContainerTheme}>
+        <Box my={boxGap}>
+          <h1 className="login-title">Solid</h1>
+        </Box>
+        <Container >
+          <Box my={0}>
+          <h2 className="login-panel-title">Login</h2>
           </Box>
-          <Box my={boxGap}>
+          <Box my={0}>
+          <p className="login-panel-subtitle">Please log in to access your account.</p>
+          </Box>
+          <Box sx={BoxTheme}>
             <InputText 
               id = "username"
               iserror={usernameError} errorText={"error"} isrequired={true} label="username"
               onChange={(e) => setUsername(e.target.value)}
             ></InputText>
           </Box>
-          <Box my={boxGap}>
+          <Box sx={BoxTheme}>
             <InputPassword 
               id = "password"
               iserror={passwordError} errorText={"error"} isrequired={true} label="password"
               onChange={(e) => setPassword(e.target.value)}
             ></InputPassword>
           </Box>
-          <Box my={boxGap}>
-            <InputPassword 
-              id = "confirm password"
-              iserror={confirmpasswordError} errorText={"password is different"} isrequired={true} label="confirm password"
-              onChange={(e) => {
-                setConfirmPassword( e.target.value);
-                if (!confirmpasswordError && String(password)===String(confirmPassword)) {
-                  setConfirmpasswordError(true); 
-                } 
-              }}
-            ></InputPassword>
+          <Box sx={{BoxTheme,px:btnPading}}>
+            <LoginButton 
+              id = "Login"
+              innertext="Login"
+              onClick={handleSubmit}
+            ></LoginButton>
           </Box>
-          <Box my={boxGap}>
-            <InputText 
-              id = "real name"
-              iserror={realnameError} errorText={"error"} isrequired={true} label="real name"
-              onChange={(e) => setRealName(e.target.value)}
-              ></InputText>
-          </Box>
-          <Box my={boxGap}>
-            <InputText 
-              id ="sutdent ID"
-              iserror={studentIdError} errorText={"error"} isrequired={true} label="student ID"
-              onChange={(e) => setStudentId(e.target.value)}
-            ></InputText>
-          </Box>
-          <Box my={boxGap}>
-            <InputText 
-              id = "email"
-              iserror={emailError} errorText={"error"} isrequired={false} label="email"
-              onChange={(e) => setEmail(e.target.value)}  
-            ></InputText>
-          </Box>
-          <Box my={boxGap}>
-            <CheckboxStatement 
-              id = "accept Term"
-              statement="I accept the terms and privacy policy"
-              onChange={(e) => setIsTermsAccepted(e.target.value)}
-            ></CheckboxStatement>
-          </Box>
-          <Box sx={{my:boxGap,px:"40px"}}>
+          <Box sx={BoxTheme}>
             <SignupButton 
-              id = "sing up"
-              innertext="SugnUp"
+              id = "Singup"
+              innertext="Singup"
               onClick={handleSubmit}
             ></SignupButton>
           </Box>
+          <Box my={boxGap}>
+          {/* <ThemeProvider theme={DividerTheme}> */}
+            <Divider sx={DividerTheme}>Or Login With</Divider>
+          {/* </ThemeProvider> */}
+          </Box>
+          <Box sx={BoxTheme} > 
+          <GoogleLoginButton 
+            id="loginwithgoogle"
+            onClick={() => alert("Hello")} 
+            innertext="Log in with Google"
+          />
+          </Box>
       </Container>
       </ThemeProvider>
+    
     );
+
 }
 
 export default LoginPage;

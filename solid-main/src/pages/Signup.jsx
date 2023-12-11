@@ -71,7 +71,7 @@ function SignupPage() {
   return (
       <Container  maxWidth="sm" sx={{py:"75px", px: isMobile ? "45px":(isPad ? "144px":"360px") } }>
           <Box my={boxGap}>
-          <h1 className="title">Create account</h1>
+          <h1 className="signup-panel-title">Create account</h1>
           </Box>
           <Box my={boxGap}>
             <InputText 
@@ -130,7 +130,7 @@ function SignupPage() {
           <Box sx={{my:boxGap,px:"40px"}}>
             <SignupButton 
               id = "sing up"
-              innertext="SugnUp"
+              innertext="SignUp"
               onClick={handleSubmit}
             ></SignupButton>
           </Box>
