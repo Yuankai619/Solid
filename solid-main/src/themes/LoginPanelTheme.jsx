@@ -7,20 +7,18 @@ const LoginPanelTheme = createTheme({
       ].join(','),
     },
     components: {
-        MuiPaper: {
+      MuiContainer: {
         styleOverrides: {
-            root: {
-                borderRadius: '24px',  // 自定義邊框圓角
-                backgroundColor: '#222222',  // 自定義背景顏色
-                color: '#EEEEEE',
-                elevation:10,
-                padding: '20px',            // 自定義內邊距
-                margin: '15px',             // 自定義外邊距
-                // 在這裡可以添加更多自定義樣式
-            }
-        } 
+          root: {
+            backgroundColor: '#000000', // 自定義背景顏色
+            borderRadius: '24px',      // 自定義邊框圓角
+            color: '#EEEEEE',
+            //boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)', 
+            // 可以添加更多的自定義樣式
+          }
         }
-    },
+      }
+    }
   });
 
 export default LoginPanelTheme;
