@@ -1,24 +1,29 @@
 import {createTheme} from '@mui/material/styles';
-const LoginPanelTheme = createTheme({
-    typography: {
-      fontFamily: [
-        'Poppins', // 您選擇的 Google 字體
-        'sans-serif', // 作為後備的系統字體
-      ].join(','),
-    },
-    components: {
-      MuiContainer: {
-        styleOverrides: {
-          root: {
-            backgroundColor: '#000000', // 自定義背景顏色
-            borderRadius: '24px',      // 自定義邊框圓角
-            color: '#EEEEEE',
-            //boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)', 
-            // 可以添加更多的自定義樣式
-          }
-        }
+const LoginContainerTheme = createTheme({
+      components: {
+        MuiContainer: {
+          styleOverrides: {
+            root: {
+              [`@media (max-width:600px)`]: {
+                width:"330px",
+              },
+              [`@media (min-width:601px)`]: { 
+                width:"500px",
+              },
+              [`@media (min-width:901px)`]: { 
+                width:"630px",
+              },
+              backgroundColor: '#222222', 
+              borderRadius: '24px',      
+              color: '#EEEEEE',
+              paddingTop: '5px',
+              paddingBottom: '30px',
+              boxShadow: '0px 4px 15px rgba(0, 0, 0, 1)', 
+            }
+          },
+        },
+
       }
-    }
   });
 
-export default LoginPanelTheme;
+export default LoginContainerTheme;
