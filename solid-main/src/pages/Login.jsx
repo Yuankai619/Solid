@@ -10,6 +10,10 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme,ThemeProvider,createTheme } from '@mui/material/styles';
 import DividerTheme from "../themes/DividerTheme";
 import GoogleLoginButton from "../components/GoogleLoginButton";
+// deerufin
+import axios from 'axios';
+// deerufin
+
 function LoginPage(){
     document.body.style.background="linear-gradient(-45deg, #141E30, #243B55,#1B1c1E)";
     document.body.style.backgroundSize=" 400% 400%";
@@ -20,7 +24,10 @@ function LoginPage(){
     const [usernameError, setUsernameError] = useState(false);
     const [passwordError, setPasswordError] = useState(false);
 
+    //deerufin  
+    const [data, setData] = useState(null);
     const handleSubmit = async (event) => {
+<<<<<<< Updated upstream
     event.preventDefault();
   
 
@@ -50,6 +57,66 @@ function LoginPage(){
     // }
   };
   
+=======
+      axios({
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        data: JSON.stringify({
+          username: username,
+          password: password
+        }),
+        withCredentials: true,
+        url: "http://localhost:4000/login"
+      })
+      .then((res) => console.log(res));
+    } 
+    const showUser =  ()=>{
+      axios({
+        method: "GET",
+        withCredentials: true,
+        url: "http://localhost:4000/user",
+      }).then((res) => setData(res.data));
+    }
+    //deerufin
+
+    // const handleSubmit = async (event) => {
+    //   event.preventDefault();
+
+    //   // 创建要提交的数据对象
+    //   const userData = {
+    //     username,
+    //     password,
+    //   };
+    //   alert(JSON.stringify(userData));
+    //   // try {
+    //   //   // 发送 POST 请求到后端登录接口
+    //   //   const response = await fetch('您的后端登录API地址', {
+    //   //     method: 'POST',
+    //   //     headers: {
+    //   //       'Content-Type': 'application/json',
+    //   //     },
+    //   //     body: JSON.stringify(userData),
+    //   //   });
+
+    //   //   if (response.ok) {
+    //   //     // 请求成功，处理响应数据
+    //   //     const data = await response.json();
+    //   //     console.log("登录成功：", data);
+    //   //     // 这里可以根据需要进行页面跳转或其他操作
+    //   //   } else {
+    //   //     // 请求失败，处理错误
+    //   //     console.error("登录失败：", response.statusText);
+    //   //     // 这里可以设置错误状态以反馈到UI
+    //   //   }
+    //   // } catch (error) {
+    //   //   // 网络错误或其他异常
+    //   //   console.error("网络或其他错误：", error);
+    //   //   // 这里可以设置错误状态以反馈到UI
+    //   // }
+    // };
+>>>>>>> Stashed changes
 
   const ContainerTheme = createTheme({
       components: {
@@ -192,6 +259,16 @@ function LoginPage(){
             innertext="Log in with Google"
           />
           </Box>
+          <div>
+            <Box sx={BoxButtonTheme} > 
+            <SignupButton 
+              id="test"
+              onClick={showUser} 
+              innertext="test"
+            />
+            </Box>
+            { data ?  <h1>hi {data.username}</h1> : null }  
+          </div>
       </Container>
       </ThemeProvider>
     

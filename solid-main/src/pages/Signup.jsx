@@ -7,6 +7,11 @@ import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme} from '@mui/material/styles';
+// deerufin
+import axios from 'axios';
+// deerufin
+
+
 function SignupPage() {
   document.body.style.backgroundColor = "#222222";
   const [username, setUsername] = useState('');
@@ -22,9 +27,10 @@ function SignupPage() {
   const [realnameError, setRealnameError] = useState(false);
   const [studentIdError, setStudentIdError] = useState(false);
   const [emailError, setEmailError] = useState(false);
+
   const handleSubmit = async (event) => {
     event.preventDefault();
-  
+    //console.log(`haha`)
     // 確保密碼和確認密碼相同
     if (String(password) !== String(confirmPassword)) {
       setConfirmpasswordError(true);
@@ -32,35 +38,22 @@ function SignupPage() {
     }else{
       setConfirmpasswordError(false);
     }
-  
-    // 創建要提交的數據對象
-    const userData = {
-      username,
-      password,
-      realName,
-      studentId,
-      email,
-      isTermsAccepted
-    };
-    console.log(userData);
-    // try {
-    //   const response = await fetch('您的後端API地址', {
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //     },
-    //     body: JSON.stringify(userData),
-    //   });
-  
-    //   if (response.ok) {
-    //     // 處理響應
-    //     console.log("Registration successful");
-    //   } else {
-    //     console.error("Registration failed");
-    //   }
-    // } catch (error) {
-    //   console.error("Error:", error);
-    // }
+    axios({
+      method: "post",
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: JSON.stringify({
+        username: username,
+        password: password,
+        realname: realName,
+        studentID: studentId,
+        email: email
+      }),
+      withCredentials: true,
+      url: "http://localhost:4000/register"
+    })
+    .then((res) => console.log(res));
   };
   
 
