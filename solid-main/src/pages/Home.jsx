@@ -22,6 +22,7 @@ import FileCopyIcon from '@mui/icons-material/FileCopyOutlined';
 import SaveIcon from '@mui/icons-material/Save';
 import PrintIcon from '@mui/icons-material/Print';
 import ShareIcon from '@mui/icons-material/Share';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
   return (
@@ -42,6 +43,49 @@ function TabPanel(props) {
   );
 }
 
+
+const HomePagePanelTheme = createTheme({
+  typography: {
+    fontFamily: [
+      'Poppins',
+      'sans-serif', 
+    ].join(','),
+  },
+  components: {
+    MuiBox: {
+      styleOverrides: {
+        root:{
+          backgroundColor: '#222222',
+          color: '#EEEEEE', 
+        },
+      },
+    },
+    MuiAppBar: {
+      styleOverrides: {
+        colorPrimary: { // 当 color="primary" 时的样式
+          backgroundColor: '#EEEEEE', // 自定义的背景颜色
+          fontWeight:'bold',
+          fontSize:'3px',
+        },
+        colorSecondary: { // 当 color="secondary" 时的样式
+          // 定义样式...
+        },
+        // 根据需要添加其他颜色样式
+      },
+    },
+  }
+});
+
+const AppBarTheme = createTheme({
+  typography: {
+    fontFamily: [
+      'Poppins',
+      'sans-serif', 
+    ].join(','),
+  },
+  colorDefault: "1B1C1E",
+  
+});
 
 
 function Home(){
@@ -68,8 +112,52 @@ function Home(){
     { icon: <ShareIcon />, name: 'Share' },
   ];
   return (
-    <Box>
-      <AppBar position="static" color="default">
+    <ThemeProvider theme={HomePagePanelTheme}>
+    <Box >
+      
+      <Drawer open={drawerOpen} onClose={toggleDrawer(false)}>
+        <Box
+          sx={{ width: 250 }}
+          role="presentation"
+          onClick={toggleDrawer(false)}
+          onKeyDown={toggleDrawer(false)}
+        >
+          <List>
+            <ListItem button>
+              <ListItemText primary="Home" />
+            </ListItem>
+            {/* 可以添加更多的列表项 */}
+          </List>
+        </Box>
+      </Drawer>
+      <SwipeableViews
+        axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
+        index={value}
+        onChangeIndex={handleChangeIndex}
+        style={{ height: 'calc(100vh - 64px)' }}//讓空白處也可以滑動
+      >
+        <TabPanel value={value} index={0} dir={theme.direction}>
+          <JoinedClassCardContainer></JoinedClassCardContainer>
+        </TabPanel>
+        <TabPanel value={value} index={1} dir={theme.direction}>
+          <JoinedClassCardContainer></JoinedClassCardContainer>
+        </TabPanel>
+      </SwipeableViews>
+      <SpeedDial
+        ariaLabel="SpeedDial basic example"
+        sx={{ position: 'absolute', bottom: 82, right: 30 }}
+        icon={<SpeedDialIcon />}
+      >
+        {actions.map((action) => (
+          <SpeedDialAction
+            key={action.name}
+            icon={action.icon}
+            tooltipTitle={action.name}
+          />
+        ))}
+      </SpeedDial>
+      {/* <ThemeProvider theme={AppBarTheme}> */}
+      <AppBar position="static"  >
         <Toolbar p={0}>
           <IconButton
             edge="start"
@@ -96,48 +184,9 @@ function Home(){
           </Box>
         </Toolbar>
       </AppBar>
-      <Drawer open={drawerOpen} onClose={toggleDrawer(false)}>
-        <Box
-          sx={{ width: 250 }}
-          role="presentation"
-          onClick={toggleDrawer(false)}
-          onKeyDown={toggleDrawer(false)}
-        >
-          <List>
-            <ListItem button>
-              <ListItemText primary="Home" />
-            </ListItem>
-            {/* 可以添加更多的列表项 */}
-          </List>
-        </Box>
-      </Drawer>
-      <SwipeableViews
-        axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
-        index={value}
-        onChangeIndex={handleChangeIndex}
-        style={{ height: 'calc(100vh - 48px)' }}//讓空白處也可以滑動
-      >
-        <TabPanel value={value} index={0} dir={theme.direction}>
-          <JoinedClassCardContainer></JoinedClassCardContainer>
-        </TabPanel>
-        <TabPanel value={value} index={1} dir={theme.direction}>
-          <JoinedClassCardContainer></JoinedClassCardContainer>
-        </TabPanel>
-      </SwipeableViews>
-      <SpeedDial
-        ariaLabel="SpeedDial basic example"
-        sx={{ position: 'absolute', bottom: 32, right: 50 }}
-        icon={<SpeedDialIcon />}
-      >
-        {actions.map((action) => (
-          <SpeedDialAction
-            key={action.name}
-            icon={action.icon}
-            tooltipTitle={action.name}
-          />
-        ))}
-      </SpeedDial>
+      {/* </ThemeProvider> */}
     </Box>
+    </ThemeProvider>
   );
 }
 
