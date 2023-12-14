@@ -53,7 +53,7 @@ function SignupPage() {
       withCredentials: true,
       url: "http://localhost:4000/register"
     })
-    .then((res) => console.log(res));
+    .then((res) => console.log('aa',res));
   };
   
 

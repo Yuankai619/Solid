@@ -10,7 +10,7 @@ const bodyParser = require('body-parser');
 const app = express();
 const User = require('./user')
 // ---------------------------  end of import -------------------------------
-mongoose.connect("mongodb+srv://deerufin:ismemario@cluster0.qoooxr8.mongodb.net/?retryWrites=true&w=majority")
+mongoose.connect("mongodb+srv://deerufin:ismemario@cluster0.wpbsliy.mongodb.net/?retryWrites=true&w=majority")
     .then(() => console.log('Connected to Mongo Successfully'))
     .catch(error => console.error(error));
 
