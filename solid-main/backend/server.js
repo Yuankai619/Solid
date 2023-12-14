@@ -41,19 +41,27 @@ require('./passportConfig')(passport);
 
 //routes 
 
-app.post('/login',(req,res,next)=>{
-    passport.authenticate("local",(err,user,info)=>{
-        if(err)throw err;
-        if(!user) res.send("No User Exists");
+app.post('/login', (req, res,next) => {
+    passport.authenticate("local", (err, user, info) => {
+        if (err) throw err;
+        if (!user){
+            return res.send("username_not_exist");
+        } 
         else {
-            req.logIn(user,err=>{
-                if(err) throw err;
-                res.send('success authenticated');
-                console.log(req.user);
+            req.logIn(user, async err => {
+                if (err) throw err;
+                try {
+                    const result = await User.findOne({username: req.body.username});
+                    console.log('username = ',result.username);
+                    return res.send('successfully_authenticated');
+                } catch (error) {
+                    console.error(error);
+                    return res.send('password_not_match')
+                }
             })
         }
-    })(req,res,next);
-})
+    })(req, res, next);
+});
 
 app.post("/register",async (req,res)=>{
     console.log(req.body);
@@ -80,12 +88,13 @@ app.post("/register",async (req,res)=>{
 })
 
 app.get("/user",(req,res)=>{
-    console.log(req.user);
+    console.log(req.body.username);
 })
 
 app.get('/',(req,res)=>{
     res.send('Sanic');
 })
+
 
 // ---------------------------  end of routes -------------------------------
 

@@ -28,7 +28,7 @@ function LoginPage(){
 
     //deerufin  
     const [data, setData] = useState(null);
-    const handleSubmit = async (event) => {
+    const handleSubmit =  () => {
       axios({
         method: "POST",
         headers: {
@@ -36,20 +36,34 @@ function LoginPage(){
         },
         data: JSON.stringify({
           username: username,
-          password: password
+          password: password,
         }),
         withCredentials: true,
         url: "http://localhost:4000/login"
       })
-      .then((res) => console.log(res));
+      .then((res) =>{
+        console.log('res data = ',res.data)
+        if (res.data === 'username_not_exist' || res.data === 'password_not_match') {
+          //alert('The username does not exist.');
+          alert('Invalid username or password.');
+        }else if(res.data === 'successfully_authenticated'){
+          alert('Successfully logged in.')
+        }
+      });
+
     } 
     const showUser =  ()=>{
       axios({
         method: "GET",
         withCredentials: true,
         url: "http://localhost:4000/user",
-      }).then((res) => setData(res.data));
+      }).then((res) => {
+        setData(res.data);
+      });
     }
+
+
+ 
     //deerufin
 
     // const handleSubmit = async (event) => {

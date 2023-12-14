@@ -39,7 +39,7 @@ function SignupPage() {
       setConfirmpasswordError(false);
     }
     axios({
-      method: "post",
+      method: "POST",
       headers: {
         'Content-Type': 'application/json',
       },
