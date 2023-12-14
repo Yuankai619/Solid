@@ -6,6 +6,14 @@ function JoinedClassCardContainer(){
   return(
     <Container>
         <JoinedClassCard></JoinedClassCard>
+        <JoinedClassCard></JoinedClassCard>
+        <JoinedClassCard></JoinedClassCard>
+        <JoinedClassCard></JoinedClassCard>
+        <JoinedClassCard></JoinedClassCard>
+        <JoinedClassCard></JoinedClassCard>
+        <JoinedClassCard></JoinedClassCard>
+        <JoinedClassCard></JoinedClassCard>
+        <JoinedClassCard></JoinedClassCard>
     </Container>
   );
 }

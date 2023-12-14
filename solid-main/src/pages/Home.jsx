@@ -68,7 +68,7 @@ function Home(){
     { icon: <ShareIcon />, name: 'Share' },
   ];
   return (
-    <Box sx={{ bgcolor: 'background.paper', width: '100%' }}>
+    <Box>
       <AppBar position="static" color="default">
         <Toolbar p={0}>
           <IconButton
@@ -79,22 +79,22 @@ function Home(){
             sx={{ flexGrow: 0 }} // 汉堡菜单图标不参与 flex 布局
           >
             <MenuIcon />
-        </IconButton>
-        <Box sx={{ flexGrow: 1, display: 'flex' }}>
-        <Tabs
-          value={value}
-          onChange={handleChange}
-          indicatorColor="primary"
-          textColor="primary"
-          variant="fullWidth"
-          sx={{ width: '100%' }}
-          aria-label="full width tabs"
-        >
-          <Tab label="Joined Class" />
-          <Tab label="Created Class" />
-        </Tabs>
-        </Box>
-      </Toolbar>
+          </IconButton>
+          <Box sx={{ flexGrow: 1, display: 'flex' }}>
+            <Tabs
+              value={value}
+              onChange={handleChange}
+              indicatorColor="primary"
+              textColor="primary"
+              variant="fullWidth"
+              sx={{ width: '100%' }}
+              aria-label="full width tabs"
+            >
+              <Tab label="Joined Class" />
+              <Tab label="Created Class" />
+            </Tabs>
+          </Box>
+        </Toolbar>
       </AppBar>
       <Drawer open={drawerOpen} onClose={toggleDrawer(false)}>
         <Box
@@ -126,7 +126,7 @@ function Home(){
       </SwipeableViews>
       <SpeedDial
         ariaLabel="SpeedDial basic example"
-        sx={{ position: 'absolute', bottom: 16, right: 16 }}
+        sx={{ position: 'absolute', bottom: 32, right: 50 }}
         icon={<SpeedDialIcon />}
       >
         {actions.map((action) => (
