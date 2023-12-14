@@ -7,13 +7,15 @@ import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme} from '@mui/material/styles';
+import { useNavigate } from "react-router-dom";
 // deerufin
 import axios from 'axios';
 // deerufin
 
 
 function SignupPage() {
-  document.body.style.backgroundColor = "#222222";
+  console.log("turn");
+  
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -27,7 +29,7 @@ function SignupPage() {
   const [realnameError, setRealnameError] = useState(false);
   const [studentIdError, setStudentIdError] = useState(false);
   const [emailError, setEmailError] = useState(false);
-
+  const navigate=useNavigate();
   const handleSubmit = async (event) => {
     event.preventDefault();
     //console.log(`haha`)
@@ -53,7 +55,12 @@ function SignupPage() {
       withCredentials: true,
       url: "http://localhost:4000/register"
     })
-    .then((res) => console.log('aa',res));
+    .then((res) =>{
+      console.log('res data = ',res.data)
+      
+        navigate('/login');
+      
+    });
   };
   
 
@@ -62,6 +69,7 @@ function SignupPage() {
   const isPad = useMediaQuery(curtheme.breakpoints.down('md'));
   const boxGap = "45px";
   return (
+    <Box backgroundColor="#222222">
       <Container  maxWidth="sm" sx={{py:"75px", px: isMobile ? "45px":(isPad ? "144px":"360px") } }>
           <Box my={boxGap}>
           <h1 className="signup-panel-title">Create account</h1>
@@ -128,6 +136,7 @@ function SignupPage() {
             ></SignupButton>
           </Box>
       </Container>
+    </Box>
   );
 }
 

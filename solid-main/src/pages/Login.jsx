@@ -12,6 +12,7 @@ import DividerTheme from "../themes/DividerTheme";
 import BoxButtonTheme from "../themes/BoxButtonTheme";
 import BoxTextFieldTheme from "../themes/BoxTextFieldTheme";
 import GoogleLoginButton from "../components/GoogleLoginButton";
+import { useNavigate } from "react-router-dom";
 // deerufin
 import axios from 'axios';
 // deerufin
@@ -28,6 +29,11 @@ function LoginPage(){
 
     //deerufin  
     const [data, setData] = useState(null);
+    const navigate=useNavigate();
+    const handleSignup =()=>{
+      document.body.style.backgroundColor = "#222222";
+      navigate('/signup'); 
+    }
     const handleSubmit =  () => {
       axios({
         method: "POST",
@@ -48,6 +54,7 @@ function LoginPage(){
           alert('Invalid username or password.');
         }else if(res.data === 'successfully_authenticated'){
           alert('Successfully logged in.')
+          navigate('/home');
         }
       });
 
@@ -141,7 +148,7 @@ function LoginPage(){
             <SignupButton 
               id = "Singup"
               innertext="Singup"
-              onClick={handleSubmit}
+              onClick={handleSignup}
             ></SignupButton>
           </Box>
           <Box my={boxGap}>
