@@ -18,7 +18,7 @@ import axios from 'axios';
 // deerufin
 
 function LoginPage(){
-    document.body.style.background="linear-gradient(-45deg, #141E30, #243B55,#1B1c1E)";
+    document.body.style.background="linear-gradient(-45deg, #32854b, #243B55,#a4c44d)";
     document.body.style.backgroundSize=" 400% 400%";
     document.body.style.animation=" gradient 10s ease infinite";
 

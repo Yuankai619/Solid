@@ -22,6 +22,7 @@ import FileCopyIcon from '@mui/icons-material/FileCopyOutlined';
 import SaveIcon from '@mui/icons-material/Save';
 import PrintIcon from '@mui/icons-material/Print';
 import ShareIcon from '@mui/icons-material/Share';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
   return (
@@ -42,6 +43,49 @@ function TabPanel(props) {
   );
 }
 
+
+const HomePagePanelTheme = createTheme({
+  typography: {
+    fontFamily: [
+      'Poppins',
+      'sans-serif', 
+    ].join(','),
+  },
+  components: {
+    MuiBox: {
+      styleOverrides: {
+        root:{
+          backgroundColor: '#222222',
+          color: '#EEEEEE', 
+        },
+      },
+    },
+    MuiAppBar: {
+      styleOverrides: {
+        colorPrimary: { // 当 color="primary" 时的样式
+          backgroundColor: '#EEEEEE', // 自定义的背景颜色
+          fontWeight:'bold',
+          fontSize:'3px',
+        },
+        colorSecondary: { // 当 color="secondary" 时的样式
+          // 定义样式...
+        },
+        // 根据需要添加其他颜色样式
+      },
+    },
+  }
+});
+
+const AppBarTheme = createTheme({
+  typography: {
+    fontFamily: [
+      'Poppins',
+      'sans-serif', 
+    ].join(','),
+  },
+  colorDefault: "1B1C1E",
+  
+});
 
 
 function Home(){
@@ -78,34 +122,9 @@ function Home(){
     { icon: <ShareIcon />, name: 'Share' },
   ];
   return (
-    <Box sx={{ bgcolor: 'background.paper', width: '100%' }}>
-      <AppBar position="static" color="default">
-        <Toolbar p={0}>
-          <IconButton
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            onClick={toggleDrawer(true)}
-            sx={{ flexGrow: 0 }} // 汉堡菜单图标不参与 flex 布局
-          >
-            <MenuIcon />
-        </IconButton>
-        <Box sx={{ flexGrow: 1, display: 'flex' }}>
-        <Tabs
-          value={value}
-          onChange={handleChange}
-          indicatorColor="primary"
-          textColor="primary"
-          variant="fullWidth"
-          sx={{ width: '100%' }}
-          aria-label="full width tabs"
-        >
-          <Tab label="Joined Class" />
-          <Tab label="Created Class" />
-        </Tabs>
-        </Box>
-      </Toolbar>
-      </AppBar>
+    <ThemeProvider theme={HomePagePanelTheme}>
+    <Box >
+      
       <Drawer open={drawerOpen} onClose={toggleDrawer(false)}>
         <Box
           sx={{ width: 250 }}
@@ -125,7 +144,7 @@ function Home(){
         axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
         index={value}
         onChangeIndex={handleChangeIndex}
-        style={{ height: 'calc(100vh - 48px)' }}//讓空白處也可以滑動
+        style={{ height: 'calc(100vh - 64px)' }}//讓空白處也可以滑動
       >
         <TabPanel value={value} index={0} dir={theme.direction}>
           <JoinedClassCardContainer></JoinedClassCardContainer>
@@ -136,7 +155,7 @@ function Home(){
       </SwipeableViews>
       <SpeedDial
         ariaLabel="SpeedDial basic example"
-        sx={{ position: 'absolute', bottom: 16, right: 16 }}
+        sx={{ position: 'absolute', bottom: 82, right: 30 }}
         icon={<SpeedDialIcon />}
       >
         {actions.map((action) => (
@@ -147,7 +166,37 @@ function Home(){
           />
         ))}
       </SpeedDial>
+      {/* <ThemeProvider theme={AppBarTheme}> */}
+      <AppBar position="static"  >
+        <Toolbar p={0}>
+          <IconButton
+            edge="start"
+            color="inherit"
+            aria-label="menu"
+            onClick={toggleDrawer(true)}
+            sx={{ flexGrow: 0 }} // 汉堡菜单图标不参与 flex 布局
+          >
+            <MenuIcon />
+          </IconButton>
+          <Box sx={{ flexGrow: 1, display: 'flex' }}>
+            <Tabs
+              value={value}
+              onChange={handleChange}
+              indicatorColor="primary"
+              textColor="primary"
+              variant="fullWidth"
+              sx={{ width: '100%' }}
+              aria-label="full width tabs"
+            >
+              <Tab label="Joined Class" />
+              <Tab label="Created Class" />
+            </Tabs>
+          </Box>
+        </Toolbar>
+      </AppBar>
+      {/* </ThemeProvider> */}
     </Box>
+    </ThemeProvider>
   );
 }
 
