@@ -1,9 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Rubik+Mono+One&display=swap');
 
-html, body {
+html,body{
 	margin: 0;
 	padding: 0;
-	overflow: hidden; 
+	/* overflow: hidden; */
 }
 .signup-panel-title{
     font-family: 'Poppins', sans-serif;

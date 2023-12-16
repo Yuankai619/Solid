@@ -14,6 +14,7 @@ function JoinedClassCardContainer(){
         <JoinedClassCard></JoinedClassCard>
         <JoinedClassCard></JoinedClassCard>
         <JoinedClassCard></JoinedClassCard>
+
     </Container>
   );
 }

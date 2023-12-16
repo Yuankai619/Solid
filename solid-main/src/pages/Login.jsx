@@ -12,6 +12,11 @@ import DividerTheme from "../themes/DividerTheme";
 import BoxButtonTheme from "../themes/BoxButtonTheme";
 import BoxTextFieldTheme from "../themes/BoxTextFieldTheme";
 import GoogleLoginButton from "../components/GoogleLoginButton";
+import { useNavigate } from "react-router-dom";
+// deerufin
+import axios from 'axios';
+// deerufin
+
 function LoginPage(){
     document.body.style.background="linear-gradient(-45deg, #32854b, #243B55,#a4c44d)";
     document.body.style.backgroundSize=" 400% 400%";
@@ -22,41 +27,87 @@ function LoginPage(){
     const [usernameError, setUsernameError] = useState(false);
     const [passwordError, setPasswordError] = useState(false);
 
-    const handleSubmit = async (event) => {
-      event.preventDefault();
+    //deerufin  
+    const [data, setData] = useState(null);
+    const navigate=useNavigate();
+    const handleSignup =()=>{
+      document.body.style.backgroundColor = "#222222";
+      navigate('/signup'); 
+    }
+    const handleSubmit =  () => {
+      axios({
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        data: JSON.stringify({
+          username: username,
+          password: password,
+        }),
+        withCredentials: true,
+        url: "http://localhost:4000/login"
+      })
+      .then((res) =>{
+        console.log('res data = ',res.data)
+        if (res.data === 'username_not_exist' || res.data === 'password_not_match') {
+          //alert('The username does not exist.');
+          alert('Invalid username or password.');
+        }else if(res.data === 'successfully_authenticated'){
+          alert('Successfully logged in.')
+          navigate('/home');
+        }
+      });
 
-      // 创建要提交的数据对象
-      const userData = {
-        username,
-        password,
-      };
-      alert(JSON.stringify(userData));
-      // try {
-      //   // 发送 POST 请求到后端登录接口
-      //   const response = await fetch('您的后端登录API地址', {
-      //     method: 'POST',
-      //     headers: {
-      //       'Content-Type': 'application/json',
-      //     },
-      //     body: JSON.stringify(userData),
-      //   });
+    } 
+    const showUser =  ()=>{
+      axios({
+        method: "GET",
+        withCredentials: true,
+        url: "http://localhost:4000/user",
+      }).then((res) => {
+        setData(res.data);
+      });
+    }
 
-      //   if (response.ok) {
-      //     // 请求成功，处理响应数据
-      //     const data = await response.json();
-      //     console.log("登录成功：", data);
-      //     // 这里可以根据需要进行页面跳转或其他操作
-      //   } else {
-      //     // 请求失败，处理错误
-      //     console.error("登录失败：", response.statusText);
-      //     // 这里可以设置错误状态以反馈到UI
-      //   }
-      // } catch (error) {
-      //   // 网络错误或其他异常
-      //   console.error("网络或其他错误：", error);
-      //   // 这里可以设置错误状态以反馈到UI
-      // }
-    };
+
+ 
+    //deerufin
+
+    // const handleSubmit = async (event) => {
+    //   event.preventDefault();
+
+    //   // 创建要提交的数据对象
+    //   const userData = {
+    //     username,
+    //     password,
+    //   };
+    //   alert(JSON.stringify(userData));
+    //   // try {
+    //   //   // 发送 POST 请求到后端登录接口
+    //   //   const response = await fetch('您的后端登录API地址', {
+    //   //     method: 'POST',
+    //   //     headers: {
+    //   //       'Content-Type': 'application/json',
+    //   //     },
+    //   //     body: JSON.stringify(userData),
+    //   //   });
+
+    //   //   if (response.ok) {
+    //   //     // 请求成功，处理响应数据
+    //   //     const data = await response.json();
+    //   //     console.log("登录成功：", data);
+    //   //     // 这里可以根据需要进行页面跳转或其他操作
+    //   //   } else {
+    //   //     // 请求失败，处理错误
+    //   //     console.error("登录失败：", response.statusText);
+    //   //     // 这里可以设置错误状态以反馈到UI
+    //   //   }
+    //   // } catch (error) {
+    //   //   // 网络错误或其他异常
+    //   //   console.error("网络或其他错误：", error);
+    //   //   // 这里可以设置错误状态以反馈到UI
+    //   // }
+    // };
 
 
     const boxGap = "45px";
@@ -97,7 +148,7 @@ function LoginPage(){
             <SignupButton 
               id = "Singup"
               innertext="Singup"
-              onClick={handleSubmit}
+              onClick={handleSignup}
             ></SignupButton>
           </Box>
           <Box my={boxGap}>
@@ -110,6 +161,16 @@ function LoginPage(){
             innertext="Login with Google"
           />
           </Box>
+          <div>
+            <Box sx={BoxButtonTheme} > 
+            <SignupButton 
+              id="test"
+              onClick={showUser} 
+              innertext="test"
+            />
+            </Box>
+            { data ?  <h1>hi {data.username}</h1> : null }  
+          </div>
       </Container>
       </ThemeProvider>
     
