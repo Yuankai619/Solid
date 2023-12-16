@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
@@ -45,7 +45,17 @@ function TabPanel(props) {
 
 
 function Home(){
-  document.body.style.backgroundColor = "#222222";
+  
+  useEffect(() => {
+    // 当组件挂载时执行
+    document.body.style.overflow = 'hidden';
+
+    // 当组件卸载时执行的清理函数
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, []); // 空依赖数组 [] 表示这个 effect 只在组件挂载和卸载时运行
+
   const theme = useTheme();
   const [value, setValue] = useState(0);
   const handleChange = (event, newValue) => {
