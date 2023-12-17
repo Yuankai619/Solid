@@ -69,7 +69,7 @@ function SignupPage() {
   const isPad = useMediaQuery(curtheme.breakpoints.down('md'));
   const boxGap = "45px";
   return (
-    <Box backgroundColor="#222222" height={"100%"}>
+    <Box backgroundColor="#222222" height={"100vh"}>
       <Container  maxWidth="sm" sx={{py:"75px", px: isMobile ? "45px":(isPad ? "144px":"360px") } }>
           <Box my={boxGap}>
           <h1 className="signup-panel-title">Create account</h1>

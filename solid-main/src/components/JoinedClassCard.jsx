@@ -6,6 +6,7 @@ import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useNavigate } from 'react-router-dom';
 
 const JoinedClassCardTheme = createTheme({
   // typography: {
@@ -29,12 +30,12 @@ const JoinedClassCardTheme = createTheme({
     MuiCard: {
       styleOverrides: {
         root: {
-          paddingBottom: '13px', 
-          paddingTop: '13px',
-          paddingRight: '27px',
-          paddingLeft: '27px',
+          paddingBottom: '10px', 
+          paddingTop: '10px',
+          paddingRight: '20px',
+          paddingLeft: '10px',
           marginBottom: '23px', 
-          marginTop: '23px',
+          marginTop: '13px',
           marginRight: '27px',
           marginLeft: '27px',
           borderRadius: '24px', 
@@ -51,25 +52,31 @@ const card = (
       <Typography variant="h2" sx={{ fontSize: 20, fontWeight: 700}} color="#000" >
         Discussion Name
       </Typography>
-      <Typography sx={{ fontSize: 12, fontWeight: 500}} color="#999"  component="div">
+      <Typography sx={{ fontSize: 15, fontWeight: 500, marginTop:'32px'}} color="#999"  component="div">
         owner: somebody
       </Typography>
-      <Typography sx={{ fontSize: 14, fontWeight: 500}} color="#000" >
+      <Typography sx={{ fontSize: 18, fontWeight: 500, }} color="#000" >
         Date: ...
       </Typography>
     </CardContent>
-    <CardActions>
+    {/* <CardActions>
       <Button size="small" >Learn More</Button>
-    </CardActions>
+    </CardActions> */}
   </React.Fragment>
 );
 
-export default function OutlinedCard() {
-  return (
+function JoinedClassCard(){
+  const navigate = useNavigate();
+  const handleClick = () => {
+    navigate('/signup'); // 在这里设置目标路由
+  };
+  return(
     <ThemeProvider theme={JoinedClassCardTheme}>
-    <Box sx={{ minWidth: 275 }}>
-      <Card variant="outlined">{card}</Card>
-    </Box>
+      <Box sx={{ minWidth: 275 }} onClick={handleClick}>
+        <Card variant="outlined" sx={{ cursor: 'pointer' }}>{card}</Card>
+      </Box>
     </ThemeProvider>
-  );
+  )
 }
+
+export default JoinedClassCard;

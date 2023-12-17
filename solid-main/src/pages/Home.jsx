@@ -193,7 +193,7 @@ function Home() {
   ];
   return (
     <ThemeProvider theme={HomePagePanelTheme}>
-      <Box sx={{ backgroundColor: '#444444' }}>
+      <Box sx={{ backgroundColor: '#444' }}>
         <Drawer open={drawerOpen} onClose={toggleDrawer(false)}>
           <Box
             sx={{ width: 250 }}
@@ -234,18 +234,7 @@ function Home() {
               key={action.name}
               icon={action.icon}
               onClick={handleActionClick}
-              // onClick={handleClose}
-              // tooltipTitle={action.}
               tooltipTitle={action.name}
-              // tooltipTitle=""
-              // tooltipOpen={open}
-              // FabProps={{
-              //   children: (
-              //     <Tooltip fontSize='5px' placement="left">
-              //       <GroupAddIcon />
-              //     </Tooltip>
-              //   ),
-              // }}
             />
           ))}
         </SpeedDial>
