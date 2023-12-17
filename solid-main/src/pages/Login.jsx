@@ -1,4 +1,4 @@
-import React,{useState}from "react";
+import React,{useState,useEffect}from "react";
 import InputText from "../components/InputText";
 import InputPassword from "../components/InputPassword";
 import SignupButton from "../components/SignupButton";
@@ -18,10 +18,19 @@ import axios from 'axios';
 // deerufin
 
 function LoginPage(){
-    document.body.style.background="linear-gradient(-45deg, #32854b, #243B55,#a4c44d)";
-    document.body.style.backgroundSize=" 400% 400%";
-    document.body.style.animation=" gradient 10s ease infinite";
+    useEffect(() => {
+      // 设置背景样式
+      document.body.style.background = "linear-gradient(-45deg, #32854b, #243B55,#a4c44d)";
+      document.body.style.backgroundSize = "400% 400%";
+      document.body.style.animation = "gradient 10s ease infinite";
 
+      // 组件卸载时清除背景样式
+      return () => {
+        document.body.style.background = '';
+        document.body.style.backgroundSize = '';
+        document.body.style.animation = '';
+      };
+    }, []);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [usernameError, setUsernameError] = useState(false);

@@ -11,7 +11,7 @@ const LoginContainerTheme = createTheme({
                 width:"500px",
               },
               [`@media (min-width:901px)`]: { 
-                width:"630px",
+                width:"530px",
               },
               backgroundColor: '#222222', 
               borderRadius: '24px',      
