@@ -69,10 +69,10 @@ function SignupPage() {
   const isPad = useMediaQuery(curtheme.breakpoints.down('md'));
   const boxGap = "45px";
   return (
-    <Box backgroundColor="#222222" height={"100%"}>
+    <Box backgroundColor="#222222" height={"100vh"}>
       <Container  maxWidth="sm" sx={{py:"75px", px: isMobile ? "45px":(isPad ? "144px":"360px") } }>
           <Box my={boxGap}>
-          <h1 className="signup-panel-title">Create account</h1>
+          <h1 className="signup-panel-title">Setting information</h1>
           </Box>
           <Box my={boxGap}>
             <InputText 
@@ -80,25 +80,6 @@ function SignupPage() {
               iserror={usernameError} errorText={"error"} isrequired={true} label="username"
               onChange={(e) => setUsername(e.target.value)}
             ></InputText>
-          </Box>
-          <Box my={boxGap}>
-            <InputPassword 
-              id = "password"
-              iserror={passwordError} errorText={"error"} isrequired={true} label="password"
-              onChange={(e) => setPassword(e.target.value)}
-            ></InputPassword>
-          </Box>
-          <Box my={boxGap}>
-            <InputPassword 
-              id = "confirm password"
-              iserror={confirmpasswordError} errorText={"password is different"} isrequired={true} label="confirm password"
-              onChange={(e) => {
-                setConfirmPassword( e.target.value);
-                if (!confirmpasswordError && String(password)===String(confirmPassword)) {
-                  setConfirmpasswordError(true); 
-                } 
-              }}
-            ></InputPassword>
           </Box>
           <Box my={boxGap}>
             <InputText 
@@ -114,13 +95,7 @@ function SignupPage() {
               onChange={(e) => setStudentId(e.target.value)}
             ></InputText>
           </Box>
-          <Box my={boxGap}>
-            <InputText 
-              id = "email"
-              iserror={emailError} errorText={"error"} isrequired={false} label="email"
-              onChange={(e) => setEmail(e.target.value)}  
-            ></InputText>
-          </Box>
+
           <Box my={boxGap}>
             <CheckboxStatement 
               id = "accept Term"
@@ -130,8 +105,8 @@ function SignupPage() {
           </Box>
           <Box sx={{my:boxGap,px:"40px"}}>
             <SignupButton 
-              id = "sing up"
-              innertext="SignUp"
+              id = "confirm info"
+              innertext="Confirm"
               onClick={handleSubmit}
             ></SignupButton>
           </Box>
