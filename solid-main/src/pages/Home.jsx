@@ -25,6 +25,12 @@ import ShareIcon from '@mui/icons-material/Share';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import DialpadIcon from '@mui/icons-material/Dialpad';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
   return (
@@ -185,12 +191,27 @@ function Home() {
   const handleActionClick = (event) => {
     // 阻止事件冒泡
     event.stopPropagation();
+    setDialogOpen(true);
+    setOpen(false); // 关闭 SpeedDial
     console.log("Action clicked");
   };
   const actions = [
     { icon: <DialpadIcon />, name: 'Join by ID' },
    
   ];
+
+  const [dialogOpen, setDialogOpen] = useState(false);
+
+  const handleOpenDialog = () => {
+    setDialogOpen(true);
+    setOpen(false); // 关闭 SpeedDial
+  };
+
+  const handleCloseDialog = () => {
+    setDialogOpen(false);
+  };
+
+
   return (
     <ThemeProvider theme={HomePagePanelTheme}>
       <Box sx={{ backgroundColor: '#444' }}>
@@ -238,6 +259,24 @@ function Home() {
             />
           ))}
         </SpeedDial>
+        <Dialog open={dialogOpen} onClose={handleCloseDialog}>
+          <DialogTitle>标题</DialogTitle>
+          <DialogContent>
+            <TextField
+              autoFocus
+              margin="dense"
+              id="name"
+              label="输入内容"
+              type="text"
+              fullWidth
+              variant="standard"
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleCloseDialog}>取消</Button>
+            <Button onClick={handleCloseDialog}>加入</Button>
+          </DialogActions>
+        </Dialog>
         <AppBar>
           <Toolbar p={0}>
             <IconButton
