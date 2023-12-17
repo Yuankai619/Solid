@@ -24,6 +24,7 @@ import PrintIcon from '@mui/icons-material/Print';
 import ShareIcon from '@mui/icons-material/Share';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
+import DialpadIcon from '@mui/icons-material/Dialpad';
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
   return (
@@ -81,7 +82,7 @@ const HomePagePanelTheme = createTheme({
     },
     MuiTabs: {
       defaultProps: {
-        variant: 'fullWidth', // 这里设置您想要的默认 variant 值
+        variant: 'fullWidth', 
       },
       styleOverrides: {
         root: {
@@ -91,14 +92,65 @@ const HomePagePanelTheme = createTheme({
           },
           
         },
-        
-        
+      },
+    },
+    MuiSpeedDial: {
+      styleOverrides: {
+        root: {
+          // 根元素的样式
+          // '& .MuiSpeedDialIcon-icon': { fontSize: '5rem' },
+          [`@media (max-width:601px)`]: { 
+              right:"20px",
+          },
+          [`@media (min-width:601px)`]: { 
+              right:"55px",
+          },
+          position: 'absolute', 
+          bottom: '82px',
+        },
+        fab: {
+          // 悬浮按钮的样式
+          backgroundColor: '#2D6CB6', 
+          width: '60px',
+          height: '60px',
+        },
+      },
+    },
+    MuiSpeedDialAction: {
+      styleOverrides: {
+        fab: {
+          '&:hover': {
+            // 鼠标悬停的背景颜色
+            backgroundColor: '#2D6CB6',
+          },
+          '&.Mui-selected': {
+            // 选中（点击）状态的背景颜色
+            backgroundColor: 'purple',
+          },
+          '&.Mui-focusVisible': {
+            // 聚焦时的背景颜色
+            backgroundColor: 'orange',
+          },
+          backgroundColor: '#2D6CB6', 
+          // '&:click': {
+          //   backgroundColor: 'darkgreen', // 设置鼠标悬停时的背景颜色
+          // },
+          
+          width: '54px',
+          height: '54px',
+        }
+      },
+    },
+    MuiTooltip: {
+      styleOverrides: {
+        tooltip: {
+          backgroundColor: 'black', // 工具提示背景颜色
+          color: 'white', // 工具提示文字颜色
+        },
       },
     },
   }
 });
-
-
 
 
 function Home() {
@@ -124,8 +176,19 @@ function Home() {
     }
     setDrawerOpen(open);
   };
+  const [open, setOpen] = useState(false);
+
+  const handleClickSpeedDial = () => {
+    setOpen(!open); // 切换 SpeedDial 的打开/关闭状态
+  };
+  const handleClose = () => setOpen(false);
+  const handleActionClick = (event) => {
+    // 阻止事件冒泡
+    event.stopPropagation();
+    console.log("Action clicked");
+  };
   const actions = [
-    { icon: <GroupAddIcon />, name: 'Join by ID' },
+    { icon: <DialpadIcon />, name: 'Join by ID' },
    
   ];
   return (
@@ -160,15 +223,29 @@ function Home() {
           </TabPanel>
         </SwipeableViews>
         <SpeedDial
-          ariaLabel="SpeedDia"
-          sx={{ position: 'absolute', bottom: 82, right: 35 }}
+          ariaLabel="SpeedDial"
           icon={<SpeedDialIcon />}
+          open={open}
+          onClick={handleClickSpeedDial} // 控制打开/关闭
         >
           {actions.map((action) => (
             <SpeedDialAction
+              
               key={action.name}
               icon={action.icon}
+              onClick={handleActionClick}
+              // onClick={handleClose}
+              // tooltipTitle={action.}
               tooltipTitle={action.name}
+              // tooltipTitle=""
+              // tooltipOpen={open}
+              // FabProps={{
+              //   children: (
+              //     <Tooltip fontSize='5px' placement="left">
+              //       <GroupAddIcon />
+              //     </Tooltip>
+              //   ),
+              // }}
             />
           ))}
         </SpeedDial>
@@ -199,6 +276,4 @@ function Home() {
     </ThemeProvider>
   );
 }
-
 export default Home;
-
