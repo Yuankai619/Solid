@@ -14,9 +14,10 @@ import BarChartIcon from '@mui/icons-material/BarChart';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import { ThemeProvider } from '@mui/material/styles';
 import HomePageDrawerTheme from '../themes/HomePageDrawerTheme';
-
+import { useNavigate } from "react-router-dom";
 
 function HomePageDrawer(props) {
+    const navigate = useNavigate();
     return (
         <ThemeProvider theme={HomePageDrawerTheme}>
             <Drawer open={props._drawerOpen} onClose={props._toggleDrawer(false)}>
@@ -39,11 +40,11 @@ function HomePageDrawer(props) {
                             </ListItem>
                             <ListItemButton>
                                 <ListItemIcon><HomeIcon style={{ color: "#EEEEEE" }} /></ListItemIcon>
-                                <ListItemText primary="Home" />
+                                <ListItemText primary="Home" onClick={() => navigate('/home')}/>
                             </ListItemButton>
                             <ListItemButton>
                                 <ListItemIcon><SettingsIcon style={{ color: "#EEEEEE" }} /></ListItemIcon>
-                                <ListItemText primary="Setting" />
+                                <ListItemText primary="Setting" onClick={() => navigate('/profile')} />
                             </ListItemButton>
                             <ListItemButton>
                                 <ListItemIcon><BarChartIcon style={{ color: "#EEEEEE" }} /></ListItemIcon>

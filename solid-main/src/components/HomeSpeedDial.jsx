@@ -12,7 +12,7 @@ function HomeSpeedDial(props) {
         event.stopPropagation();
         props._setDialogOpen(true);
         // setOpen(false);//設定典擊後要不要收合action icon 
-        console.log("Action clicked");
+        // console.log("Action clicked");
     };
     const actions = props._actions;
     const handleClickSpeedDial = () => {
