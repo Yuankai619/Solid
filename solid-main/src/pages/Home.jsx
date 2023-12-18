@@ -14,7 +14,14 @@ import IconButton from '@mui/material/IconButton';
 import Drawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
+import Avatar from '@mui/material/Avatar';
+import HomeIcon from '@mui/icons-material/Home';
+import SettingsIcon from '@mui/icons-material/Settings';
+import BarChartIcon from '@mui/icons-material/BarChart';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import SpeedDial from '@mui/material/SpeedDial';
 import SpeedDialIcon from '@mui/material/SpeedDialIcon';
 import SpeedDialAction from '@mui/material/SpeedDialAction';
@@ -25,6 +32,14 @@ import ShareIcon from '@mui/icons-material/Share';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import DialpadIcon from '@mui/icons-material/Dialpad';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import Slide from '@mui/material/Slide';
+import InputText from '../components/InputText';
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
   return (
@@ -45,6 +60,9 @@ function TabPanel(props) {
   );
 }
 
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
 const HomePagePanelTheme = createTheme({
   typography: {
@@ -123,14 +141,14 @@ const HomePagePanelTheme = createTheme({
             // 鼠标悬停的背景颜色
             backgroundColor: '#2D6CB6',
           },
-          '&.Mui-selected': {
-            // 选中（点击）状态的背景颜色
-            backgroundColor: 'purple',
-          },
-          '&.Mui-focusVisible': {
-            // 聚焦时的背景颜色
-            backgroundColor: 'orange',
-          },
+          // '&.Mui-selected': {
+          //   // 选中（点击）状态的背景颜色
+          //   backgroundColor: 'purple',
+          // },
+          // '&.Mui-focusVisible': {
+          //   // 聚焦时的背景颜色
+          //   backgroundColor: 'orange',
+          // },
           backgroundColor: '#2D6CB6', 
           // '&:click': {
           //   backgroundColor: 'darkgreen', // 设置鼠标悬停时的背景颜色
@@ -149,12 +167,48 @@ const HomePagePanelTheme = createTheme({
         },
       },
     },
+    MuiDialog: {
+      styleOverrides: {
+        paper: {
+          
+          backgroundColor: '#222222', // 自定义背景颜色
+          width: '450px', // 自定义宽度
+          // 其他样式...
+        },
+      },
+    },
+    MuiDialogTitle: {
+      styleOverrides: {
+        root: {
+          // Dialog 标题的样式
+          color: '#EEEEEE', // 自定义文字颜色
+          fontSize: '1.3rem', // 自定义字体大小
+          marginBottom:'0px',
+        },
+      },
+    },
+    MuiDialogContent: {
+      styleOverrides: {
+        root: {
+          marginTop:'20px',
+        },
+      },
+    },
+    MuiDialogActions: {
+      styleOverrides: {
+        root: {
+          marginBottom:'10px',
+          // Dialog 操作按钮区域的样式
+          // 可以在这里添加样式
+        },
+      },
+    },
   }
 });
-
-
 function Home() {
-
+  
+  const [inputClassId, setinputClassId] = useState('');
+  const [classIdError, classIdErrorError] = useState(false);
   useEffect(() => {
     document.body.style.overflow = 'hidden';
     return () => {
@@ -185,28 +239,73 @@ function Home() {
   const handleActionClick = (event) => {
     // 阻止事件冒泡
     event.stopPropagation();
+    setDialogOpen(true);
+    setOpen(false); // 关闭 SpeedDial
     console.log("Action clicked");
   };
   const actions = [
     { icon: <DialpadIcon />, name: 'Join by ID' },
    
   ];
+
+  const [dialogOpen, setDialogOpen] = useState(false);
+
+  const handleOpenDialog = () => {
+    setDialogOpen(true);
+    setOpen(false); // 关闭 SpeedDial
+  };
+
+  const handleCloseDialog = () => {
+    setDialogOpen(false);
+  };
+
+
   return (
     <ThemeProvider theme={HomePagePanelTheme}>
-      <Box sx={{ backgroundColor: '#444444' }}>
+      <Box sx={{ backgroundColor: '#444' }}>
         <Drawer open={drawerOpen} onClose={toggleDrawer(false)}>
           <Box
-            sx={{ width: 250 }}
-            role="presentation"
-            onClick={toggleDrawer(false)}
-            onKeyDown={toggleDrawer(false)}
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              height: '100%',
+              width: '250px',
+            }}
+            // role="presentation"
+            // onClick={toggleDrawer(false)}
+            // onKeyDown={toggleDrawer(false)}
           >
+             <Box sx={{ flexGrow: 1 }}>
             <List>
-              <ListItem button>
-                <ListItemText primary="Home" />
-              </ListItem>
-              {/* 可以添加更多的列表项 */}
+          {/* 用户信息 */}
+          <ListItem>
+            <Avatar /> {/* 用户头像 */}
+            <ListItemText primary="用户名" />
+          </ListItem>
+          {/* 其他列表项 */}
+          <ListItemButton>
+            <ListItemIcon><HomeIcon /></ListItemIcon>
+            <ListItemText primary="Home" />
+          </ListItemButton>
+          <ListItemButton>
+            <ListItemIcon><SettingsIcon /></ListItemIcon>
+            <ListItemText primary="Setting" />
+          </ListItemButton>
+          <ListItemButton>
+            <ListItemIcon><BarChartIcon /></ListItemIcon>
+            <ListItemText primary="Statistics" />
+          </ListItemButton>
+        </List>
+          </Box>
+          <Box>
+            <List>
+              {/* 底部登出按钮 */}
+              <ListItemButton>
+                <ListItemIcon><ExitToAppIcon /></ListItemIcon>
+                <ListItemText primary="Logout" />
+              </ListItemButton>
             </List>
+          </Box>
           </Box>
         </Drawer>
         <SwipeableViews
@@ -234,21 +333,26 @@ function Home() {
               key={action.name}
               icon={action.icon}
               onClick={handleActionClick}
-              // onClick={handleClose}
-              // tooltipTitle={action.}
               tooltipTitle={action.name}
-              // tooltipTitle=""
-              // tooltipOpen={open}
-              // FabProps={{
-              //   children: (
-              //     <Tooltip fontSize='5px' placement="left">
-              //       <GroupAddIcon />
-              //     </Tooltip>
-              //   ),
-              // }}
             />
           ))}
         </SpeedDial>
+        <React.Fragment>
+        <Dialog open={dialogOpen} onClose={handleCloseDialog} TransitionComponent={Transition}>
+          <DialogTitle>Input Class ID to Join</DialogTitle>
+          <DialogContent>
+            <InputText 
+              id="classID" label="class ID" 
+              iserror={classIdError} errorText={"class id is invalid"} isrequired={false}
+              onChange={(e) => setinputClassId(e.target.value)}
+            ></InputText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleCloseDialog} sx={{color:'#EEEEEE', marginRight:'30px',fontSize:'1rem'}}>Cancle</Button>
+            <Button onClick={handleCloseDialog}  sx={{fontWeight:'bold', marginRight:'30px',fontSize:'1.2rem'}}>Join</Button>
+          </DialogActions>
+        </Dialog>
+        </React.Fragment>
         <AppBar>
           <Toolbar p={0}>
             <IconButton

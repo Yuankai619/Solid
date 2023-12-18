@@ -10,13 +10,20 @@ import {
 function App() {
   return (
     <Routes>
-      <Route path="/" Component={UpdateGoogleUserInfoPage} />
-      <Route path="/login" Component={LoginPage} />
-      <Route path="/signup" Component={SignupPage} />
-      <Route path="/home" Component={HomePage} />
-      <Route path="/updateinfo" Component={UpdateGoogleUserInfoPage}></Route>
+      <Route path="/" element={<LoginPage />} />
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/signup" element={<SignupPage />} />
+      <Route path="/home" element={<HomePage />} />
+      <Route path="/home/signup" element={<UpdateGoogleUserInfoPage />} />
     </Routes>
   );
 }
 
 export default App;
+{/* <Routes>
+  <Route path="/" element={<LoginPage />} />
+  <Route path="/login" element={<LoginPage />} />
+  <Route path="/signup" element={<SignupPage />} />
+  <Route path="/home" element={<HomePage />} />
+  <Route path="/home/signup" element={<UpdateGoogleUserInfoPage />} />
+</Routes> */}
