@@ -14,7 +14,14 @@ import IconButton from '@mui/material/IconButton';
 import Drawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
+import Avatar from '@mui/material/Avatar';
+import HomeIcon from '@mui/icons-material/Home';
+import SettingsIcon from '@mui/icons-material/Settings';
+import BarChartIcon from '@mui/icons-material/BarChart';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import SpeedDial from '@mui/material/SpeedDial';
 import SpeedDialIcon from '@mui/material/SpeedDialIcon';
 import SpeedDialAction from '@mui/material/SpeedDialAction';
@@ -258,17 +265,47 @@ function Home() {
       <Box sx={{ backgroundColor: '#444' }}>
         <Drawer open={drawerOpen} onClose={toggleDrawer(false)}>
           <Box
-            sx={{ width: 250 }}
-            role="presentation"
-            onClick={toggleDrawer(false)}
-            onKeyDown={toggleDrawer(false)}
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              height: '100%',
+              width: '250px',
+            }}
+            // role="presentation"
+            // onClick={toggleDrawer(false)}
+            // onKeyDown={toggleDrawer(false)}
           >
+             <Box sx={{ flexGrow: 1 }}>
             <List>
-              <ListItem button>
-                <ListItemText primary="Home" />
-              </ListItem>
-              {/* 可以添加更多的列表项 */}
+          {/* 用户信息 */}
+          <ListItem>
+            <Avatar /> {/* 用户头像 */}
+            <ListItemText primary="用户名" />
+          </ListItem>
+          {/* 其他列表项 */}
+          <ListItemButton>
+            <ListItemIcon><HomeIcon /></ListItemIcon>
+            <ListItemText primary="Home" />
+          </ListItemButton>
+          <ListItemButton>
+            <ListItemIcon><SettingsIcon /></ListItemIcon>
+            <ListItemText primary="Setting" />
+          </ListItemButton>
+          <ListItemButton>
+            <ListItemIcon><BarChartIcon /></ListItemIcon>
+            <ListItemText primary="Statistics" />
+          </ListItemButton>
+        </List>
+          </Box>
+          <Box>
+            <List>
+              {/* 底部登出按钮 */}
+              <ListItemButton>
+                <ListItemIcon><ExitToAppIcon /></ListItemIcon>
+                <ListItemText primary="Logout" />
+              </ListItemButton>
             </List>
+          </Box>
           </Box>
         </Drawer>
         <SwipeableViews
