@@ -1,4 +1,4 @@
-import React,{useState}from "react";
+import React,{useState,useEffect}from "react";
 import InputText from "../components/InputText";
 import InputPassword from "../components/InputPassword";
 import SignupButton from "../components/SignupButton";
@@ -15,7 +15,12 @@ import axios from 'axios';
 
 function SignupPage() {
   console.log("turn");
-  
+  useEffect(() => {
+    document.body.style.background = "#222222";
+    return () => {
+      document.body.style.background = "";
+    };
+  }, []);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -69,7 +74,7 @@ function SignupPage() {
   const isPad = useMediaQuery(curtheme.breakpoints.down('md'));
   const boxGap = "45px";
   return (
-    <Box backgroundColor="#222222" height={"100vh"}>
+    <Box backgroundColor="#222222" height={"100%"}>
       <Container  maxWidth="sm" sx={{py:"75px", px: isMobile ? "45px":(isPad ? "144px":"360px") } }>
           <Box my={boxGap}>
           <h1 className="signup-panel-title">Create account</h1>

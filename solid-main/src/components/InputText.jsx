@@ -7,6 +7,7 @@ function InputText(props) {
     <ThemeProvider theme={TextFieldTheme}>
         <TextField
             // focused 
+            margin="dense"
             id={props.id}
             onChange={props.onChange}
             error = {props.iserror ? true : false}

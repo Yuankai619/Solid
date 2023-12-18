@@ -31,6 +31,8 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+import Slide from '@mui/material/Slide';
+import InputText from '../components/InputText';
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
   return (
@@ -51,6 +53,9 @@ function TabPanel(props) {
   );
 }
 
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
 const HomePagePanelTheme = createTheme({
   typography: {
@@ -129,14 +134,14 @@ const HomePagePanelTheme = createTheme({
             // 鼠标悬停的背景颜色
             backgroundColor: '#2D6CB6',
           },
-          '&.Mui-selected': {
-            // 选中（点击）状态的背景颜色
-            backgroundColor: 'purple',
-          },
-          '&.Mui-focusVisible': {
-            // 聚焦时的背景颜色
-            backgroundColor: 'orange',
-          },
+          // '&.Mui-selected': {
+          //   // 选中（点击）状态的背景颜色
+          //   backgroundColor: 'purple',
+          // },
+          // '&.Mui-focusVisible': {
+          //   // 聚焦时的背景颜色
+          //   backgroundColor: 'orange',
+          // },
           backgroundColor: '#2D6CB6', 
           // '&:click': {
           //   backgroundColor: 'darkgreen', // 设置鼠标悬停时的背景颜色
@@ -155,12 +160,48 @@ const HomePagePanelTheme = createTheme({
         },
       },
     },
+    MuiDialog: {
+      styleOverrides: {
+        paper: {
+          
+          backgroundColor: '#222222', // 自定义背景颜色
+          width: '450px', // 自定义宽度
+          // 其他样式...
+        },
+      },
+    },
+    MuiDialogTitle: {
+      styleOverrides: {
+        root: {
+          // Dialog 标题的样式
+          color: '#EEEEEE', // 自定义文字颜色
+          fontSize: '1.3rem', // 自定义字体大小
+          marginBottom:'0px',
+        },
+      },
+    },
+    MuiDialogContent: {
+      styleOverrides: {
+        root: {
+          marginTop:'20px',
+        },
+      },
+    },
+    MuiDialogActions: {
+      styleOverrides: {
+        root: {
+          marginBottom:'10px',
+          // Dialog 操作按钮区域的样式
+          // 可以在这里添加样式
+        },
+      },
+    },
   }
 });
-
-
 function Home() {
-
+  
+  const [inputClassId, setinputClassId] = useState('');
+  const [classIdError, classIdErrorError] = useState(false);
   useEffect(() => {
     document.body.style.overflow = 'hidden';
     return () => {
@@ -259,24 +300,22 @@ function Home() {
             />
           ))}
         </SpeedDial>
-        <Dialog open={dialogOpen} onClose={handleCloseDialog}>
-          <DialogTitle>标题</DialogTitle>
+        <React.Fragment>
+        <Dialog open={dialogOpen} onClose={handleCloseDialog} TransitionComponent={Transition}>
+          <DialogTitle>Input Class ID to Join</DialogTitle>
           <DialogContent>
-            <TextField
-              autoFocus
-              margin="dense"
-              id="name"
-              label="输入内容"
-              type="text"
-              fullWidth
-              variant="standard"
-            />
+            <InputText 
+              id="classID" label="class ID" 
+              iserror={classIdError} errorText={"class id is invalid"} isrequired={false}
+              onChange={(e) => setinputClassId(e.target.value)}
+            ></InputText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleCloseDialog}>取消</Button>
-            <Button onClick={handleCloseDialog}>加入</Button>
+            <Button onClick={handleCloseDialog} sx={{color:'#EEEEEE', marginRight:'30px',fontSize:'1rem'}}>Cancle</Button>
+            <Button onClick={handleCloseDialog}  sx={{fontWeight:'bold', marginRight:'30px',fontSize:'1.2rem'}}>Join</Button>
           </DialogActions>
         </Dialog>
+        </React.Fragment>
         <AppBar>
           <Toolbar p={0}>
             <IconButton
