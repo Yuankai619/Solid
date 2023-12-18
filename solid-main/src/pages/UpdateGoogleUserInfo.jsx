@@ -14,7 +14,16 @@ import axios from 'axios';
 
 
 function SignupPage() {
-  console.log("turn");
+   console.log("turn");
+  // axios({
+  //   method: "GET",
+  //   withCredentials: true,
+  //   url: "http://localhost:4000/profile/me"
+  // })
+  // .then((res) =>{
+  //   //console.log('res data = ',res.data)
+    
+  // });
   useEffect(() => {
     document.body.style.background = "#222222";
     return () => {
@@ -52,19 +61,19 @@ function SignupPage() {
       },
       data: JSON.stringify({
         username: username,
-        password: password,
         realname: realName,
-        studentID: studentId,
-        email: email
+        studentID: studentId
       }),
       withCredentials: true,
-      url: "http://localhost:4000/register"
+      url: "http://localhost:4000/profile/me"
     })
     .then((res) =>{
-      console.log('res data = ',res.data)
-      
-        navigate('/login');
-      
+      console.log(' what ');
+        navigate('/home');
+    })
+    .catch((err)=>{
+      console.log(' post ');
+      console.log(err);
     });
   };
   
