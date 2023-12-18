@@ -58,12 +58,12 @@ function SignupPage() {
         email: email
       }),
       withCredentials: true,
-      url: "http://localhost:4000/register"
+      url: "http://localhost:4000/auth/register"
     })
     .then((res) =>{
       console.log('res data = ',res.data)
       
-        navigate('/login');
+        navigate('/home');
       
     });
   };

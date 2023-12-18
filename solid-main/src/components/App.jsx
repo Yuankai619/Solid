@@ -14,7 +14,7 @@ function App() {
       <Route path="/login" element={<LoginPage />} />
       <Route path="/signup" element={<SignupPage />} />
       <Route path="/home" element={<HomePage />} />
-      <Route path="/updateinfo" element={<UpdateGoogleUserInfoPage />} />
+      <Route path="/profile" element={<UpdateGoogleUserInfoPage />} />
     </Routes>
   );
 }
