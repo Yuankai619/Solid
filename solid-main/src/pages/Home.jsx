@@ -28,7 +28,9 @@ function Home() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [value, setValue] = useState(0);
   const actions = [
-    { icon: <DialpadIcon style={{ color: "#EEEEEE" }} />, name: 'Join by ID' },
+    [{ icon: <DialpadIcon sx={{color:'#EEEEEE'}}/>, name: 'Action 1 for Tab 0' }],
+    // 第二个标签页的 SpeedDial 操作
+    [{ icon: <DialpadIcon />, name: 'Action 1 for Tab 1' }, { icon: <DialpadIcon />, name: 'Action 2 for Tab 1' }],
   ];
   const theme = useTheme();
   const toggleDrawer = (open) => (event) => {
@@ -49,7 +51,7 @@ function Home() {
           _value={value} _handleChangeIndex={handleChangeIndex} _theme={theme}
         />
         <HomeSpeedDial
-          _actions={actions} _dialogOpen={dialogOpen} _setDialogOpen={setDialogOpen}
+          _actions={actions} _dialogOpen={dialogOpen} _setDialogOpen={setDialogOpen} _tabIndex={value}
         />
         <JoinClassByIdDialog
           id={inputClassId} label={"class ID"} errorText={"class id is invalid"} iserror={classIdError}

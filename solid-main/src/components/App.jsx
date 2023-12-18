@@ -2,6 +2,7 @@ import React from "react";
 import SignupPage from "../pages/Signup";
 import LoginPage from "../pages/Login";
 import HomePage from "../pages/Home";
+import ProfilePage from "../pages/Profile";
 import UpdateGoogleUserInfoPage from "../pages/UpdateGoogleUserInfo"
 import {
   BrowserRouter as Router, Route, Routes
@@ -14,7 +15,8 @@ function App() {
       <Route path="/login" element={<LoginPage />} />
       <Route path="/signup" element={<SignupPage />} />
       <Route path="/home" element={<HomePage />} />
-      <Route path="/profile" element={<UpdateGoogleUserInfoPage />} />
+      <Route path="/updateinfo" element={<UpdateGoogleUserInfoPage />} />
+      <Route path="/profile" element={<ProfilePage />} />
     </Routes>
   );
 }
