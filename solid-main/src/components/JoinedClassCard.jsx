@@ -16,7 +16,7 @@ const JoinedClassCardTheme = createTheme({
   //     ].join(','),
   // },
   components: {
-    MuiTypography:{
+    MuiTypography: {
       styleOverrides: {
         root: {
           fontFamily: [
@@ -30,50 +30,66 @@ const JoinedClassCardTheme = createTheme({
     MuiCard: {
       styleOverrides: {
         root: {
-          paddingBottom: '10px', 
+          paddingBottom: '10px',
           paddingTop: '10px',
           paddingRight: '20px',
           paddingLeft: '10px',
-          marginBottom: '23px', 
+          marginBottom: '23px',
           marginTop: '13px',
           marginRight: '27px',
           marginLeft: '27px',
-          borderRadius: '24px', 
-          backgroundColor: '#EEEEEE', 
+          borderRadius: '24px',
+          backgroundColor: '#EEEEEE',
         },
       },
     },
   },
 });
 
-const card = (
-  <React.Fragment>
-    <CardContent>
-      <Typography variant="h2" sx={{ fontSize: 20, fontWeight: 700}} color="#000" >
-        Discussion Name
-      </Typography>
-      <Typography sx={{ fontSize: 15, fontWeight: 500, marginTop:'32px'}} color="#999"  component="div">
-        owner: somebody
-      </Typography>
-      <Typography sx={{ fontSize: 18, fontWeight: 500, }} color="#000" >
-        Date: ...
-      </Typography>
-    </CardContent>
-    {/* <CardActions>
-      <Button size="small" >Learn More</Button>
-    </CardActions> */}
-  </React.Fragment>
-);
+// const card = (
+//   <React.Fragment>
+//     <CardContent onClick={handleClick}>
+//       <Typography variant="h2" sx={{ fontSize: 20, fontWeight: 700 }} color="#000" >
+//         Discussion Name
+//       </Typography>
+//       <Typography sx={{ fontSize: 15, fontWeight: 500, marginTop: '32px' }} color="#999" component="div">
+//         owner: somebody
+//       </Typography>
+//       <Typography sx={{ fontSize: 18, fontWeight: 500, }} color="#000" >
+//         Date: ...
+//       </Typography>
+//     </CardContent>
+//     {/* <CardActions>
+//       <Button size="small" >Learn More</Button>
+//     </CardActions> */}
+//   </React.Fragment>
+// );
 
-function JoinedClassCard(){
+function JoinedClassCard() {
   const navigate = useNavigate();
   const handleClick = () => {
     navigate('/signup'); // 在这里设置目标路由
   };
-  return(
+  return (
     <ThemeProvider theme={JoinedClassCardTheme}>
-      <Box sx={{ minWidth: 275 }} onClick={handleClick}>
-        <Card variant="outlined" sx={{ cursor: 'pointer' }}>{card}</Card>
+      <Box sx={{ minWidth: 275 }} >
+        <Card variant="outlined" sx={{ cursor: 'pointer' }} > 
+         <React.Fragment>
+          <CardContent onClick={handleClick}>
+            <Typography variant="h2" sx={{ fontSize: 20, fontWeight: 700 }} color="#000" >
+              Discussion Name
+            </Typography>
+            <Typography sx={{ fontSize: 15, fontWeight: 500, marginTop: '32px' }} color="#999" component="div">
+              owner: somebody
+            </Typography>
+            <Typography sx={{ fontSize: 18, fontWeight: 500, }} color="#000" >
+              Date: ...
+            </Typography>
+          </CardContent>
+          {/* <CardActions>
+      <Button size="small" >Learn More</Button>
+    </CardActions> */}
+        </React.Fragment></Card>
       </Box>
     </ThemeProvider>
   )
