@@ -14,7 +14,9 @@ function HomeSpeedDial(props) {
         // setOpen(false);//設定典擊後要不要收合action icon 
         // console.log("Action clicked");
     };
-    const actions = props._actions;
+    const actions = props._actions[props._tabIndex] ;
+    // console.log(props._tabIndex);
+    // console.log("Selected Actions:", actions);
     const handleClickSpeedDial = () => {
         setOpen(!open);
     };
