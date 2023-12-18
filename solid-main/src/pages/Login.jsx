@@ -54,7 +54,7 @@ function LoginPage(){
           password: password,
         }),
         withCredentials: true,
-        url: "http://localhost:4000/login"
+        url: "http://localhost:4000/auth/login"
       })
       .then((res) =>{
         console.log('res data = ',res.data)
@@ -67,15 +67,45 @@ function LoginPage(){
         }
       });
 
-    } 
+    }//handlesubmit
+    const googleSubmit =  () => {
+      window.location.href = 'http://localhost:4000/auth/google'
+        // window.location
+    //   axios({
+    //     method: "GET",
+    //     // headers: {
+    //     //   'Content-Type': 'application/json',
+    //     // },
+    //     // data: JSON.stringify({
+    //     //   username: username,
+    //     //   password: password,
+    //     // }),
+    //     withCredentials: true,
+    //     url: "http://localhost:4000/auth/google"
+    //   })
+    //   .then((res) =>{
+    //     // console.log('res data = ',res.data)
+    //     // if (res.data === 'username_not_exist' || res.data === 'password_not_match') {
+    //     //   //alert('The username does not exist.');
+    //     //   alert('Invalid username or password.');
+    //     // }else if(res.data === 'successfully_authenticated'){
+    //     //   alert('Successfully logged in.')
+    //     //   navigate('/updateinfo');
+    //     // }
+    //   }).catch((err)=>{
+    //       console.log(err);
+    //   });
+
+    }//googleSubmit
     const showUser =  ()=>{
-      axios({
-        method: "GET",
-        withCredentials: true,
-        url: "http://localhost:4000/user",
-      }).then((res) => {
-        setData(res.data);
-      });
+      navigate('/home');
+      // axios({
+      //   method: "GET",
+      //   withCredentials: true,
+      //   url: "http://localhost:4000/user",
+      // }).then((res) => {
+      //   setData(res.data);
+      // });
     }
 
 
@@ -166,7 +196,8 @@ function LoginPage(){
           <Box sx={BoxButtonTheme} > 
           <GoogleLoginButton 
             id="loginwithgoogle"
-            onClick={handleSubmit} 
+            onClick={googleSubmit} 
+            
             innertext="Login with Google"
           />
           </Box>
