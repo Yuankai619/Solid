@@ -4,18 +4,33 @@ const User = require('../models/user')
 
 const authCheck = (req,res,next)=>{
     console.log('home  if log in')
-    if(!req || req.user.studentID){
+    //console.log(req)
+    if(!req.user){
         // not login in 
-        res.redirect(`${process.env.frontUrl}/login`)
-        return;
-    }else{
-        next();
+        console.log('not login')
+        res.send('not_login');
+    }else if(req.User){
+        if(!req.user.studentID){
+            res.send('not_complete_create');
+        }else{
+            next();
+        }
     }
 };
 
 router.get('/main',authCheck,(req,res)=>{
     console.log('haha')
     res.redirect(`${process.env.frontUrl}/home`)
+})
+
+
+router.get('/auth-success',authCheck, (req, res) => {
+    console.log('login')
+})
+
+
+router.get('/haha', (req, res) => {
+   res.send('haha');
 })
 
 module.exports = router;

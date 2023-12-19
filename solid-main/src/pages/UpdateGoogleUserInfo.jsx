@@ -13,8 +13,49 @@ import axios from 'axios';
 // deerufin
 
 
-function SignupPage() {
+function UpdateGoogleUserInfo() {
+  const navigate = useNavigate();
+  const [isLogin, setisLogin] = useState(false);
+  const [isCompleteCreate, setisCompleteCreate] = useState(false);
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    const fetchUserData = async () => {
+      try {
+        const response = await axios.get('http://localhost:4000/home/auth-success'); // 假设这是您的 API 端点
+        console.log(response.data);
+        if(response.data == "not_login"){  // 未登入 
+          setisLogin(false);
+        }
+        else if(response.data == 'not_complete_create'){ // 已登入
+          setisCompleteCreate(true);
+        }else if(response.data == 'login' && response.data == 'complete_create'){
+          setisCompleteCreate(true);
+          setisLogin(true);
+        }
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+        setisLogin(false);
+        setisCompleteCreate(false);
+      }
+    };
+    fetchUserData();
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, []);
+  useEffect(() => {
+    if(!isLogin){
+      console.log('navigate to profile');
+      navigate('/login');
+      return;
+    }else if(!isCompleteCreate){
+      navigate('/updateinfo');
+    }else{
+      navigate('/home');
+    }
+  },[isLogin,isCompleteCreate]);
    console.log("turn");
+   
   // axios({
   //   method: "GET",
   //   withCredentials: true,
@@ -43,7 +84,6 @@ function SignupPage() {
   const [realnameError, setRealnameError] = useState(false);
   const [studentIdError, setStudentIdError] = useState(false);
   const [emailError, setEmailError] = useState(false);
-  const navigate=useNavigate();
   const handleSubmit = async (event) => {
     event.preventDefault();
     //console.log(`haha`)
@@ -129,4 +169,4 @@ function SignupPage() {
   );
 }
 
-export default SignupPage;
+export default UpdateGoogleUserInfo;
