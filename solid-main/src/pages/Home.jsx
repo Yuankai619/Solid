@@ -42,17 +42,15 @@ function Home() {
       document.body.style.overflow = '';
     };
   }, []);
-  useEffect(() => {
-    if(!isLogin){
-      console.log('navigate to profile');
-      navigate('/login');
-      return;
-    }else if(!isCompleteCreate){
-      navigate('/updateinfo');
-    }else{
-      navigate('/home');
-    }
-  },[isLogin,isCompleteCreate]);
+  // useEffect(() => {
+  //   if(!isLogin){
+  //     console.log('navigate to profile');
+  //     navigate('/login');
+  //     return;
+  //   }else if(!isCompleteCreate){
+  //     navigate('/updateinfo');
+  //   }
+  // },[isLogin,isCompleteCreate]);
   const [classIdError, classIdErrorError] = useState(false);
   const [inputClassId, setinputClassId] = useState('');
   const [dialogOpen, setDialogOpen] = useState(false);
