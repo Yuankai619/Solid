@@ -2,7 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors  = require('cors');
 const passport = require('passport');
-const passportlocal = require('passport-local').Strategy;
+//const passportlocal = require('passport-local').Strategy;
 const bcrypt = require('bcryptjs');
 const expressSession = require('express-session');
 const bodyParser = require('body-parser');
@@ -13,47 +13,40 @@ const profileRoutes = require('./routes/profile-routes')
 const homeRoutes = require('./routes/home-routes')
 const passportSetup = require('./config/passportConfig');
 require('dotenv').config();
-//const cookieParser = require('cookie-parser');
 
-// ---------------------------  end of import -------------------------------
+// connect Database
 
 const app = express();
 mongoose.connect(process.env.mongoDB)
-    .then(() => console.log('Connected to Mongo Successfully'))
-    .catch(error => console.error(error));
+    .then(() => {console.log('Connected to Mongo Successfully')})
+    .catch((err) => { console.log(err) });
 
-// middleware
+// ---------------------------   middleware -------------------------------
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended : true}));
+// cors
+const corsOptions = {
+    origin: [
+        process.env.frontUrl
+    ],
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    credentials: true,
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-CSRF-TOKEN'],
+}
+app.use(cors(corsOptions));
 
-app.use(cors({
-    origin: process.env.frontUrl, // where react app connect    
-    credentials: true 
-}))
-
-// app.use(session({
-//     secret : "secretcode",
-//     resave : true,
-//     saveUninitialized : true
-// }))
-
-// app.use(cookieParser("secretcode"));
-
-//cookie
+//cookie session
 app.use(expressSession({
     secret : keys.session.cookieKey,
     resave : false,
     saveUninitialized : true,
     cookie : { maxAge: 24 * 60*60*1000 }
 }))
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended : true}));
 
 // init passport
 app.use(passport.initialize());
 app.use(passport.session());
-
-
-
 
 //routes 
 app.use('/auth',authRoutes)
@@ -61,10 +54,7 @@ app.use('/profile',profileRoutes)
 app.use('/home',homeRoutes)
 
 
-
 // ---------------------------  end of middleware -------------------------------
-
-
 
 app.get("/user",(req,res)=>{
     console.log(req.body.username);
@@ -76,9 +66,10 @@ app.get('/',(req,res)=>{
 })
 
 
-// ---------------------------  end of routes -------------------------------
+// ---------------------------  end of routes ------------------------------------
 
 //startserver
-app.listen(4000,()=>{
-    console.log(`Server Has Started on port ${4000} `);
+const port = process.env.PORT
+app.listen(port,()=>{
+    console.log(`Server Has Started on port ${port} `);
 });

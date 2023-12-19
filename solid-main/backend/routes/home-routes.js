@@ -1,10 +1,12 @@
 const router = require('express').Router()
 const passport = require('passport')
 const User = require('../models/user')
+const jwt = require('jsonwebtoken');
 
 const authCheck = (req,res,next)=>{
-    console.log('home  if log in')
-    //console.log(req)
+    console.log('home  if log in => ')
+    const token = req.header('auth-token');
+    console.log(token);
     if(!req.user){
         // not login in 
         console.log('not login')

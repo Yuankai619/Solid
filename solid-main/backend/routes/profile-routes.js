@@ -2,25 +2,58 @@ const router = require('express').Router()
 const passport = require('passport')
 const User = require('../models/user')
 
-const authCheck = (req,res,next)=>{
-    console.log('profile if log in')
-    console.log(req.user);
-    if(!req){
-        // not login in 
-        console.log('p not login');
-        res.redirect(`${process.env.frontUrl}/login`)
-        
+// const authCheck = (req,res,next)=>{
+//     console.log('auth check if login')
+//     if(req.session.passport){
+//         const token = req.session.passport.user;
+//         if(token._id){
+//             if(token.studentID){
+//                 console.log('login sucess');
+//                 const resp = {
+//                     loginState: 'LoginSuccess',
+//                     completeCreateState: 'FinishCompleteCreate' 
+//                 }
+//                 res.json(resp)
+//             }else{
+//                 console.log('createState fail');
+//                 const resp = {
+//                     loginState: 'LoginSuccess',
+//                     completeCreateState: 'FinishCompleteCreate' 
+//                 }
+//                 res.json(resp)
+//             }
+//         }else{
+//             console.log('login fail');
+//             const resp = {
+//                 loginState: 'LoginFailed',
+//                 completeCreateState: 'UnFinishCompleteCreate' 
+//             }
+//             res.json(resp)
+//         }
+//     }else{
+//         console.log('login fail');
+//         const resp = {
+//             loginState: 'LoginFailed',
+//             completeCreateState: 'UnFinishCompleteCreate' 
+//         }
+//         res.json(resp)
+//     }
+//     res.send('what ?')
+// };
+
+const authCheck = (req, res, next) => {
+    let resp = {
+        loginState: 'LoginFailed',
+        completeCreateState: 'UnFinishCompleteCreate'
+    };
+
+    if (req.session.passport && req.session.passport.user._id) {
+        resp.loginState = 'LoginSuccess';
+        resp.completeCreateState = req.session.passport.user.studentID ? 'FinishCompleteCreate' : 'UnFinishCompleteCreate';
     }
-    else if(req.user){
-        if(req.user.studentID){
-            console.log('profile if log in')
-            res.redirect(`${process.env.frontUrl}/home`)
-            
-        }else{
-            //console.log(`${process.env.frontUrl}/profile`,`------------`);
-            next();
-        }
-    }
+
+    console.log(resp.loginState === 'LoginSuccess' ? 'login success' : 'login fail');
+    res.json(resp);
 };
 
 router.get('/',authCheck,(req,res)=>{
@@ -29,7 +62,7 @@ router.get('/',authCheck,(req,res)=>{
 })
 
 router.get('/me',authCheck,(req,res)=>{
-    res.redirect(`${process.env.frontUrl}/profile`)
+    res.redirect(`${process.env.frontUrl}/updateinfo`)
     //res.send(req.user)
 })
 

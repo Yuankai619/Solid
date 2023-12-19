@@ -2,8 +2,9 @@ const User = require('../models/user');
 const bcrypt = require('bcryptjs');
 const passport = require('passport')
 const localStrategy = require('passport-local').Strategy
-const keys = require('./keys')
 const googleStrategy = require('passport-google-oauth20')
+const jwt = require('jsonwebtoken');
+
 require('dotenv').config();
 // 本地策略
 passport.use(new localStrategy(
@@ -34,9 +35,8 @@ passport.use(new localStrategy(
 passport.use(
     new googleStrategy({
         //options for google strat
-        clientID: keys.google.clientID,
-        clientSecret: keys.google.clientSecret,
-        
+        clientID: process.env.GoogleclientID,
+        clientSecret: process.env.GoogleclientSecret,
         callbackURL:`${process.env.backUrl}/auth/google/redirect`,
         //scope: [ 'profile' ]
     },function(req, accessToken, refreshToken, profile, done){
@@ -57,7 +57,8 @@ passport.use(
                     email:  profile._json.email
                 }).save().then((newUser)=>{
                     console.log('new user created: ')//,newUser)
-                    done(null,newUser);
+                    return done(null, newUser);
+                    // done(null,newUser);
                 })
                 //res.redirect(`/profile`,{user: Uesr})
             }
@@ -68,7 +69,7 @@ passport.use(
 
 // 序列化與反序列化
 passport.serializeUser((user, done) => {
-    done(null, user.id);
+    done(null, user);
 });
 
 passport.deserializeUser(async (id, done) => {
