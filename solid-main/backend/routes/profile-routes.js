@@ -4,15 +4,18 @@ const User = require('../models/user')
 
 const authCheck = (req,res,next)=>{
     console.log('profile if log in')
+    console.log(req.user);
     if(!req){
         // not login in 
+        console.log('p not login');
         res.redirect(`${process.env.frontUrl}/login`)
-        return;
+        
     }
     else if(req.user){
         if(req.user.studentID){
+            console.log('profile if log in')
             res.redirect(`${process.env.frontUrl}/home`)
-            return;
+            
         }else{
             //console.log(`${process.env.frontUrl}/profile`,`------------`);
             next();

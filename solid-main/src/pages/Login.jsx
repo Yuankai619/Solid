@@ -19,12 +19,11 @@ import axios from 'axios';
 
 function LoginPage(){
     useEffect(() => {
-      // 设置背景样式
       document.body.style.background = "linear-gradient(-45deg, #32854b, #243B55,#a4c44d)";
       document.body.style.backgroundSize = "400% 400%";
       document.body.style.animation = "gradient 10s ease infinite";
 
-      // 组件卸载时清除背景样式
+      
       return () => {
         document.body.style.background = '';
         document.body.style.backgroundSize = '';

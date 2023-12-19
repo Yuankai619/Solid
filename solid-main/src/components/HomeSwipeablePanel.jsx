@@ -3,6 +3,7 @@ import Box from '@mui/material/Box';
 import SwipeableViews from 'react-swipeable-views';
 import { useTheme } from '@mui/material/styles';
 import JoinedClassCardContainer from '../components/JoinedClassContainer';
+import CreateClassContainer from './CreateClassContainer';
 import { ThemeProvider } from '@mui/material/styles';
 import HomeSwipeablePanelTheme from '../themes/HomeSwipeablePanelTheme';
 function TabPanel(props) {
@@ -38,7 +39,7 @@ function HomeSwipeablePanel(props) {
                     <JoinedClassCardContainer></JoinedClassCardContainer>
                 </TabPanel>
                 <TabPanel value={props._value} index={1} dir={props._theme.direction}>
-                    <JoinedClassCardContainer></JoinedClassCardContainer>
+                    <CreateClassContainer></CreateClassContainer>
                 </TabPanel>
             </SwipeableViews>
         </ThemeProvider>

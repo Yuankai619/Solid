@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React,{useState,useEffect}from "react";
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -8,20 +8,14 @@ import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 
-const JoinedClassCardTheme = createTheme({
-  // typography: {
-  //     fontFamily: [
-  //       'Poppins', // 您選擇的 Google 字體
-  //       'sans-serif', // 作為後備的系統字體
-  //     ].join(','),
-  // },
+const CreateClassCardTheme = createTheme({
   components: {
     MuiTypography: {
       styleOverrides: {
         root: {
           fontFamily: [
-            'Poppins', // 您選擇的 Google 字體
-            'sans-serif', // 作為後備的系統字體
+            'Poppins', 
+            'sans-serif', 
           ].join(','),
           // fontWeight: '700',
         },
@@ -46,44 +40,33 @@ const JoinedClassCardTheme = createTheme({
   },
 });
 
-// const card = (
-//   <React.Fragment>
-//     <CardContent onClick={handleClick}>
-//       <Typography variant="h2" sx={{ fontSize: 20, fontWeight: 700 }} color="#000" >
-//         Discussion Name
-//       </Typography>
-//       <Typography sx={{ fontSize: 15, fontWeight: 500, marginTop: '32px' }} color="#999" component="div">
-//         owner: somebody
-//       </Typography>
-//       <Typography sx={{ fontSize: 18, fontWeight: 500, }} color="#000" >
-//         Date: ...
-//       </Typography>
-//     </CardContent>
-//     {/* <CardActions>
-//       <Button size="small" >Learn More</Button>
-//     </CardActions> */}
-//   </React.Fragment>
-// );
-
-function JoinedClassCard() {
+function CreateClassCard(props) {
   const navigate = useNavigate();
   const handleClick = () => {
-    navigate('/signup'); // 在这里设置目标路由
+    navigate('/signup'); 
   };
+  const [stateColor,setStatecolor]=useState('#000');
+  useEffect(() => {
+    if (props._state === 'open') {
+      setStatecolor('#2D6CB6');
+    } else if (props._state === 'close') {
+      setStatecolor('#999999');
+    }
+  }, [props._state]);
   return (
-    <ThemeProvider theme={JoinedClassCardTheme}>
+    <ThemeProvider theme={CreateClassCardTheme}>
       <Box sx={{ minWidth: 275 }} >
         <Card variant="outlined" sx={{ cursor: 'pointer' }} > 
          <React.Fragment>
           <CardContent onClick={handleClick}>
             <Typography variant="h2" sx={{ fontSize: 20, fontWeight: 700 }} color="#000" >
-              Discussion Name
+              {props._discussionName}
             </Typography>
-            <Typography sx={{ fontSize: 15, fontWeight: 500, marginTop: '32px' }} color="#999" component="div">
-              owner: somebody
+            <Typography sx={{ fontSize: 15, fontWeight: 500, marginTop: '32px' }} color={stateColor} component="div">
+              state:{props._state}
             </Typography>
             <Typography sx={{ fontSize: 18, fontWeight: 500, }} color="#000" >
-              Start date: ...
+              Class ID: {props._classId}
             </Typography>
           </CardContent>
           {/* <CardActions>
@@ -95,4 +78,4 @@ function JoinedClassCard() {
   )
 }
 
-export default JoinedClassCard;
+export default CreateClassCard;
