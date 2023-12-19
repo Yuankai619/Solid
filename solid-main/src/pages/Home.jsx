@@ -20,14 +20,16 @@ function Home() {
     document.body.style.overflow = 'hidden';
     const fetchUserData = async () => {
       try {
-        const response = await axios.get('http://localhost:4000/home/auth-success'); // 假设这是您的 API 端点
+        const response = await axios.get('http://localhost:4000/profile'); // 假设这是您的 API 端点
         console.log(response.data);
-        if(response.data == "not_login"){  // 未登入 
+        console.log(response.data.loginState);
+        console.log(response.data.completeCreateState);
+        if (response.loginState == "LoginFailed"){  // 未登入 
           setisLogin(false);
         }
-        else if(response.data == 'not_complete_create'){ // 已登入
+        else if (response.completeCreateState == 'FinishCompleteCreate'){ // 已登入
           setisCompleteCreate(true);
-        }else if(response.data == 'login' && response.data == 'complete_create'){
+        } else if (response.loginState == 'LoginSuccess' && response.completeCreateState == 'complete_create'){
           setisCompleteCreate(true);
           setisLogin(true);
         }
@@ -42,15 +44,15 @@ function Home() {
       document.body.style.overflow = '';
     };
   }, []);
-  // useEffect(() => {
-  //   if(!isLogin){
-  //     console.log('navigate to profile');
-  //     navigate('/login');
-  //     return;
-  //   }else if(!isCompleteCreate){
-  //     navigate('/updateinfo');
-  //   }
-  // },[isLogin,isCompleteCreate]);
+  useEffect(() => {
+    if(!isLogin){
+      console.log('navigate to profile');
+      navigate('/login');
+      return;
+    }else if(!isCompleteCreate){
+      navigate('/updateinfo');
+    }
+  },[isLogin,isCompleteCreate]);
   const [classIdError, classIdErrorError] = useState(false);
   const [inputClassId, setinputClassId] = useState('');
   const [dialogOpen, setDialogOpen] = useState(false);
