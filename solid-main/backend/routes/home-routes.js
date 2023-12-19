@@ -6,12 +6,16 @@ const authCheck = (req,res,next)=>{
     console.log('home  if log in')
     if(!req || req.user.studentID){
         // not login in 
-        res.redirect(`${process.env.frontUrl}/login`)
+        res.send('??');
         return;
     }else{
         next();
     }
 };
+
+router.get('/check',authCheck,(req,res)=>{
+    res.send('login')
+})
 
 router.get('/main',authCheck,(req,res)=>{
     console.log('haha')

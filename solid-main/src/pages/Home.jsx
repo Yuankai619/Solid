@@ -14,8 +14,24 @@ import HomeSwipeablePanel from '../components/HomeSwipeablePanel';
 import HomeSpeedDial from '../components/HomeSpeedDial';
 import JoinClassByIdDialog from '../components/JoinClassByIdDialog';
 import HomeAppBar from '../components/HomeAppBar';
+import { Navigate } from 'react-router';
+import axios from 'axios';
 
 function Home() {
+    axios({
+      method: "GET",
+      withCredentials: true,
+      url: "http://localhost:4000/home/check"
+    })
+    .then((res) =>{
+      if(res.data === 'login'){
+        
+      }else{
+        Navigate('/home');
+      }
+      //console.log('res data = ',res.data)  
+    });
+
   useEffect(() => {
     document.body.style.overflow = 'hidden';
     return () => {

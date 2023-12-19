@@ -26,7 +26,7 @@ router.get('/',authCheck,(req,res)=>{
 })
 
 router.get('/me',authCheck,(req,res)=>{
-    res.redirect(`${process.env.frontUrl}/profile`)
+    res.redirect(`${process.env.frontUrl}/updateinfo`)
     //res.send(req.user)
 })
 
