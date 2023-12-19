@@ -18,19 +18,20 @@ function UpdateGoogleUserInfo() {
   const [isLogin, setisLogin] = useState(false);
   const [isCompleteCreate, setisCompleteCreate] = useState(false);
   useEffect(() => {
-    document.body.style.overflow = 'hidden';
+    document.body.style.overflow = '';
     const fetchUserData = async () => {
       try {
         const response = await axios.get('http://localhost:4000/home/auth-success'); // 假设这是您的 API 端点
-        console.log(response.data);
+        console.log("test:::::",response.data);
         if(response.data == "not_login"){  // 未登入 
           setisLogin(false);
-        }
-        else if(response.data == 'not_complete_create'){ // 已登入
-          setisCompleteCreate(true);
-        }else if(response.data == 'login' && response.data == 'complete_create'){
-          setisCompleteCreate(true);
+        }else{
           setisLogin(true);
+        }
+        if(response.data == 'not_complete_create'){ // 已登入
+          setisCompleteCreate(false);
+        }else if(response.data == 'complete_create'){
+          setisCompleteCreate(true);
         }
       } catch (error) {
         console.error('Error fetching user data:', error);
@@ -40,7 +41,7 @@ function UpdateGoogleUserInfo() {
     };
     fetchUserData();
     return () => {
-      document.body.style.overflow = '';
+      // document.body.style.overflow = '';
     };
   }, []);
   useEffect(() => {
@@ -48,9 +49,7 @@ function UpdateGoogleUserInfo() {
       console.log('navigate to profile');
       navigate('/login');
       return;
-    }else if(!isCompleteCreate){
-      navigate('/updateinfo');
-    }else{
+    }else if(isCompleteCreate){
       navigate('/home');
     }
   },[isLogin,isCompleteCreate]);

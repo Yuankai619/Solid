@@ -61,6 +61,7 @@ router.get('/',authCheck,(req,res)=>{
     //res.send(req.user)
 })
 
+
 router.post('/me',authCheck,(req,res)=>{
     //console.log('------------------------------------');
     //console.log(req.body);
