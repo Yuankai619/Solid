@@ -61,12 +61,6 @@ router.get('/',authCheck,(req,res)=>{
     //res.send(req.user)
 })
 
-router.get('/me',authCheck,(req,res)=>{
-    res.redirect(`${process.env.frontUrl}/updateinfo`)
-    //res.send(req.user)
-})
-
-
 router.post('/me',authCheck,(req,res)=>{
     //console.log('------------------------------------');
     //console.log(req.body);
