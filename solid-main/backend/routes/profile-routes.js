@@ -23,7 +23,7 @@ const authCheck = (req,res,next)=>{
                 console.log('createState fail');
                 const resp = {
                     loginState: 'LoginSuccess',
-                    completeCreateState: 'FinishCompleteCreate' 
+                    completeCreateState: 'UnFinishCompleteCreate' 
                 }
                 res.json(resp)
             }
@@ -96,7 +96,7 @@ router.get('/',(req,res)=>{
                 console.log('createState fail');
                 const resp = {
                     loginState: 'LoginSuccess',
-                    completeCreateState: 'FinishCompleteCreate' 
+                    completeCreateState: 'UnFinishCompleteCreate' 
                 }
                 res.json(resp)
             }
