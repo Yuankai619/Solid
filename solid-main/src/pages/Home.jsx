@@ -13,6 +13,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 function Home() {
+  
   const navigate = useNavigate();  
   useEffect(() => {
     document.body.style.overflow = 'hidden';

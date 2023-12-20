@@ -13,12 +13,16 @@ import IconButton from '@mui/material/IconButton';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
 // deerufin
 import axios from 'axios';
+import { getImageListItemBarUtilityClass } from "@mui/material";
 // deerufin
 
 
 function SignupPage() {
-    console.log("turn");
+    const [imgUrl, setImgUrl] = useState('');
+
+    
     useEffect(() => {
+        GetUserInfo();
         document.body.style.background = "#222222";
         document.body.style.overflow = '';
         return () => {
@@ -26,6 +30,27 @@ function SignupPage() {
             document.body.style.overflow = '';
         };
     }, []);
+    
+    //console.log("turn");
+    const GetUserInfo = async () => {
+        axios({
+          method: "GET",
+          headers: {
+            'Content-Type': 'application/json',
+          },  
+          withCredentials: true,
+          url: "http://localhost:4000/api/getUserInfo"
+        })  
+        .then((res) =>{
+            console.log(res.data.thumbnail);
+            setImgUrl(res.data.thumbnail);
+        })
+        .catch((error) => {
+          
+        });
+    };
+    
+    
     const [username, setUsername] = useState('');
     const [realName, setRealName] = useState('');
     const [studentID, setStudentId] = useState('');
@@ -66,11 +91,12 @@ function SignupPage() {
     const [studentIdError, setStudentIdError] = useState(false);
     const [emailError, setEmailError] = useState(false);
 
-    const handleImageChange = (event) => {
-        if (event.target.files && event.target.files[0]) {
-            setSelectedImage(URL.createObjectURL(event.target.files[0]));
-        }
-    };
+    //setSelectedImage(ImgUrl);
+    // const handleImageChange = (event) => {
+    //     if (event.target.files && event.target.files[0]) {
+    //         setSelectedImage(URL.createObjectURL(event.target.files[0]));
+    //     }
+    // };
     const navigate = useNavigate();
 
     const curtheme = useTheme();
@@ -85,21 +111,21 @@ function SignupPage() {
                 </Box>
                 <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', my: 2 }}>
                     <Avatar
-                        src={selectedImage}
+                        src={imgUrl}
                         sx={{ width: 120, height: 120, marginBottom:'20px'}}
                     />
-                    <input
+                    {/* <input
                         accept="image/*"
                         style={{ display: 'none' }}
                         id="icon-button-file"
                         type="file"
                         onChange={handleImageChange}
-                    />
-                    <label htmlFor="icon-button-file">
+                    /> */}
+                    {/* <label htmlFor="icon-button-file">
                         <IconButton color="primary" aria-label="upload picture" component="span">
                             <PhotoCamera style={{color:"#EEEEEE"}}/>
                         </IconButton>
-                    </label>
+                    </label> */}
                 </Box>
                 <Box my={boxGap}>
                     <InputText

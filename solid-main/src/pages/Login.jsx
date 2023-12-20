@@ -96,11 +96,7 @@ function LoginPage(){
     //   });
 
     }//googleSubmit
-    const showUser =  ()=>{
-      navigate('/home');
-    }
-
-
+    
  
     //deerufin
 
@@ -157,16 +153,7 @@ function LoginPage(){
             innertext="Login with Google"
           />
           </Box>
-          <div>
-            <Box sx={BoxButtonTheme} > 
-            <SignupButton 
-              id="test"
-              onClick={showUser} 
-              innertext="test"
-            />
-            </Box>
-            { data ?  <h1>hi {data.username}</h1> : null }  
-          </div>
+          
       </Container>
       </ThemeProvider>
     
