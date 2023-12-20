@@ -3,7 +3,6 @@ const passport = require('passport')
 const User = require('../models/user')
 const bcrypt = require('bcryptjs');
 const Joi = require('@hapi/joi')
-const jwt = require('jsonwebtoken')
 
 const Schema = {
     name : Joi.string().min(6).required(),
@@ -11,8 +10,65 @@ const Schema = {
     password : Joi.string().min(6).required()
 }
 
-    
-{
+// router.post('/updateinfo',(req,res)=>{
+//     console.log(req.session.passport.user.googleid)
+//     User.findOneAndUpdate(
+//         { googleid : req.session.passport.user.googleid }, // 查詢條件
+//         { username: req.body.username , // 更新的資料
+//          realname: req.body.realname , 
+//          studentID: req.body.studentID }, 
+//         { new: true } 
+//     ).then(doc => {
+//         req.session.passport.user.username = req.body.username;
+//         req.session.passport.user.realname = req.body.realname;
+//         req.session.passport.user.studentID = req.body.studentID;
+//         res.send('save success')
+//     })
+//     .catch(err => {
+//         console.error(err);
+//     });
+// })
+
+router.get('/auth-state',(req,res)=>{
+    //console.log('auth check if login----------------------')
+    // console.log(req.session);
+    if(req.session.passport){
+        const token = req.session.passport.user;
+        if(token._id){
+            if(token.studentID){
+                console.log('LoginSuccess');
+                const resp = {
+                    loginState: 'LoginSuccess',
+                    completeCreateState: 'FinishCompleteCreate' 
+                }
+                res.json(resp)
+            }else{
+                console.log('UnFinishCompleteCreate');
+                const resp = {
+                    loginState: 'LoginSuccess',
+                    completeCreateState: 'UnFinishCompleteCreate' 
+                }
+                res.json(resp)
+            }
+        }else{
+            console.log('LoginFailed');
+            const resp = {
+                loginState: 'LoginFailed',
+                completeCreateState: 'UnFinishCompleteCreate' 
+            }
+            res.json(resp)
+        }
+    }else{
+        console.log('LoginFailed');
+        const resp = {
+            loginState: 'LoginFailed',
+            completeCreateState: 'UnFinishCompleteCreate' 
+        }
+        res.json(resp)
+    }
+})
+
+
 // //auth login
 // router.get('/login',(req,res)=>{
 //     //login
@@ -67,15 +123,23 @@ const Schema = {
 //         throw err;
 //     }
 // })
-}
+
 
 //auth logout
 router.get('/logout',(req,res)=>{
-    //logout
-    req.logout(err => {
-        
+    console.log('try logout')
+    req.session.destroy((err) => {
+        if(err) {
+            res.json({
+                logoutState : 'LogoutFailed'
+            })
+            return console.log(err);
+        }
+        res.json({
+            logoutState : 'LogoutSuccess'
+        })
     });
-    res.render('home');
+    
 })
 
 
@@ -84,16 +148,10 @@ router.get('/google',passport.authenticate('google',{
     scope : ['profile','email']
 }))
 
-let  a=1;
+//auth google back
 router.get('/google/redirect', 
     passport.authenticate('google', { failureRedirect: '/login' }),
     function(req, res) {
-
-        //console.log(req.session);
-        a=req.session
-
-        
-
         res.redirect(`${process.env.frontUrl}/home`)
     }
 );

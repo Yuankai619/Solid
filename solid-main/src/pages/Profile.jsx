@@ -26,19 +26,43 @@ function SignupPage() {
             document.body.style.overflow = '';
         };
     }, []);
-    
-    const [selectedImage, setSelectedImage] = useState(null);
     const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
     const [realName, setRealName] = useState('');
-    const [studentId, setStudentId] = useState('');
-    const [email, setEmail] = useState('');
+    const [studentID, setStudentId] = useState('');
     const [isTermsAccepted, setIsTermsAccepted] = useState(false);
+  
     const [usernameError, setUsernameError] = useState(false);
-    const [passwordError, setPasswordError] = useState(false);
-    const [confirmpasswordError, setConfirmpasswordError] = useState(false);
     const [realnameError, setRealnameError] = useState(false);
+    const [studentIDError, setStudentIDError] = useState(false);
+    const [isTermsAcceptedError, setIsTermsAcceptedError] = useState(false);
+    const handleConfirm = async (event) => {
+        event.preventDefault();
+        console.log('sss');
+        axios({
+          method: "POST",
+          headers: {
+            'Content-Type': 'application/json',
+          },  
+          data: JSON.stringify({
+            username : username, 
+            realname : realName, 
+            studentID : studentID
+          }),
+          withCredentials: true,
+          url: "http://localhost:4000/api/updateinfo"
+        })  
+        .then((res) =>{
+            console.log('ss');
+            navigate('/home');
+          
+        })
+        .catch((error) => {
+           console.error(error);
+        });
+      };
+    
+
+    const [selectedImage, setSelectedImage] = useState(null);
     const [studentIdError, setStudentIdError] = useState(false);
     const [emailError, setEmailError] = useState(false);
 
@@ -48,39 +72,6 @@ function SignupPage() {
         }
     };
     const navigate = useNavigate();
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-        //console.log(`haha`)
-        // 確保密碼和確認密碼相同
-        if (String(password) !== String(confirmPassword)) {
-            setConfirmpasswordError(true);
-            return;
-        } else {
-            setConfirmpasswordError(false);
-        }
-        axios({
-            method: "POST",
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            data: JSON.stringify({
-                username: username,
-                password: password,
-                realname: realName,
-                studentID: studentId,
-                email: email
-            }),
-            withCredentials: true,
-            url: "http://localhost:4000/register"
-        })
-            .then((res) => {
-                console.log('res data = ', res.data)
-
-                navigate('/login');
-
-            });
-    };
-
 
     const curtheme = useTheme();
     const isMobile = useMediaQuery(curtheme.breakpoints.down('sm'));
@@ -143,7 +134,7 @@ function SignupPage() {
                     <SignupButton
                         id="confirm info"
                         innertext="Confirm"
-                        onClick={()=>navigate('/home')}
+                        onClick={handleConfirm}
                     ></SignupButton>
                 </Box>
             </Container>
