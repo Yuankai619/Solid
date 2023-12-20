@@ -2,7 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors  = require('cors');
 const passport = require('passport');
-//const passportlocal = require('passport-local').Strategy;
+const passportlocal = require('passport-local').Strategy;
 const bcrypt = require('bcryptjs');
 const expressSession = require('express-session');
 const bodyParser = require('body-parser');
@@ -26,11 +26,11 @@ mongoose.connect(process.env.mongoDB)
 // cors
 const corsOptions = {
     origin: [
-        process.env.frontUrl
+        'http://localhost:3000'
     ],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     credentials: true,
-    allowedHeaders: ['Content-Type', 'Authorization', 'X-CSRF-TOKEN'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-CSRF-TOKEN' , 'Cookie' , 'X-Requested-With' , 'Accept'],
 }
 app.use(cors(corsOptions));
 
@@ -41,12 +41,14 @@ app.use(expressSession({
     saveUninitialized : true,
     cookie : { maxAge: 24 * 60*60*1000 }
 }))
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended : true}));
+// app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({extended : true}));
+
 
 // init passport
 app.use(passport.initialize());
 app.use(passport.session());
+
 
 //routes 
 app.use('/auth',authRoutes)
@@ -55,6 +57,13 @@ app.use('/home',homeRoutes)
 
 
 // ---------------------------  end of middleware -------------------------------
+
+
+app.post('/test', (req, res) => {
+    console.log(req.sessionID);
+    req.session.a = "hi"
+    res.json({a: 1})
+})
 
 app.get("/user",(req,res)=>{
     console.log(req.body.username);

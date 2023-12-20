@@ -84,9 +84,12 @@ router.get('/google',passport.authenticate('google',{
     scope : ['profile','email']
 }))
 
+let  a=1;
 router.get('/google/redirect', 
     passport.authenticate('google', { failureRedirect: '/login' }),
     function(req, res) {
+        //console.log(req.session);
+        a=req.session
         res.redirect(`${process.env.frontUrl}/home`)
     }
 );

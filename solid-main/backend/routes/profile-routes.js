@@ -1,64 +1,114 @@
 const router = require('express').Router()
 const passport = require('passport')
 const User = require('../models/user')
+//const verify = require('../utils/verifySSToken')
 
-// const authCheck = (req,res,next)=>{
-//     console.log('auth check if login')
-//     if(req.session.passport){
-//         const token = req.session.passport.user;
-//         if(token._id){
-//             if(token.studentID){
-//                 console.log('login sucess');
-//                 const resp = {
-//                     loginState: 'LoginSuccess',
-//                     completeCreateState: 'FinishCompleteCreate' 
-//                 }
-//                 res.json(resp)
-//             }else{
-//                 console.log('createState fail');
-//                 const resp = {
-//                     loginState: 'LoginSuccess',
-//                     completeCreateState: 'FinishCompleteCreate' 
-//                 }
-//                 res.json(resp)
-//             }
-//         }else{
-//             console.log('login fail');
-//             const resp = {
-//                 loginState: 'LoginFailed',
-//                 completeCreateState: 'UnFinishCompleteCreate' 
-//             }
-//             res.json(resp)
-//         }
-//     }else{
-//         console.log('login fail');
-//         const resp = {
-//             loginState: 'LoginFailed',
-//             completeCreateState: 'UnFinishCompleteCreate' 
-//         }
-//         res.json(resp)
-//     }
-//     res.send('what ?')
-// };
-
-const authCheck = (req, res, next) => {
-    let resp = {
-        loginState: 'LoginFailed',
-        completeCreateState: 'UnFinishCompleteCreate'
-    };
-
-    if (req.session.passport && req.session.passport.user._id) {
-        resp.loginState = 'LoginSuccess';
-        resp.completeCreateState = req.session.passport.user.studentID ? 'FinishCompleteCreate' : 'UnFinishCompleteCreate';
+const authCheck = (req,res,next)=>{
+    console.log('auth check if login----------------------')
+    console.log(req.session);
+    if(req.session.passport){
+        const token = req.session.passport.user;
+        if(token._id){
+            if(token.studentID){
+                console.log('login sucess');
+                const resp = {
+                    loginState: 'LoginSuccess',
+                    completeCreateState: 'FinishCompleteCreate' 
+                }
+                res.json(resp)
+            }else{
+                console.log('createState fail');
+                const resp = {
+                    loginState: 'LoginSuccess',
+                    completeCreateState: 'FinishCompleteCreate' 
+                }
+                res.json(resp)
+            }
+        }else{
+            console.log('login fail');
+            const resp = {
+                loginState: 'LoginFailed',
+                completeCreateState: 'UnFinishCompleteCreate' 
+            }
+            res.json(resp)
+        }
+    }else{
+        console.log('login fail');
+        const resp = {
+            loginState: 'LoginFailed',
+            completeCreateState: 'UnFinishCompleteCreate' 
+        }
+        res.json(resp)
     }
-
-    console.log(resp.loginState === 'LoginSuccess' ? 'login success' : 'login fail');
-    res.json(resp);
+    // res.send('what ?')
 };
 
-router.get('/',authCheck,(req,res)=>{
+// const authCheck = (req, res, next) => {
+//     let resp = {
+//         loginState: 'LoginFailed',
+//         completeCreateState: 'UnFinishCompleteCreate'
+//     };
+//     if (req.session.passport && req.session.passport.user._id) {
+//         resp.loginState = 'LoginSuccess';
+//         resp.completeCreateState = req.session.passport.user.studentID ? 'FinishCompleteCreate' : 'UnFinishCompleteCreate';
+//     }
+//     console.log(resp.loginState === 'LoginSuccess' ? 'login success' : 'login fail');
+//     res.json(resp);
+// };
+
+
+
+
+// router.get('/test',(req,res)=>{
+//     res.redirect('/');
+// })
+router.get('/test',(req,res)=>{
+    console.log(req.session);
+    res.redirect('jaj');
+})
+router.get('/jaj',(req,res)=>{
+    console.log('auth check if login----------------------')
+    console.log(req.session);
+})
+router.get('/',(req,res)=>{
     //res.send('haha')
     //res.send(req.user)
+    console.log('auth check if login----------------------')
+    console.log(req.session);
+    if(req.session.passport){
+        const token = req.session.passport.user;
+        if(token._id){
+            if(token.studentID){
+                console.log('login sucess');
+                const resp = {
+                    loginState: 'LoginSuccess',
+                    completeCreateState: 'FinishCompleteCreate' 
+                }
+                res.json(resp)
+            }else{
+                console.log('createState fail');
+                const resp = {
+                    loginState: 'LoginSuccess',
+                    completeCreateState: 'FinishCompleteCreate' 
+                }
+                res.json(resp)
+            }
+        }else{
+            console.log('login fail');
+            const resp = {
+                loginState: 'LoginFailed',
+                completeCreateState: 'UnFinishCompleteCreate' 
+            }
+            res.json(resp)
+        }
+    }else{
+        console.log('login fail');
+        const resp = {
+            loginState: 'LoginFailed',
+            completeCreateState: 'UnFinishCompleteCreate' 
+        }
+        res.json(resp)
+    }
 })
 
 

@@ -20,16 +20,39 @@ function Home() {
     document.body.style.overflow = 'hidden';
     const fetchUserData = async () => {
       try {
-        const response = await axios.get('http://localhost:4000/home/auth-success'); // 假设这是您的 API 端点
+        const response = await axios({
+          method: 'get',
+          url: 'http://localhost:4000/profile/',
+          withCredentials: true
+        });
+        //const response = await axios.get('http://localhost:4000/profile/'); // 假设这是您的 API 端点
         console.log(response.data);
-        if(response.data == "not_login"){  // 未登入 
-          setisLogin(false);
+        console.log(response.data.loginState);
+        console.log(response.data.completeCreateState);
+        console.log(isLogin,isCompleteCreate);
+        if(response.data.loginState == "LoginSuccess"){  // 未登入 
+          console.log('log y');
+          isLogin = true ;
+          //setisLogin(true);
+        }else{
+          isLogin = false ;
+          //setisLogin(false);
         }
-        else if(response.data == 'not_complete_create'){ // 已登入
-          setisCompleteCreate(true);
-        }else if(response.data == 'login' && response.data == 'complete_create'){
-          setisCompleteCreate(true);
-          setisLogin(true);
+        if(response.data.completeCreateState == 'FinishCompleteCreate'){ // 已登入
+          console.log('y');
+          isCompleteCreate = true;
+          //setisCompleteCreate(true);
+        }else {
+          isCompleteCreate = false;
+          //setisCompleteCreate(false);
+        }
+        console.log(isLogin,isCompleteCreate);
+        if(!isLogin){
+          console.log('navigate to profile');
+          navigate('/login');
+          return;
+        }else if(isCompleteCreate){
+          navigate('/home');
         }
       } catch (error) {
         console.error('Error fetching user data:', error);
@@ -43,12 +66,13 @@ function Home() {
     };
   }, []);
   // useEffect(() => {
+  //   console.log(isLogin,isCompleteCreate);
   //   if(!isLogin){
   //     console.log('navigate to profile');
   //     navigate('/login');
   //     return;
-  //   }else if(!isCompleteCreate){
-  //     navigate('/updateinfo');
+  //   }else if(isCompleteCreate){
+  //     navigate('/home');
   //   }
   // },[isLogin,isCompleteCreate]);
   const [classIdError, classIdErrorError] = useState(false);
