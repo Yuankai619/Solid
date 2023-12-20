@@ -21,4 +21,16 @@ router.post('/updateinfo',(req,res)=>{
     });
 })
 
+router.get('/getUserInfo',(req,res)=>{
+    //console.log(req.session.passport.user);
+    res.json({
+        _id : req.session.passport.user._id,
+        username: req.session.passport.user.username,
+        thumbnail: req.session.passport.user.thumbnail,
+        googleid: req.session.passport.user.googleid,
+        realname: req.session.passport.user.realname,
+        studentID: req.session.passport.user.studentID
+    })
+})
+
 module.exports = router;
