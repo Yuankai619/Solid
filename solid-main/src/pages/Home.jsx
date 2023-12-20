@@ -20,6 +20,7 @@ function Home() {
     document.body.style.overflow = 'hidden';
     const fetchUserData = async () => {
       try {
+
         const response = await axios({
           method: 'get',
           url: 'http://localhost:4000/profile/',
@@ -53,6 +54,7 @@ function Home() {
           return;
         }else if(isCompleteCreate){
           navigate('/home');
+
         }
       } catch (error) {
         console.error('Error fetching user data:', error);
@@ -65,6 +67,7 @@ function Home() {
       document.body.style.overflow = '';
     };
   }, []);
+
   // useEffect(() => {
   //   console.log(isLogin,isCompleteCreate);
   //   if(!isLogin){
@@ -75,6 +78,7 @@ function Home() {
   //     navigate('/home');
   //   }
   // },[isLogin,isCompleteCreate]);
+
   const [classIdError, classIdErrorError] = useState(false);
   const [inputClassId, setinputClassId] = useState('');
   const [dialogOpen, setDialogOpen] = useState(false);
