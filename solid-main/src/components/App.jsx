@@ -4,7 +4,7 @@ import LoginPage from "../pages/Login";
 import HomePage from "../pages/Home";
 import ProfilePage from "../pages/Profile";
 import UpdateGoogleUserInfoPage from "../pages/UpdateGoogleUserInfo"
-import AnswerStream from "../pages/AnswerStream";
+//import AnswerStream from "../pages/AnswerStream";
 import {
   BrowserRouter as Router, Route, Routes
 } from "react-router-dom";
@@ -12,7 +12,7 @@ import {
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<AnswerStream />} />
+      <Route path="/" element={<LoginPage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/signup" element={<SignupPage />} />
       <Route path="/home" element={<HomePage />} />
