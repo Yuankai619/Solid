@@ -3,6 +3,7 @@ const passport = require('passport')
 const User = require('../models/user')
 //const verify = require('../utils/verifySSToken')
 
+
 // router.get('/',(req,res)=>{
 //     //res.send('haha')
 //     //res.send(req.user)
@@ -41,8 +42,10 @@ const User = require('../models/user')
 //             completeCreateState: 'UnFinishCompleteCreate' 
 //         }
 //         res.json(resp)
+
 //     }
 // })
+
 
 
 module.exports = router;
