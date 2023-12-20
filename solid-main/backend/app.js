@@ -4,7 +4,8 @@ const cors  = require('cors');
 const passport = require('passport');
 const passportlocal = require('passport-local').Strategy;
 const bcrypt = require('bcryptjs');
-const expressSession = require('express-session');
+// const session = require('session');
+const session = require('express-session');
 const bodyParser = require('body-parser');
 const User = require('./models/user')
 const keys = require('./config/keys')
@@ -12,6 +13,7 @@ const authRoutes = require('./routes/auth-routes')
 const profileRoutes = require('./routes/profile-routes')
 const homeRoutes = require('./routes/home-routes')
 const passportSetup = require('./config/passportConfig');
+const cookieParser = require('cookie-parser');
 require('dotenv').config();
 
 // connect Database
@@ -24,6 +26,17 @@ mongoose.connect(process.env.mongoDB)
 // ---------------------------   middleware -------------------------------
 
 // cors
+// app.use
+// app.use(passport.session());
+app.use(session(/* ... */));
+app.use(passport.authenticate('session'));
+// app.use(session({
+//     secret: 'keyboard cat',
+//     resave: false,
+//     saveUninitialized: false,
+//     cookie: { secure: true }
+// }));
+app.use(cookieParser());
 const corsOptions = {
     origin: [
         'http://localhost:3000'
@@ -35,11 +48,12 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 //cookie session
-app.use(expressSession({
+app.use(session({
     secret : keys.session.cookieKey,
     resave : false,
     saveUninitialized : true,
-    cookie : { maxAge: 24 * 60*60*1000 }
+    cookie : { maxAge: 24 * 60*60*1000 },
+    passport : { maxAge: 24 * 60 * 60 * 1000 }
 }))
 // app.use(bodyParser.json());
 // app.use(bodyParser.urlencoded({extended : true}));
