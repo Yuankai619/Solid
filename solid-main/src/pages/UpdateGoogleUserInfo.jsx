@@ -8,115 +8,82 @@ import Container from '@mui/material/Container';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme} from '@mui/material/styles';
 import { useNavigate } from "react-router-dom";
-// deerufin
 import axios from 'axios';
-// deerufin
 
 
 function UpdateGoogleUserInfo() {
   const navigate = useNavigate();
-  const [isLogin, setisLogin] = useState(false);
-  const [isCompleteCreate, setisCompleteCreate] = useState(false);
+  let isLogin = false, isCompleteCreate = false;
   useEffect(() => {
     document.body.style.overflow = '';
+    document.body.style.background = "#222222";
     const fetchUserData = async () => {
       try {
-        const response = await axios.get('http://localhost:4000/home/auth-success'); // 假设这是您的 API 端点
-        console.log("test:::::",response.data);
-        if(response.data == "not_login"){  // 未登入 
-          setisLogin(false);
-        }else{
-          setisLogin(true);
+        const response = await axios({
+          method: 'get',
+          url: 'http://localhost:4000/profile/',
+          withCredentials: true
+        });
+        // console.log(response.data);
+        // console.log(response.data.loginState);
+        console.log(response.data.completeCreateState);
+        console.log(isLogin,isCompleteCreate);
+        
+        if (response.data.loginState == "LoginFailed") {  
+          navigate('/login');
         }
-        if(response.data == 'not_complete_create'){ // 已登入
-          setisCompleteCreate(false);
-        }else if(response.data == 'complete_create'){
-          setisCompleteCreate(true);
+        if (response.data.completeCreateState == 'FinishCompleteCreate') { 
+          console.log('navigate to home');
+          navigate('/home');
         }
       } catch (error) {
         console.error('Error fetching user data:', error);
-        setisLogin(false);
-        setisCompleteCreate(false);
       }
     };
     fetchUserData();
-    return () => {
-      // document.body.style.overflow = '';
-    };
-  }, []);
-  useEffect(() => {
-    if(!isLogin){
-      console.log('navigate to profile');
-      navigate('/login');
-      return;
-    }else if(isCompleteCreate){
-      navigate('/home');
-    }
-  },[isLogin,isCompleteCreate]);
-   console.log("turn");
-   
-  // axios({
-  //   method: "GET",
-  //   withCredentials: true,
-  //   url: "http://localhost:4000/profile/me"
-  // })
-  // .then((res) =>{
-  //   //console.log('res data = ',res.data)
-    
-  // });
-  useEffect(() => {
-    document.body.style.background = "#222222";
     return () => {
       document.body.style.background = "";
     };
   }, []);
   const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
   const [realName, setRealName] = useState('');
-  const [studentId, setStudentId] = useState('');
-  const [email, setEmail] = useState('');
+  const [studentID, setStudentId] = useState('');
   const [isTermsAccepted, setIsTermsAccepted] = useState(false);
+
   const [usernameError, setUsernameError] = useState(false);
-  const [passwordError, setPasswordError] = useState(false);
-  const [confirmpasswordError, setConfirmpasswordError] = useState(false);
   const [realnameError, setRealnameError] = useState(false);
-  const [studentIdError, setStudentIdError] = useState(false);
-  const [emailError, setEmailError] = useState(false);
-  const handleSubmit = async (event) => {
+  const [studentIDError, setStudentIDError] = useState(false);
+  const [isTermsAcceptedError, setIsTermsAcceptedError] = useState(false);
+
+  
+  const handleConfirm = async (event) => {
     event.preventDefault();
-    //console.log(`haha`)
-    // 確保密碼和確認密碼相同
-    if (String(password) !== String(confirmPassword)) {
-      setConfirmpasswordError(true);
-      return;
-    }else{
-      setConfirmpasswordError(false);
-    }
+    const userdata = { 
+      username: username, 
+      realname: realName, 
+      studentID: studentID,
+      isTermsAccepted: isTermsAccepted
+    };
+    userdata.JSON.stringify(userdata);
     axios({
       method: "POST",
       headers: {
         'Content-Type': 'application/json',
-      },
-      data: JSON.stringify({
-        username: username,
-        realname: realName,
-        studentID: studentId
-      }),
+      },  
+      data: userdata,
       withCredentials: true,
       url: "http://localhost:4000/profile/me"
-    })
+    })  
     .then((res) =>{
       console.log(' what ');
         navigate('/home');
-    })
+    })  
     .catch((err)=>{
       console.log(' post ');
       console.log(err);
     });
   };
-  
-
+    
   const curtheme = useTheme();
   const isMobile = useMediaQuery(curtheme.breakpoints.down('sm'));
   const isPad = useMediaQuery(curtheme.breakpoints.down('md'));
@@ -144,7 +111,7 @@ function UpdateGoogleUserInfo() {
           <Box my={boxGap}>
             <InputText 
               id ="sutdent ID"
-              iserror={studentIdError} errorText={"error"} isrequired={true} label="student ID"
+              iserror={studentIDError} errorText={"error"} isrequired={true} label="student ID"
               onChange={(e) => setStudentId(e.target.value)}
             ></InputText>
           </Box>
@@ -160,7 +127,7 @@ function UpdateGoogleUserInfo() {
             <SignupButton 
               id = "confirm info"
               innertext="Confirm"
-              onClick={handleSubmit}
+              onClick={handleConfirm}
             ></SignupButton>
           </Box>
       </Container>

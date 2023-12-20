@@ -16,7 +16,7 @@ import { ThemeProvider } from '@mui/material/styles';
 import HomePageDrawerTheme from '../themes/HomePageDrawerTheme';
 import { useNavigate } from "react-router-dom";
 
-function HomePageDrawer(props) {
+function HomePageDrawer({ clickLogout ,...props}) {
     const navigate = useNavigate();
     return (
         <ThemeProvider theme={HomePageDrawerTheme}>
@@ -54,7 +54,7 @@ function HomePageDrawer(props) {
                     </Box>
                     <Box>
                         <List>
-                            <ListItemButton>
+                            <ListItemButton onClick={clickLogout}>
                                 <ListItemIcon><ExitToAppIcon style={{ color: "#EEEEEE" }} /></ListItemIcon>
                                 <ListItemText primary="Logout" />
                             </ListItemButton>

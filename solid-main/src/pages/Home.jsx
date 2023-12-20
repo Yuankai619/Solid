@@ -13,53 +13,28 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 function Home() {
-  const navigate = useNavigate();
-  const [isLogin, setisLogin] = useState(false);
-  const [isCompleteCreate, setisCompleteCreate] = useState(false);
+  const navigate = useNavigate();  
   useEffect(() => {
     document.body.style.overflow = 'hidden';
     const fetchUserData = async () => {
       try {
-
         const response = await axios({
           method: 'get',
           url: 'http://localhost:4000/profile/',
           withCredentials: true
         });
-        //const response = await axios.get('http://localhost:4000/profile/'); // 假设这是您的 API 端点
-        console.log(response.data);
+        // console.log(response.data);
         console.log(response.data.loginState);
         console.log(response.data.completeCreateState);
-        console.log(isLogin,isCompleteCreate);
-        if(response.data.loginState == "LoginSuccess"){  // 未登入 
-          console.log('log y');
-          isLogin = true ;
-          //setisLogin(true);
-        }else{
-          isLogin = false ;
-          //setisLogin(false);
-        }
-        if(response.data.completeCreateState == 'FinishCompleteCreate'){ // 已登入
-          console.log('y');
-          isCompleteCreate = true;
-          //setisCompleteCreate(true);
-        }else {
-          isCompleteCreate = false;
-          //setisCompleteCreate(false);
-        }
-        console.log(isLogin,isCompleteCreate);
-        if(!isLogin){
-          console.log('navigate to profile');
+        if (response.data.loginState == "LoginFailed"){  // 未登入 
           navigate('/login');
-          return;
-        }else if(isCompleteCreate){
-          navigate('/home');
-
+        }
+        if (response.data.completeCreateState == 'UnFinishCompleteCreate'){ // 已登入
+          console.log('navigate to updateinfo');
+          navigate('/updateinfo');
         }
       } catch (error) {
         console.error('Error fetching user data:', error);
-        setisLogin(false);
-        setisCompleteCreate(false);
       }
     };
     fetchUserData();
@@ -67,17 +42,6 @@ function Home() {
       document.body.style.overflow = '';
     };
   }, []);
-
-  // useEffect(() => {
-  //   console.log(isLogin,isCompleteCreate);
-  //   if(!isLogin){
-  //     console.log('navigate to profile');
-  //     navigate('/login');
-  //     return;
-  //   }else if(isCompleteCreate){
-  //     navigate('/home');
-  //   }
-  // },[isLogin,isCompleteCreate]);
 
   const [classIdError, classIdErrorError] = useState(false);
   const [inputClassId, setinputClassId] = useState('');
@@ -100,11 +64,22 @@ function Home() {
     setValue(index);
   };
 
-  
+  const handleLogout = () => {
+    axios({
+      method: 'get',
+      url: 'http://localhost:4000/auth/logout',
+      withCredentials: true
+    }).then((res) => {
+      console.log(res.data.logoutState);
+      if (res.data == 'LogoutSuccess') {
+        navigate('/login');
+      }
+    });
+  }
   return (
       <Box sx={{ backgroundColor: '#444' }}>
         <HomePageDrawer
-          _drawerOpen={drawerOpen} _toggleDrawer={toggleDrawer}
+        _drawerOpen={drawerOpen} _toggleDrawer={toggleDrawer} clickLogout={handleLogout}
         />
         <HomeSwipeablePanel
           _value={value} _handleChangeIndex={handleChangeIndex} _theme={theme}
@@ -117,7 +92,7 @@ function Home() {
           _dialogOpen={dialogOpen} _setDialogOpen={setDialogOpen} isrequired={false}
           onChange={(e) => setinputClassId(e.target.value)}
         />
-        <HomeAppBar _value={value} _setValue={setValue} _toggleDrawer={toggleDrawer }/>
+        <HomeAppBar  _value={value} _setValue={setValue} _toggleDrawer={toggleDrawer }/>
       </Box>
   );
 }
