@@ -15,7 +15,8 @@ function InputText(props) {
             fullWidth 
             required = {props.isrequired ? true : false}
             label= {props.label}
-            defaultValue=""
+            defaultValue={props.defaultValue}
+            value={props.value}
             />
     </ThemeProvider>
   );

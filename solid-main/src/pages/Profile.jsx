@@ -19,7 +19,11 @@ import { getImageListItemBarUtilityClass } from "@mui/material";
 
 function SignupPage() {
     const [imgUrl, setImgUrl] = useState('');
-
+    const [username, setUsername] = useState('');
+    const [realName, setRealName] = useState('');
+    const [studentID, setStudentId] = useState('');
+    //const [isTermsAccepted, setIsTermsAccepted] = useState(false);
+  
     
     useEffect(() => {
         GetUserInfo();
@@ -31,7 +35,8 @@ function SignupPage() {
         };
     }, []);
     
-    //console.log("turn");
+    //console.log("turn");\
+  
     const GetUserInfo = async () => {
         axios({
           method: "GET",
@@ -42,27 +47,53 @@ function SignupPage() {
           url: "http://localhost:4000/api/getUserInfo"
         })  
         .then((res) =>{
-            console.log(res.data.thumbnail);
+
+            console.log(res.data.username)
+            // console.log 是正確的
             setImgUrl(res.data.thumbnail);
+            setUsername(res.data.username)
+            setRealName(res.data.realname);
+            setStudentId(res.data.studentID);
+          
         })
         .catch((error) => {
-          
+            
         });
     };
+ 
     
     
-    const [username, setUsername] = useState('');
-    const [realName, setRealName] = useState('');
-    const [studentID, setStudentId] = useState('');
-    const [isTermsAccepted, setIsTermsAccepted] = useState(false);
-  
+   
     const [usernameError, setUsernameError] = useState(false);
     const [realnameError, setRealnameError] = useState(false);
     const [studentIDError, setStudentIDError] = useState(false);
     const [isTermsAcceptedError, setIsTermsAcceptedError] = useState(false);
+
+    
+    function checkNameLength(name) {
+        if (name.length >= 1 && name.length <= 15) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     const handleConfirm = async (event) => {
         event.preventDefault();
-        console.log('sss');
+
+        if(!checkNameLength(username)){
+            alert('請確認您的username長度在 1 到 15 個字之間')
+            return;
+        }
+        if(!checkNameLength(realName)){
+            alert('請確認您的realName長度在 1 到 15 個字之間')
+            return;
+        }
+        if(!checkNameLength(studentID)){
+            alert('請確認您的studentID在 1 到 15 個字之間')
+            return;
+        }
+
         axios({
           method: "POST",
           headers: {
@@ -91,12 +122,12 @@ function SignupPage() {
     const [studentIdError, setStudentIdError] = useState(false);
     const [emailError, setEmailError] = useState(false);
 
-    //setSelectedImage(ImgUrl);
-    // const handleImageChange = (event) => {
-    //     if (event.target.files && event.target.files[0]) {
-    //         setSelectedImage(URL.createObjectURL(event.target.files[0]));
-    //     }
-    // };
+    
+    const handleImageChange = (event) => {
+        if (event.target.files && event.target.files[0]) {
+            setImgUrl(URL.createObjectURL(event.target.files[0]));
+        }
+    };
     const navigate = useNavigate();
 
     const curtheme = useTheme();
@@ -114,22 +145,23 @@ function SignupPage() {
                         src={imgUrl}
                         sx={{ width: 120, height: 120, marginBottom:'20px'}}
                     />
-                    {/* <input
+                    <input
                         accept="image/*"
                         style={{ display: 'none' }}
                         id="icon-button-file"
                         type="file"
                         onChange={handleImageChange}
-                    /> */}
-                    {/* <label htmlFor="icon-button-file">
+                    />
+                    <label htmlFor="icon-button-file">
                         <IconButton color="primary" aria-label="upload picture" component="span">
                             <PhotoCamera style={{color:"#EEEEEE"}}/>
                         </IconButton>
-                    </label> */}
+                    </label>
                 </Box>
                 <Box my={boxGap}>
                     <InputText
                         id="username"
+                        value={username}
                         iserror={usernameError} errorText={"error"} isrequired={true} label="username"
                         onChange={(e) => setUsername(e.target.value)}
                     ></InputText>
@@ -137,6 +169,7 @@ function SignupPage() {
                 <Box my={boxGap}>
                     <InputText
                         id="real name"
+                        value={realName}
                         iserror={realnameError} errorText={"error"} isrequired={true} label="real name"
                         onChange={(e) => setRealName(e.target.value)}
                     ></InputText>
@@ -144,6 +177,7 @@ function SignupPage() {
                 <Box my={boxGap}>
                     <InputText
                         id="sutdent ID"
+                        value={studentID}
                         iserror={studentIdError} errorText={"error"} isrequired={true} label="student ID"
                         onChange={(e) => setStudentId(e.target.value)}
                     ></InputText>
