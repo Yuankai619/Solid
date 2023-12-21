@@ -7,16 +7,16 @@ import CreateClassContainer from './CreateClassContainer';
 import { ThemeProvider } from '@mui/material/styles';
 import HomeSwipeablePanelTheme from '../themes/HomeSwipeablePanelTheme';
 function TabPanel(props) {
-    const { children, value, index, ...other } = props;
+    const { children, tabIndex, index, ...other } = props;
     return (
         <div
             role="tabpanel"
-            hidden={value !== index}
+            hidden={tabIndex !== index}
             id={`swipeable-tabpanel-${index}`}
             aria-labelledby={`swipeable-tab-${index}`}
             {...other}
         >
-            {value === index && (
+            {tabIndex === index && (
                 <Box p={3}>
                     {children}
 
@@ -26,19 +26,20 @@ function TabPanel(props) {
     );
 }
 
+
 function HomeSwipeablePanel(props) {
     return (
         <ThemeProvider theme={HomeSwipeablePanelTheme}>
             <SwipeableViews
                 axis={props._theme.direction === 'rtl' ? 'x-reverse' : 'x'}
-                index={props._value}
+                index={props.tabIndex}
                 onChangeIndex={props._handleChangeIndex}
                 style={{ height: 'calc(100vh - 64px)' }}//讓空白處也可以滑動
             >
-                <TabPanel value={props._value} index={0} dir={props._theme.direction}>
+                <TabPanel tabIndex={props.tabIndex} index={0} dir={props._theme.direction}>
                     <JoinedClassCardContainer></JoinedClassCardContainer>
                 </TabPanel>
-                <TabPanel value={props._value} index={1} dir={props._theme.direction}>
+                <TabPanel tabIndex={props.tabIndex} index={1} dir={props._theme.direction}>
                     <CreateClassContainer></CreateClassContainer>
                 </TabPanel>
             </SwipeableViews>
