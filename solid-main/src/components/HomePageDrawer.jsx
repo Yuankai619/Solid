@@ -23,7 +23,6 @@ function HomePageDrawer({ clickLogout ,...props}) {
     const [usernameUrl, setusernameUrl] = useState('');
     const [studentIdUrl, setstudentIdUrl] = useState('');
     useEffect(() => {
-        console.log('s')
         GetUserInfo();
     }, []);
     const GetUserInfo = async () => {
@@ -37,7 +36,7 @@ function HomePageDrawer({ clickLogout ,...props}) {
         })  
         .then((res) =>{
             
-            console.log(res.data);
+            //console.log(res.data);
             
             setImgUrl(res.data.thumbnail);
             setusernameUrl(res.data.username);
