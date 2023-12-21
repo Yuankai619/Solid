@@ -20,6 +20,10 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 function PrebuildDialog(props) {
+
+    
+
+
     //switch setting
     const [state, setState] = React.useState({
         gilad: true,
@@ -46,7 +50,11 @@ function PrebuildDialog(props) {
     const handleInputBlur = () => {
         setInputFocused(false);
     };
- 
+
+    const handlecreate = () => {
+        props.setDialogOpen();
+        alert(roomTitle + " " + description + " " + state.gilad)
+    }
     return (
         <ThemeProvider theme={PrebuildDialogTheme}> 
             <React.Fragment>
@@ -61,14 +69,14 @@ function PrebuildDialog(props) {
                             id={"room title"} 
                             placeholder="your title ?"
                             iserror={false} errorText={"error title name"} isrequired={true} 
+                            onChange={(e) => setRoomTitle(e.target.value)} 
                         ></InputText>
                         </Box>
                         <Box sx={{ margin: '20px 0px 20px' }}>
                             <Typography sx={{ color: '#EEEEEE', marginButtom: '20px' }}>
                                 {"Description:"}
                             </Typography>
-                            <TextField
-                            
+                            <TextField      
                                 multiline
                                 rows={inputFocused ? 4 : 2}
                                 placeholder="your description ?"
@@ -83,6 +91,7 @@ function PrebuildDialog(props) {
                                         padding: '15px', // 這裡增加padding來調整文字和框的間距
                                     },
                                 }}
+                                onChange={(e) => setDescription(e.target.value)}
                             />
                         </Box>
                         <FormControlLabel
@@ -95,7 +104,7 @@ function PrebuildDialog(props) {
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={props.setDialogOpen} sx={{ color: '#EEEEEE', marginRight: '30px', fontSize: '1rem' }}>Cancel</Button>
-                        <Button onClick={props.setDialogOpen} sx={{ fontWeight: 'bold', marginRight: '30px', fontSize: '1.2rem' }}>Create</Button>
+                        <Button onClick={handlecreate} sx={{ fontWeight: 'bold', marginRight: '30px', fontSize: '1.2rem' }}>Create</Button>
                     </DialogActions>
                 </Dialog>
             </React.Fragment>
