@@ -10,11 +10,12 @@ function HomeSpeedDial(props) {
 
     const handleActionClick = (event) => {
         event.stopPropagation();
+        event.preventDefault();
         props.setDialogOpen();
         // setOpen(false);//設定典擊後要不要收合action icon 
         console.log("Action clicked");
     };
-    const actions = props._actions[props.tabIndex] ;
+    const action = props.actions[props.tabIndex] ;
     // console.log(props.tabIndex);
     // console.log("Selected Actions:", actions);
     const handleClickSpeedDial = () => {
@@ -29,12 +30,12 @@ function HomeSpeedDial(props) {
                 open={open}
                 onClick={handleClickSpeedDial}
             >
-                {actions.map((action) => (
+                {action.map((item) => (
                     <SpeedDialAction
-                        key={action.name}
-                        icon={action.icon}
+                        key={item.name}
+                        icon={item.icon}
                         onClick={handleActionClick}
-                        tooltipTitle={action.name}
+                        tooltipTitle={item.name}
                     />
                 ))}
             </SpeedDial>

@@ -14,13 +14,10 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 function JoinClassByIdDialog(props) {
-    const handleCloseDialog = () => {
-        props._setDialogOpen(false);
-    };
     return (
         <ThemeProvider theme={JoinClassDialogTheme}>
             <React.Fragment>
-                <Dialog open={props._dialogOpen} onClose={handleCloseDialog} TransitionComponent={Transition}>
+                <Dialog open={props.dialogOpen} onClose={props.setDialogOpen} TransitionComponent={Transition}>
                     <DialogTitle>Input Class ID to Join</DialogTitle>
                     <DialogContent>
                         <InputText
@@ -30,8 +27,8 @@ function JoinClassByIdDialog(props) {
                         ></InputText>
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={handleCloseDialog} sx={{ color: '#EEEEEE', marginRight: '30px', fontSize: '1rem' }}>Cancel</Button>
-                        <Button onClick={handleCloseDialog} sx={{ fontWeight: 'bold', marginRight: '30px', fontSize: '1.2rem' }}>Join</Button>
+                        <Button onClick={props.setDialogOpen} sx={{ color: '#EEEEEE', marginRight: '30px', fontSize: '1rem' }}>Cancel</Button>
+                        <Button onClick={props.setDialogOpen} sx={{ fontWeight: 'bold', marginRight: '30px', fontSize: '1.2rem' }}>Join</Button>
                     </DialogActions>
                 </Dialog>
             </React.Fragment>
