@@ -9,6 +9,7 @@ function InputText(props) {
             // focused 
             margin="dense"
             id={props.id}
+            placeholder={props.placeholder}
             onChange={props.onChange}
             error = {props.iserror ? true : false}
             helperText={props.iserror ? props.errorText : ""}
