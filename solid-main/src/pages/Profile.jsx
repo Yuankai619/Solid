@@ -13,12 +13,20 @@ import IconButton from '@mui/material/IconButton';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
 // deerufin
 import axios from 'axios';
+import { getImageListItemBarUtilityClass } from "@mui/material";
 // deerufin
 
 
 function SignupPage() {
-    console.log("turn");
+    const [imgUrl, setImgUrl] = useState('');
+    const [username, setUsername] = useState('');
+    const [realName, setRealName] = useState('');
+    const [studentID, setStudentId] = useState('');
+    //const [isTermsAccepted, setIsTermsAccepted] = useState(false);
+  
+    
     useEffect(() => {
+        GetUserInfo();
         document.body.style.background = "#222222";
         document.body.style.overflow = '';
         return () => {
@@ -26,61 +34,101 @@ function SignupPage() {
             document.body.style.overflow = '';
         };
     }, []);
+    
+    //console.log("turn");\
+  
+    const GetUserInfo = async () => {
+        axios({
+          method: "GET",
+          headers: {
+            'Content-Type': 'application/json',
+          },  
+          withCredentials: true,
+          url: "http://localhost:4000/api/getUserInfo"
+        })  
+        .then((res) =>{
+
+            console.log(res.data.username)
+            // console.log 是正確的
+            setImgUrl(res.data.thumbnail);
+            setUsername(res.data.username)
+            setRealName(res.data.realname);
+            setStudentId(res.data.studentID);
+          
+        })
+        .catch((error) => {
+            
+        });
+    };
+ 
+    
+    
+   
+    const [usernameError, setUsernameError] = useState(false);
+    const [realnameError, setRealnameError] = useState(false);
+    const [studentIDError, setStudentIDError] = useState(false);
+    const [isTermsAcceptedError, setIsTermsAcceptedError] = useState(false);
+
+    
+    function checkNameLength(name) {
+        if (name.length >= 1 && name.length <= 15) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    const handleConfirm = async (event) => {
+        event.preventDefault();
+
+        if(!checkNameLength(username)){
+            alert('請確認您的username長度在 1 到 15 個字之間')
+            return;
+        }
+        if(!checkNameLength(realName)){
+            alert('請確認您的realName長度在 1 到 15 個字之間')
+            return;
+        }
+        if(!checkNameLength(studentID)){
+            alert('請確認您的studentID在 1 到 15 個字之間')
+            return;
+        }
+
+        axios({
+          method: "POST",
+          headers: {
+            'Content-Type': 'application/json',
+          },  
+          data: JSON.stringify({
+            username : username, 
+            realname : realName, 
+            studentID : studentID
+          }),
+          withCredentials: true,
+          url: "http://localhost:4000/api/updateinfo"
+        })  
+        .then((res) =>{
+            console.log('ss');
+            navigate('/home');
+          
+        })
+        .catch((error) => {
+           console.error(error);
+        });
+      };
+    
 
     const [selectedImage, setSelectedImage] = useState(null);
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
-    const [realName, setRealName] = useState('');
-    const [studentId, setStudentId] = useState('');
-    const [email, setEmail] = useState('');
-    const [isTermsAccepted, setIsTermsAccepted] = useState(false);
-    const [usernameError, setUsernameError] = useState(false);
-    const [passwordError, setPasswordError] = useState(false);
-    const [confirmpasswordError, setConfirmpasswordError] = useState(false);
-    const [realnameError, setRealnameError] = useState(false);
     const [studentIdError, setStudentIdError] = useState(false);
     const [emailError, setEmailError] = useState(false);
 
+    
     const handleImageChange = (event) => {
         if (event.target.files && event.target.files[0]) {
-            setSelectedImage(URL.createObjectURL(event.target.files[0]));
+            setImgUrl(URL.createObjectURL(event.target.files[0]));
         }
     };
     const navigate = useNavigate();
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-        //console.log(`haha`)
-        // 確保密碼和確認密碼相同
-        if (String(password) !== String(confirmPassword)) {
-            setConfirmpasswordError(true);
-            return;
-        } else {
-            setConfirmpasswordError(false);
-        }
-        axios({
-            method: "POST",
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            data: JSON.stringify({
-                username: username,
-                password: password,
-                realname: realName,
-                studentID: studentId,
-                email: email
-            }),
-            withCredentials: true,
-            url: "http://localhost:4000/register"
-        })
-            .then((res) => {
-                console.log('res data = ', res.data)
-
-                navigate('/login');
-
-            });
-    };
-
 
     const curtheme = useTheme();
     const isMobile = useMediaQuery(curtheme.breakpoints.down('sm'));
@@ -94,7 +142,7 @@ function SignupPage() {
                 </Box>
                 <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', my: 2 }}>
                     <Avatar
-                        src={selectedImage}
+                        src={imgUrl}
                         sx={{ width: 120, height: 120, marginBottom:'20px'}}
                     />
                     <input
@@ -113,6 +161,7 @@ function SignupPage() {
                 <Box my={boxGap}>
                     <InputText
                         id="username"
+                        value={username}
                         iserror={usernameError} errorText={"error"} isrequired={true} label="username"
                         onChange={(e) => setUsername(e.target.value)}
                     ></InputText>
@@ -120,6 +169,7 @@ function SignupPage() {
                 <Box my={boxGap}>
                     <InputText
                         id="real name"
+                        value={realName}
                         iserror={realnameError} errorText={"error"} isrequired={true} label="real name"
                         onChange={(e) => setRealName(e.target.value)}
                     ></InputText>
@@ -127,6 +177,7 @@ function SignupPage() {
                 <Box my={boxGap}>
                     <InputText
                         id="sutdent ID"
+                        value={studentID}
                         iserror={studentIdError} errorText={"error"} isrequired={true} label="student ID"
                         onChange={(e) => setStudentId(e.target.value)}
                     ></InputText>
@@ -143,7 +194,7 @@ function SignupPage() {
                     <SignupButton
                         id="confirm info"
                         innertext="Confirm"
-                        onClick={()=>navigate('/home')}
+                        onClick={handleConfirm}
                     ></SignupButton>
                 </Box>
             </Container>

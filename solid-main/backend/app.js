@@ -11,6 +11,7 @@ const keys = require('./config/keys')
 const authRoutes = require('./routes/auth-routes')
 const profileRoutes = require('./routes/profile-routes')
 const homeRoutes = require('./routes/home-routes')
+const apiRoutes = require('./routes/api-routes')
 const passportSetup = require('./config/passportConfig');
 require('dotenv').config();
 
@@ -41,8 +42,8 @@ app.use(expressSession({
     saveUninitialized: true,
     cookie: { maxAge: 24 * 60 * 60 * 1000 }
 }))
-// app.use(bodyParser.json());
-// app.use(bodyParser.urlencoded({extended : true}));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended : true}));
 
 
 // init passport
@@ -54,6 +55,7 @@ app.use(passport.session());
 app.use('/auth', authRoutes)
 app.use('/profile', profileRoutes)
 app.use('/home', homeRoutes)
+app.use('/api', apiRoutes)
 
 
 // ---------------------------  end of middleware -------------------------------

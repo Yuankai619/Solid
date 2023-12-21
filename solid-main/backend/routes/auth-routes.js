@@ -3,7 +3,6 @@ const passport = require('passport')
 const User = require('../models/user')
 const bcrypt = require('bcryptjs');
 const Joi = require('@hapi/joi')
-const jwt = require('jsonwebtoken')
 
 const Schema = {
     name : Joi.string().min(6).required(),
@@ -11,8 +10,47 @@ const Schema = {
     password : Joi.string().min(6).required()
 }
 
-    
-{
+
+router.get('/auth-state',(req,res)=>{
+    //console.log('auth check if login----------------------')
+    // console.log(req.session);
+    if(req.session.passport){
+        const token = req.session.passport.user;
+        if(token._id){
+            if(token.studentID){
+                console.log('LoginSuccess');
+                const resp = {
+                    loginState: 'LoginSuccess',
+                    completeCreateState: 'FinishCompleteCreate' 
+                }
+                res.json(resp)
+            }else{
+                console.log('UnFinishCompleteCreate');
+                const resp = {
+                    loginState: 'LoginSuccess',
+                    completeCreateState: 'UnFinishCompleteCreate' 
+                }
+                res.json(resp)
+            }
+        }else{
+            console.log('LoginFailed');
+            const resp = {
+                loginState: 'LoginFailed',
+                completeCreateState: 'UnFinishCompleteCreate' 
+            }
+            res.json(resp)
+        }
+    }else{
+        console.log('LoginFailed');
+        const resp = {
+            loginState: 'LoginFailed',
+            completeCreateState: 'UnFinishCompleteCreate' 
+        }
+        res.json(resp)
+    }
+})
+
+
 // //auth login
 // router.get('/login',(req,res)=>{
 //     //login
@@ -67,15 +105,65 @@ const Schema = {
 //         throw err;
 //     }
 // })
-}
+
+
+//auth api logout
+router.get('/auth-state',(req,res)=>{
+    //res.send('haha')
+    //res.send(req.user)
+    console.log('auth check if login----------------------')
+    console.log(req.session);
+    if(req.session.passport){
+        const token = req.session.passport.user;
+        if(token._id){
+            if(token.studentID){
+                console.log('login sucess');
+                const resp = {
+                    loginState: 'LoginSuccess',
+                    completeCreateState: 'FinishCompleteCreate' 
+                }
+                res.json(resp)
+            }else{
+                console.log('createState fail');
+                const resp = {
+                    loginState: 'LoginSuccess',
+                    completeCreateState: 'UnFinishCompleteCreate' 
+                }
+                res.json(resp)
+            }
+        }else{
+            console.log('login fail');
+            const resp = {
+                loginState: 'LoginFailed',
+                completeCreateState: 'UnFinishCompleteCreate' 
+            }
+            res.json(resp)
+        }
+    }else{
+        console.log('login fail');
+        const resp = {
+            loginState: 'LoginFailed',
+            completeCreateState: 'UnFinishCompleteCreate' 
+        }
+        res.json(resp)
+    }
+})
 
 //auth logout
 router.get('/logout',(req,res)=>{
-    //logout
-    req.logout(err => {
-        
+    console.log('try logout')
+    req.session.destroy((err) => {
+        if(err) {
+            res.json({
+                logoutState : 'LogoutFailed'
+            })
+            return console.log(err);
+        }
+        res.json({
+            logoutState : 'LogoutSuccess'
+        })
     });
-    res.render('home');
+    
 })
 
 
@@ -84,16 +172,10 @@ router.get('/google',passport.authenticate('google',{
     scope : ['profile','email']
 }))
 
-let  a=1;
+//auth google back
 router.get('/google/redirect', 
     passport.authenticate('google', { failureRedirect: '/login' }),
     function(req, res) {
-
-        //console.log(req.session);
-        a=req.session
-
-        
-
         res.redirect(`${process.env.frontUrl}/home`)
     }
 );

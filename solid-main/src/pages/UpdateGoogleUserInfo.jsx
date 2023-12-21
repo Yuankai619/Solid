@@ -21,19 +21,14 @@ function UpdateGoogleUserInfo() {
       try {
         const response = await axios({
           method: 'get',
-          url: 'http://localhost:4000/profile/',
+          url: 'http://localhost:4000/auth/auth-state',
           withCredentials: true
         });
-        // console.log(response.data);
-        // console.log(response.data.loginState);
-        console.log(response.data.completeCreateState);
-        console.log(isLogin,isCompleteCreate);
-        
         if (response.data.loginState == "LoginFailed") {  
           navigate('/login');
         }
         if (response.data.completeCreateState == 'FinishCompleteCreate') { 
-          console.log('navigate to home');
+          //console.log('navigate to home');
           navigate('/home');
         }
       } catch (error) {
@@ -55,35 +50,54 @@ function UpdateGoogleUserInfo() {
   const [studentIDError, setStudentIDError] = useState(false);
   const [isTermsAcceptedError, setIsTermsAcceptedError] = useState(false);
 
-  
-  const handleConfirm = async (event) => {
+  function checkNameLength(name) {
+      if (name.length >= 1 && name.length <= 15) {
+          return true;
+      } else {
+          return false;
+      }
+  }
+
+  const handleConfirm =  (event) => {
     event.preventDefault();
-    const userdata = { 
-      username: username, 
-      realname: realName, 
-      studentID: studentID,
-      isTermsAccepted: isTermsAccepted
-    };
-    userdata.JSON.stringify(userdata);
+    //console.log(isTermsAccepted);
+    if(!checkNameLength(username)){
+      alert('請確認您的username長度在 1 到 15 個字之間')
+      return;
+    }
+    if(!checkNameLength(realName)){
+      alert('請確認您的realName長度在 1 到 15 個字之間')
+      return;
+    }
+    if(!checkNameLength(studentID)){
+      alert('請確認您的studentID在 1 到 15 個字之間')
+      return;
+    }
+    if(!isTermsAccepted){
+        alert('請確認您已詳閱隱私政策')
+        return;
+    }
     axios({
       method: "POST",
       headers: {
         'Content-Type': 'application/json',
       },  
-      data: userdata,
+      data: JSON.stringify({
+        username : username, 
+        realname : realName, 
+        studentID : studentID
+      }),
       withCredentials: true,
-      url: "http://localhost:4000/profile/me"
+      url: "http://localhost:4000/api/updateinfo"
     })  
     .then((res) =>{
-      console.log(' what ');
         navigate('/home');
-    })  
-    .catch((err)=>{
-      console.log(' post ');
-      console.log(err);
+    })
+    .catch((error) => {
+       console.error(error);
     });
   };
-    
+
   const curtheme = useTheme();
   const isMobile = useMediaQuery(curtheme.breakpoints.down('sm'));
   const isPad = useMediaQuery(curtheme.breakpoints.down('md'));
@@ -120,7 +134,7 @@ function UpdateGoogleUserInfo() {
             <CheckboxStatement 
               id = "accept Term"
               statement="I accept the terms and privacy policy"
-              onChange={(e) => setIsTermsAccepted(e.target.value)}
+              onChange={()=>setIsTermsAccepted(!isTermsAccepted)}
             ></CheckboxStatement>
           </Box>
           <Box sx={{my:boxGap,px:"40px"}}>

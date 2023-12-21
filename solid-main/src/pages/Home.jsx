@@ -13,6 +13,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 function Home() {
+  
   const navigate = useNavigate();  
   useEffect(() => {
     document.body.style.overflow = 'hidden';
@@ -20,7 +21,7 @@ function Home() {
       try {
         const response = await axios({
           method: 'get',
-          url: 'http://localhost:4000/profile/',
+          url: 'http://localhost:4000/auth/auth-state',
           withCredentials: true
         });
         // console.log(response.data);
@@ -71,9 +72,7 @@ function Home() {
       withCredentials: true
     }).then((res) => {
       console.log(res.data.logoutState);
-      if (res.data == 'LogoutSuccess') {
-        navigate('/login');
-      }
+      navigate('/login');
     });
   }
 

@@ -15,8 +15,37 @@ import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import { ThemeProvider } from '@mui/material/styles';
 import HomePageDrawerTheme from '../themes/HomePageDrawerTheme';
 import { useNavigate } from "react-router-dom";
-
+// deerufin
+import axios from 'axios';
+// deerufin
 function HomePageDrawer({ clickLogout ,...props}) {
+    const [imgUrl, setImgUrl] = useState('');
+    const [usernameUrl, setusernameUrl] = useState('');
+    const [studentIdUrl, setstudentIdUrl] = useState('');
+    useEffect(() => {
+        GetUserInfo();
+    }, []);
+    const GetUserInfo = async () => {
+        axios({
+          method: "GET",
+          headers: {
+            'Content-Type': 'application/json',
+          },  
+          withCredentials: true,
+          url: "http://localhost:4000/api/getUserInfo"
+        })  
+        .then((res) =>{
+            
+            //console.log(res.data);
+            
+            setImgUrl(res.data.thumbnail);
+            setusernameUrl(res.data.username);
+            setstudentIdUrl(res.data.studentID);
+        })
+        .catch((error) => {
+          
+        });
+    };
     const navigate = useNavigate();
     return (
         <ThemeProvider theme={HomePageDrawerTheme}>
@@ -32,10 +61,10 @@ function HomePageDrawer({ clickLogout ,...props}) {
                     <Box sx={{ flexGrow: 1 }}>
                         <List>
                             <ListItem>
-                                <Avatar style={{ marginRight: '22px', width: '50px', height: '50px' }} /> 
+                                <Avatar  src={imgUrl} style={{ marginRight: '22px', width: '50px', height: '50px' }} /> 
                                 <Box>
-                                    <Typography style={{ fontSize: "18px", fontWeight: "bold" }} >Username</Typography>
-                                    <Typography style={{ fontSize: "12px", color: "#999999" }}>ID: 000000000</Typography>
+                                    <Typography style={{ fontSize: "18px", fontWeight: "bold" }} >{usernameUrl}</Typography>
+                                    <Typography style={{ fontSize: "12px", color: "#999999" }}>ID: {studentIdUrl}</Typography>
                                 </Box>
                             </ListItem>
                             <ListItemButton>
