@@ -7,11 +7,11 @@ const bcrypt = require('bcryptjs');
 const expressSession = require('express-session');
 const bodyParser = require('body-parser');
 const User = require('./models/user')
-const keys = require('./config/keys')
+const Course = require('./models/user')
 const authRoutes = require('./routes/auth-routes')
-const profileRoutes = require('./routes/profile-routes')
 const homeRoutes = require('./routes/home-routes')
 const apiRoutes = require('./routes/api-routes')
+const courseRoutes = require('./routes/course-routes')
 const passportSetup = require('./config/passportConfig');
 require('dotenv').config();
 
@@ -37,7 +37,7 @@ app.use(cors(corsOptions));
 
 //cookie session
 app.use(expressSession({
-    secret: keys.session.cookieKey,
+    secret: process.env.cookieKey,
     resave: false,
     saveUninitialized: true,
     cookie: { maxAge: 24 * 60 * 60 * 1000 }
@@ -53,9 +53,9 @@ app.use(passport.session());
 
 //routes 
 app.use('/auth', authRoutes)
-app.use('/profile', profileRoutes)
 app.use('/home', homeRoutes)
 app.use('/api', apiRoutes)
+app.use('/course', courseRoutes)
 
 
 // ---------------------------  end of middleware -------------------------------

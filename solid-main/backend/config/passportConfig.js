@@ -49,7 +49,7 @@ passport.use(
                 done(null,currentUser);
             }else{
                 //create user
-                console.log(profile);
+                //console.log(profile);
                 new User({
                     username : profile.displayName,
                     googleid : profile.id,
