@@ -11,7 +11,7 @@ import EditNoteIcon from '@mui/icons-material/EditNote';
 import FlashOnIcon from '@mui/icons-material/FlashOn';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import PrebuildQuessionDialog from '../components/PrebuildQuessionDialog';
+import PrebuildDialog from '../components/PrebuildDialog';
 function Home() {
 
   const navigate = useNavigate();
@@ -51,8 +51,8 @@ function Home() {
   const [tabIndex, setTabIndex] = useState(0);
 
   const actions = [
-    [{ icon: <DialpadIcon sx={{ color: '#EEEEEE' }} />, name: 'Join class by ID' }],
-    [{ icon: <EditNoteIcon sx={{ color: '#EEEEEE', fontSize: '32px' }} />, name: 'Prebuild a quession' }, { icon: <FlashOnIcon sx={{ color: '#EEEEEE', fontSize: '30px' }} />, name: 'Quick quession' }],
+    [{ icon: <DialpadIcon sx={{ color: '#EEEEEE' }} />, name: 'Join by ID' }],
+    [{ icon: <EditNoteIcon sx={{ color: '#EEEEEE', fontSize: '32px' }} />, name: 'Prebuild' }, { icon: <FlashOnIcon sx={{ color: '#EEEEEE', fontSize: '30px' }} />, name: 'Quick create' }],
   ];
   const theme = useTheme();
   const toggleDrawer = (open) => (event) => {
@@ -105,19 +105,19 @@ function Home() {
         tabIndex={tabIndex} _handleChangeIndex={handleChangeIndex} _theme={theme}
       />
       <HomeSpeedDial
-        _actions={actions} tabIndex={tabIndex} dialogOpen={dialogOpen} setDialogOpen={handleChangeDialog}
+        actions={actions} tabIndex={tabIndex} dialogOpen={dialogOpen} setDialogOpen={handleChangeDialog}
       />
       {tabIndex === 0 && (
         <JoinClassByIdDialog
-          id={inputClassId} label={"class ID"} errorText={"class id is invalid"} iserror={classIdError}
-          _dialogOpen={dialogOpen} _setDialogOpen={setDialogOpen} isrequired={false}
-          onChange={(e) => setinputClassId(e.target.tabIndex)}
+          label={"class ID"} errorText={"class id is invalid"} iserror={classIdError}
+          dialogOpen={dialogOpen} setDialogOpen={handleChangeDialog}
+          
         />
       )}
       {tabIndex === 1 && (
-        <PrebuildQuessionDialog     
-          id={inputClassId}     
-          _dialogOpen={dialogOpen} _setDialogOpen={setDialogOpen}
+        <PrebuildDialog     
+          
+          dialogOpen={dialogOpen} setDialogOpen={handleChangeDialog}
           
         />
       )}
