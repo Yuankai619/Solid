@@ -15,13 +15,69 @@ import JoinClassDialogTheme from '../themes/JoinClassDialogTheme';
 import { Typography } from '@mui/material';
 import Switch from '@mui/material/Switch';
 import PrebuildDialogTheme from '../themes/PrebuildDialogTheme';
+import axios from 'axios';
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
 function PrebuildDialog(props) {
+    const [username, setUsername] = useState('');
+    const [realName, setRealName] = useState('');
+    const [studentID, setStudentId] = useState('');
+    const [userID, setUserId] = useState('');
 
-    
+    useEffect(() => {
+        GetUserInfo();
+    }, []);
+
+    const GetUserInfo = async () => {
+        axios({
+          method: "GET",
+          headers: {
+            'Content-Type': 'application/json',
+          },  
+          withCredentials: true,
+          url: "http://localhost:4000/api/getUserInfo"
+        })  
+        .then((res) =>{
+            console.log(res.data.username);
+            setUsername(res.data.username)
+            setRealName(res.data.realname);
+            setStudentId(res.data.studentID);
+            setUserId(res.data._id);
+        })
+        .catch((error) => {
+            
+        });
+    };
+
+    const handleCreate = () => {
+        props.setDialogOpen();
+        axios({
+            method: "POST",
+            headers: {
+              'Content-Type': 'application/json',
+            },  
+            data: JSON.stringify({
+              userID : userID,
+              description: description,
+              roomTitle : roomTitle,
+              state : state.gilad,
+              username : username
+            }),
+            withCredentials: true,
+            url: "http://localhost:4000/course/create"
+          })  
+          .then((res) =>{
+            //console.log(res.data);
+            //alert(roomTitle + " " + description + " " + state.gilad)
+            alert(" sucess create at "+res.data)
+            // res is the classID
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+    }
 
 
     //switch setting
@@ -51,10 +107,7 @@ function PrebuildDialog(props) {
         setInputFocused(false);
     };
 
-    const handlecreate = () => {
-        props.setDialogOpen();
-        alert(roomTitle + " " + description + " " + state.gilad)
-    }
+    
     return (
         <ThemeProvider theme={PrebuildDialogTheme}> 
             <React.Fragment>
@@ -104,7 +157,7 @@ function PrebuildDialog(props) {
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={props.setDialogOpen} sx={{ color: '#EEEEEE', marginRight: '30px', fontSize: '1rem' }}>Cancel</Button>
-                        <Button onClick={handlecreate} sx={{ fontWeight: 'bold', marginRight: '30px', fontSize: '1.2rem' }}>Create</Button>
+                        <Button onClick={handleCreate} sx={{ fontWeight: 'bold', marginRight: '30px', fontSize: '1.2rem' }}>Create</Button>
                     </DialogActions>
                 </Dialog>
             </React.Fragment>

@@ -1,6 +1,7 @@
 const router = require('express').Router()
 const User = require('../models/user')
 
+
 router.post('/updateinfo',(req,res)=>{
     console.log('try update info');
     //console.log(req.session.passport.user.googleid)
