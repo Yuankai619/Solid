@@ -11,13 +11,13 @@ import { useNavigate } from "react-router-dom";
 import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
-// deerufin
+import LoginChecker from '../checker/LoginChecker';
 import axios from 'axios';
 import { getImageListItemBarUtilityClass } from "@mui/material";
-// deerufin
 
 
-function SignupPage() {
+function ProfilepPage() {
+    var isLoggedIn = LoginChecker();
     const [imgUrl, setImgUrl] = useState('');
     const [username, setUsername] = useState('');
     const [realName, setRealName] = useState('');
@@ -202,6 +202,6 @@ function SignupPage() {
     );
 }
 
-export default SignupPage;
+export default ProfilepPage;
 
 

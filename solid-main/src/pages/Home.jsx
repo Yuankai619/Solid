@@ -12,38 +12,18 @@ import FlashOnIcon from '@mui/icons-material/FlashOn';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import PrebuildDialog from '../components/PrebuildDialog';
+import LoginChecker from '../checker/LoginChecker';
 function Home() {
 
   const navigate = useNavigate();
+  var isLoggedIn = LoginChecker();
   useEffect(() => {
     document.body.style.overflow = 'hidden';
-    const fetchUserData = async () => {
-      try {
-        const response = await axios({
-          method: 'get',
-          url: 'http://localhost:4000/auth/auth-state',
-          withCredentials: true
-        });
-        // console.log(response.data);
-        console.log(response.data.loginState);
-        console.log(response.data.completeCreateState);
-        if (response.data.loginState == "LoginFailed") {  // 未登入 
-          navigate('/login');
-        }
-        if (response.data.completeCreateState == 'UnFinishCompleteCreate') { // 已登入
-          console.log('navigate to updateinfo');
-          navigate('/updateinfo');
-        }
-      } catch (error) {
-        console.error('Error fetching user data:', error);
-      }
-    };
-    fetchUserData();
     return () => {
       document.body.style.overflow = '';
     };
   }, []);
-
+  // i  
   const [classIdError, classIdErrorError] = useState(false);
   const [inputClassId, setinputClassId] = useState('');
   const [dialogOpen, setDialogOpen] = useState(false);

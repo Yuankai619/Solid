@@ -12,45 +12,67 @@ function Auth(req, res, next) {
     }
   }
 
+async function generateUniqueClassID() {
+    let classID;
+    let course;
+    do {
+        // Generate a new classID
+        classID = Math.floor(10000 + Math.random() * 90000).toString(); // generates a 5-digit number
+        // Check if the classID already exists in the database
+        course = await Course.findOne({ 'info.classID': classID });
+    } while (course);
+    return classID;
+}
+
+
 router.post('/create',Auth,(req,res)=>{
-    const _userID = req.body.authorID;
-    const _user = req.body.author;
+    const _userID = req.body.userID;
+    const _description = req.body.description;
+    const _title = req.body.roomTitle;
     const _state = req.body.state;
-    const _title = req.body.title;
-    const newCourse = new Course({
-        info : 
-        {
-            classID  :  "123456",
-            authorID :  _userID,
-            state    :  _state,
-            title    :  _title,
-            description : " default description",
-            createDate :  new Date()
-        },
-        member : 
-        [
-            { userid : _userID }
-        ],
-        message : 
-        [
+    const _username = req.body.username;
+    let _classID;
+    generateUniqueClassID().then(classID => {
+        
+        _classID = classID;
+        //console.log(_classID)
+        const newCourse = new Course({
+            info : 
             {
-                user: _user,
-                message: " test ",
-                timestamp: new Date()
-            }
-        ]
-    });
-    newCourse.save().then((err) => {
-        res.send('Course created successfully!');
-    }).catch(err => {
-        console.error(err);
-        res.status(500).send(err);
+                classID  :  _classID,
+                authorID :  _userID,
+                state    :  _state,
+                title    :  _title,
+                description : _description,
+                createDate :  new Date()
+            },
+            member : 
+            [
+                { userid : _userID }
+            ],
+            message : 
+            [
+                {
+                    userID: _userID,
+                    username : _username,
+                    message: "default text",
+                    timestamp: new Date()
+                }
+            ]
+        });
+        newCourse.save().then((err) => {
+            res.send(_classID);
+        }).catch(err => {
+            console.error(err);
+            res.status(500).send(err);
+        });
     });
 })
 
 router.post('/addComment', Auth,(req, res) => {
     const comment = {
-        user: req.body.user,
+        userID: "not comp",
+        username : req.body.user,
         message: req.body.message,
         timestamp: new Date()
     };
