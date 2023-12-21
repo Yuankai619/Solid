@@ -76,6 +76,22 @@ function Home() {
       }
     });
   }
+
+  const [discussionData, setDiscussionData] = useState([//測試discussionData
+    {
+      id: 1,
+      title: "Card1",
+      accessID: "000001",
+      infoData: {
+        "classID": "001",
+        "state": "close",
+        "ownerID": "1234556",
+        "creat date": "2021/10/10",
+        "description": "this is a description"
+      }
+    },
+  ]);
+
   return (
       <Box sx={{ backgroundColor: '#444' }}>
         <HomePageDrawer

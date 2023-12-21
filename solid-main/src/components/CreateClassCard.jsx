@@ -13,6 +13,7 @@ import MenuItem from '@mui/material/MenuItem';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { CardHeader } from "@mui/material";
 import CreateClassCardTheme from '../themes/CreateClassCardTheme';
+import { Link } from 'react-router-dom';
 // { discussionName, classID, state }
 function CreateClassCard({data, onUpdate, onDelete}) {
   const navigate = useNavigate();
@@ -82,6 +83,8 @@ function CreateClassCard({data, onUpdate, onDelete}) {
             <MenuItem onClick={handleChangeState}>Start</MenuItem>
             <MenuItem onClick={handleDelete} sx={{color:"#CC0000"}}>Delete</MenuItem>
           </Menu>
+          {/* id是uuid */}
+          <Link style={{ textDecoration: 'none', color: 'inherit' }} key={data.id}  to={`/room/${data.discussionName}`}> 
           <React.Fragment>
             <CardContent >
               <Typography sx={{ fontSize: 15, fontWeight: 600, marginTop: '12px' }} color={stateColor} component="div">
@@ -92,6 +95,7 @@ function CreateClassCard({data, onUpdate, onDelete}) {
               </Typography>
             </CardContent>
           </React.Fragment>
+          </Link>
         </Card>
       </Box>
     </ThemeProvider>

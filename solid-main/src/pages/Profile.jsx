@@ -26,7 +26,7 @@ function SignupPage() {
             document.body.style.overflow = '';
         };
     }, []);
-    
+
     const [selectedImage, setSelectedImage] = useState(null);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');

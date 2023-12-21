@@ -9,6 +9,8 @@ function CreateClassContainer() {
     { id: 2, discussionName: "Card2", classID: "002", state: "open" },
     { id: 3, discussionName: "Card3", classID: "003", state: "close" },
   ]);
+
+
   // useEffect(() => { 
   //   const fetchUserData = async () => { 
   //     try { 
