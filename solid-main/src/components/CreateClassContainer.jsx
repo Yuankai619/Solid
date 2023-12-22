@@ -3,7 +3,7 @@ import Container from '@mui/material/Container';
 import CreateClassCard from "./CreateClassCard";
 import { useClassDataContext } from '../context/ClassDataContext';
 function CreateClassContainer({data,...props}) {
-  const { createdClassData, handleChangeCreatedClassState, handleDeleteCreatedClass } = useClassDataContext();
+  const { createdClassData } = useClassDataContext();
 
   return (
     <Container>

@@ -24,10 +24,11 @@ function Discussion() {
         document.body.style.background = "#222222";
         checkLogin();
         return () => {
-            document.body.style.background = '';
+            console.log('return');
+            // document.body.style.background = '';
             document.body.style.overflow = '';
         };
-    }, [navigate]);
+    }, []);
     //測試discussionData
     const data = {
         id: 1,

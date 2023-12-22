@@ -85,14 +85,14 @@ function CreateClassCard({data}) {
             <MenuItem onClick={handleChangeState}>{menuState}</MenuItem>
             <MenuItem onClick={handleDelete} sx={{color:"#CC0000"}}>Delete</MenuItem>
           </Menu>
-          <Link style={{ textDecoration: 'none', color: 'inherit' }} key={data.id} to={`/room/${data.id}`}> 
+          <Link style={{ textDecoration: 'none', color: 'inherit' }} key={data.id} to={`/room/${data.classID}`}> 
           <React.Fragment>
             <CardContent >
                 <Typography sx={{ fontSize: 15, fontWeight: 600, marginTop: '12px' }} color={data.state ? '#2D6CB6' : '#999999'} component="div">
                   state: {data.state ? 'open' : 'close'}
               </Typography>
               <Typography sx={{ fontSize: 18, fontWeight: 600, }} color="#000" >
-                Class ID: {data.id}
+                Class ID: {data.classID}
               </Typography>
             </CardContent>
           </React.Fragment>

@@ -6,9 +6,9 @@ export const useClassDataContext = () => useContext(ClassDataContext);
 
 export const ClassDataProvider = ({ children }) => {
     const [createdClassData, setCreatedClassData] = useState([
-        { id: 1, title: "Card1", classID: "001", state: "close" },
-        // { id: 2, discussionName: "Card2", classID: "002", state: "open" },
-        // { id: 3, discussionName: "Card3", classID: "003", state: "close" },
+        // { id: 1, title: "Card1", classID: "001", state: "close" },
+        // { id: 2, title: "Card2", classID: "002", state: "open" },
+        // { id: 3, title: "Card3", classID: "003", state: "close" },
     ]);
     //fetch class data
     useEffect(() => {
@@ -21,15 +21,19 @@ export const ClassDataProvider = ({ children }) => {
                     url: 'http://localhost:4000/course/getClass',
                     withCredentials: true
                 });
-                console.log(response.data);
-                //setCreatedClassData(response.data);
+                const modifiedData = response.data.map(item => ({
+                    ...item,
+                    id: parseInt(item.classID)  // 根据您的数据结构调整
+                }));
+                console.log("sd;", modifiedData);
+                setCreatedClassData(modifiedData);
             } catch (error) {
                 console.error('Error fetching class data:', error);
             }
         };
         fetchClassData();
     }, []);
-    //
+    // //
     const handleNewCreatedClass = newClass => {
         setCreatedClassData(prev => [...prev, newClass]);
     };
@@ -45,6 +49,11 @@ export const ClassDataProvider = ({ children }) => {
             prevClassData.filter(data => data.id !== id)
         );
     };
+    // const handleDeleteCreatedClass = classID => {
+    //     setCreatedClassData(prevClassData =>
+    //         prevClassData.filter(data => data.classID !== classID)
+    //     );
+    // };
     return (
         <ClassDataContext.Provider value={{ createdClassData, handleNewCreatedClass,handleChangeCreatedClassState,handleDeleteCreatedClass }}>
             {children}
