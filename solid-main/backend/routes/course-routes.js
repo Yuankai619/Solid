@@ -61,7 +61,13 @@ router.post('/create',Auth,(req,res)=>{
             ]
         });
         newCourse.save().then((err) => {
-            res.send(_classID);
+            res.json({
+                userID: _userID,
+                title: _title,
+                classID: _classID,
+                description: _description,
+                state: _state,  
+            })
         }).catch(err => {
             console.error(err);
             res.status(500).send(err);

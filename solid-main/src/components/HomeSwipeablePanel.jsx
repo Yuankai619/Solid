@@ -40,7 +40,11 @@ function HomeSwipeablePanel(props) {
                     <JoinedClassCardContainer></JoinedClassCardContainer>
                 </TabPanel>
                 <TabPanel tabIndex={props.tabIndex} index={1} dir={props._theme.direction}>
-                    <CreateClassContainer></CreateClassContainer>
+                    <CreateClassContainer 
+                        data={props.createdClassData}
+                        handleUpdateState={props.handleUpdateState}
+                        handleDelete={props.handleDelete}
+                    />
                 </TabPanel>
             </SwipeableViews>
         </ThemeProvider>

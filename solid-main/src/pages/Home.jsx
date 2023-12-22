@@ -13,11 +13,16 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import PrebuildDialog from '../components/PrebuildDialog';
 import LoginChecker from '../checker/LoginChecker';
+import { ClassDataProvider } from '../context/ClassDataContext';
 function Home() {
 
   const navigate = useNavigate();
-  var isLoggedIn = LoginChecker();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   useEffect(() => {
+    const checkLoginStatus= async () => {
+      const loginStatus = await LoginChecker();
+      setIsLoggedIn(loginStatus);
+    };
     document.body.style.overflow = 'hidden';
     return () => {
       document.body.style.overflow = '';
@@ -29,6 +34,27 @@ function Home() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [tabIndex, setTabIndex] = useState(0);
+
+  //connet backend
+  // const [createdClassData, setcreatedClassData] = useState([
+  //   { id: 1, discussionName: "Card1", classID: "001", state: "close" },
+  //   // { id: 2, discussionName: "Card2", classID: "002", state: "open" },
+  //   // { id: 3, discussionName: "Card3", classID: "003", state: "close" },
+  // ]);
+  // const handleNewClass = newClass => {
+  //   setcreatedClassData(prevClassData => [...prevClassData, newClass]);
+  // };
+
+  // const handleUpdateState = (id, newData) => {
+  //   setcreatedClassData(prevData =>
+  //     prevData.map(data => (data.id === id ? { ...data, ...newData } : data))
+  //   );
+  // };
+  // const handleDelete = (id) => {
+  //   setClassData(prevData =>
+  //     prevData.filter(data => data.id !== id)
+  //   );
+  // };
 
   const actions = [
     [{ icon: <DialpadIcon sx={{ color: '#EEEEEE' }} />, name: 'Join by ID' }],
@@ -61,22 +87,24 @@ function Home() {
     });
   }
 
-  const [discussionData, setDiscussionData] = useState([//測試discussionData
-    {
-      id: 1,
-      title: "Card1",
-      accessID: "000001",
-      infoData: {
-        "classID": "001",
-        "state": "close",
-        "ownerID": "1234556",
-        "creat date": "2021/10/10",
-        "description": "this is a description"
-      }
-    },
-  ]);
+  // const [discussionData, setDiscussionData] = useState([//測試discussionData
+  //   {
+  //     id: 1,
+  //     title: "Card1",
+  //     accessID: "000001",
+  //     infoData: {
+  //       "classID": "001",
+  //       "state": "close",
+  //       "ownerID": "1234556",
+  //       "creat date": "2021/10/10",
+  //       "description": "this is a description"
+  //     }
+  //   },
+  // ]);
+
 
   return (
+    <ClassDataProvider>
     <Box sx={{ backgroundColor: '#444' }}>
       <HomePageDrawer
         _drawerOpen={drawerOpen} _toggleDrawer={toggleDrawer} clickLogout={handleLogout}
@@ -91,18 +119,19 @@ function Home() {
         <JoinClassByIdDialog
           label={"class ID"} errorText={"class id is invalid"} iserror={classIdError}
           dialogOpen={dialogOpen} setDialogOpen={handleChangeDialog}
-          
+
         />
       )}
       {tabIndex === 1 && (
-        <PrebuildDialog     
-          
+        <PrebuildDialog
+
           dialogOpen={dialogOpen} setDialogOpen={handleChangeDialog}
-          
+
         />
       )}
       <HomeAppBar _value={tabIndex} _setValue={setTabIndex} _toggleDrawer={toggleDrawer} />
     </Box>
+    </ClassDataProvider>
   );
 }
 export default Home;

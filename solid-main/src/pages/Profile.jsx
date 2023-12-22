@@ -16,16 +16,19 @@ import axios from 'axios';
 import { getImageListItemBarUtilityClass } from "@mui/material";
 
 
-function ProfilepPage() {
-    var isLoggedIn = LoginChecker();
+function ProfilepPage() {    
     const [imgUrl, setImgUrl] = useState('');
     const [username, setUsername] = useState('');
     const [realName, setRealName] = useState('');
     const [studentID, setStudentId] = useState('');
     //const [isTermsAccepted, setIsTermsAccepted] = useState(false);
-  
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
     
     useEffect(() => {
+        const checkLoginStatus = async () => {
+            const loginStatus = await LoginChecker();
+            setIsLoggedIn(loginStatus);
+        };
         GetUserInfo();
         document.body.style.background = "#222222";
         document.body.style.overflow = '';
@@ -122,7 +125,6 @@ function ProfilepPage() {
     const [studentIdError, setStudentIdError] = useState(false);
     const [emailError, setEmailError] = useState(false);
 
-    
     const handleImageChange = (event) => {
         if (event.target.files && event.target.files[0]) {
             setImgUrl(URL.createObjectURL(event.target.files[0]));

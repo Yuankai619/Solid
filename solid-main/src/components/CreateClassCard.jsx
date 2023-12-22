@@ -14,12 +14,11 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { CardHeader } from "@mui/material";
 import CreateClassCardTheme from '../themes/CreateClassCardTheme';
 import { Link } from 'react-router-dom';
+import { useClassDataContext } from '../context/ClassDataContext'; 
 // { discussionName, classID, state }
-function CreateClassCard({data, onUpdate, onDelete}) {
+function CreateClassCard({data}) {
+  const { handleChangeCreatedClassState, handleDeleteCreatedClass } = useClassDataContext();
   const navigate = useNavigate();
-  const handleClick = () => {
-    navigate('/signup');
-  };
 
   const [stateColor, setStatecolor] = useState('#000');
   useEffect(() => {
@@ -39,11 +38,12 @@ function CreateClassCard({data, onUpdate, onDelete}) {
 
   const handleChangeState = (event) => {
     event.stopPropagation();
-    data.state === 'open' ? onUpdate({ state: 'close' }) : onUpdate({ state: 'open' });
+    handleChangeCreatedClassState(data.id, !data.state);
   };
   const handleDelete = (event) => {
     event.stopPropagation();
-    onDelete();
+    console.log(data.classID)
+    handleDeleteCreatedClass(data.id);    
   };
   return (
     <ThemeProvider theme={CreateClassCardTheme}>
@@ -58,7 +58,7 @@ function CreateClassCard({data, onUpdate, onDelete}) {
                 <MoreVertIcon />
               </IconButton>
             }
-            title={data.discussionName}
+            title={data.title}
           />
           <Menu
             id="long-menu"
@@ -83,12 +83,11 @@ function CreateClassCard({data, onUpdate, onDelete}) {
             <MenuItem onClick={handleChangeState}>Start</MenuItem>
             <MenuItem onClick={handleDelete} sx={{color:"#CC0000"}}>Delete</MenuItem>
           </Menu>
-          {/* id是uuid */}
-          <Link style={{ textDecoration: 'none', color: 'inherit' }} key={data.id}  to={`/room/${data.discussionName}`}> 
+          <Link style={{ textDecoration: 'none', color: 'inherit' }} key={data.id} to={`/room/${data.title}`}> 
           <React.Fragment>
             <CardContent >
-              <Typography sx={{ fontSize: 15, fontWeight: 600, marginTop: '12px' }} color={stateColor} component="div">
-                state: {data.state}
+                <Typography sx={{ fontSize: 15, fontWeight: 600, marginTop: '12px' }} color={data.state ? '#2D6CB6' : '#999999'} component="div">
+                  state: {data.state ? 'open' : 'close'}
               </Typography>
               <Typography sx={{ fontSize: 18, fontWeight: 600, }} color="#000" >
                 Class ID: {data.classID}

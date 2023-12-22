@@ -16,11 +16,14 @@ import { Typography } from '@mui/material';
 import Switch from '@mui/material/Switch';
 import PrebuildDialogTheme from '../themes/PrebuildDialogTheme';
 import axios from 'axios';
+import { useClassDataContext } from '../context/ClassDataContext';
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
 function PrebuildDialog(props) {
+    const { handleNewCreatedClass } = useClassDataContext();
+
     const [username, setUsername] = useState('');
     const [realName, setRealName] = useState('');
     const [studentID, setStudentId] = useState('');
@@ -72,6 +75,8 @@ function PrebuildDialog(props) {
             //console.log(res.data);
             //alert(roomTitle + " " + description + " " + state.gilad)
             alert(" sucess create at "+res.data)
+              handleNewCreatedClass(res.data);
+            // props.onNewClassCreated(res.data);
             // res is the classID
           })
           .catch((error) => {
