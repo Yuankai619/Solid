@@ -1,6 +1,6 @@
 // ClassDataContext.js
-import React, { createContext, useState, useContext } from 'react';
-
+import React, { createContext, useState, useContext,useEffect } from 'react';
+import axios from 'axios';
 const ClassDataContext = createContext();
 export const useClassDataContext = () => useContext(ClassDataContext);
 
@@ -11,18 +11,24 @@ export const ClassDataProvider = ({ children }) => {
         // { id: 3, discussionName: "Card3", classID: "003", state: "close" },
     ]);
     //fetch class data
-    // useEffect(() => {
-    //     const fetchClassData = async () => {
-    //         try {
-    //             const response = await axios.get(''); // 更換為你的 API 端點
-    //             setClassData(response.data);
-    //         } catch (error) {
-    //             console.error('Error fetching class data:', error);
-    //         }
-    //     };
+    useEffect(() => {
+        console.log('test');
+        const fetchClassData = async () => {
+            try {
 
-    //     fetchClassData();
-    // }, []);
+                const response = await axios({
+                    method: 'get',
+                    url: 'http://localhost:4000/course/getClass',
+                    withCredentials: true
+                });
+                console.log(response.data);
+                //setCreatedClassData(response.data);
+            } catch (error) {
+                console.error('Error fetching class data:', error);
+            }
+        };
+        fetchClassData();
+    }, []);
     //
     const handleNewCreatedClass = newClass => {
         setCreatedClassData(prev => [...prev, newClass]);

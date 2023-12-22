@@ -58,6 +58,7 @@ function PrebuildDialog(props) {
 
     const handleCreate = () => {
         props.setDialogOpen();
+        let tmp
         axios({
             method: "POST",
             headers: {
@@ -76,12 +77,24 @@ function PrebuildDialog(props) {
           })  
           .then((res) =>{
             // console.log(res.data);
-            handleNewCreatedClass(res.data);
-
-          })
-          .catch((error) => {
+            tmp = res.data;
+            axios({
+                method: "POST",
+                headers: { 'Content-Type': 'application/json', },  
+                data: JSON.stringify({
+                    userID : userID,
+                    classID : tmp.classID
+                }),
+                withCredentials: true,
+                url: "http://localhost:4000/course/addClassToUser"
+            })  
+            .then((res) =>{ console.log(tmp); })
+            .catch((error) => { console.error(error); });
+        })
+        .catch((error) => {
             console.error(error);
-          });
+        });
+        
     }
 
 

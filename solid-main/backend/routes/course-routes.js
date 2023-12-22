@@ -13,35 +13,56 @@ function Auth(req, res, next) {
     }
 }
 
-router.post('/test',(req,res)=>{
-    const _id = req.body._id;
+
+router.get('/getClass',Auth, async (req,res)=>{
+    console.log('hi');
+    console.log( req.session.passport);
+    const _id = req.session.passport.user._id;
     console.log(_id);
-    User.findById(_id)
-    res.send('suc');
+    try{
+        const user = await User.findById(_id);
+        const joinedClass = user.joinedClass;
+        //console.log(joinedClass)
+        const coursesInfo = await Promise.all(joinedClass.map(async ({ classID }) => {
+            const course = await Course.findOne({ 'info.classID': classID });
+            console.log(course.info)
+            return course.info;
+        }));
+        console.log(coursesInfo)
+        res.send(coursesInfo);
+    }catch(err){
+        console.log(err);
+    }
 })
 
 
-router.post('/joinClass', (req, res) => {
-    const { _id, classID } = req.body;
-    User.findByIdAndUpdate(_id, { $push: { joinedClass: { classID } } }, { new: true })
-        .then(() => res.status(200).send('Class joined successfully'))
-        .catch(error => res.status(500).send('Server error'));
-});
+
+router.post('/addClassToUser',Auth,(req,res)=>{
+    const _id = req.body.userID;
+    const _classID = req.body.classID;
+    // console.log(_id);
+    // console.log(_classID);
+    User.findByIdAndUpdate(_id, { $push: { joinedClass: { classID: _classID } } }).then(()=>{
+        console.log('success user update')
+        res.send('suc');
+    }).catch((err)=>{
+        console.log(err)
+    });
+})
+
 
 async function generateUniqueClassID() {
     let classID;
     let course;
     do {
-        // Generate a new classID
         classID = Math.floor(10000 + Math.random() * 90000).toString(); // generates a 5-digit number
-        // Check if the classID already exists in the database
         course = await Course.findOne({ 'info.classID': classID });
     } while (course);
     return classID;
 }
 
 
-router.post('/create', (req, res) => {
+router.post('/create',Auth, (req, res) => {
     const _userID = req.body.userID;
     const _description = req.body.description;
     const _title = req.body.roomTitle;
@@ -49,7 +70,6 @@ router.post('/create', (req, res) => {
     const _username = req.body.username;
     let _classID;
     generateUniqueClassID().then(classID => {
-        
         _classID = classID;
         //console.log(_classID)
         const newCourse = new Course({
@@ -77,6 +97,7 @@ router.post('/create', (req, res) => {
             ]
         });
         newCourse.save().then((err) => {
+            console.log('create class',_classID);
             res.json({
                 id: _classID,
                 userID: _userID,
