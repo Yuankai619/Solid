@@ -21,9 +21,9 @@ router.get('/getClass',Auth, async (req,res)=>{
     console.log(_id);
     try{
         const user = await User.findById(_id);
-        const joinedClass = user.joinedClass;
-        //console.log(joinedClass)
-        const coursesInfo = await Promise.all(joinedClass.map(async ({ classID }) => {
+        const createdClass = user.createdClass;
+        //console.log(createdClass)
+        const coursesInfo = await Promise.all(createdClass.map(async ({ classID }) => {
             const course = await Course.findOne({ 'info.classID': classID });
             console.log(course.info)
             return course.info;
@@ -42,7 +42,7 @@ router.post('/addClassToUser',Auth,(req,res)=>{
     const _classID = req.body.classID;
     // console.log(_id);
     // console.log(_classID);
-    User.findByIdAndUpdate(_id, { $push: { joinedClass: { classID: _classID } } }).then(()=>{
+    User.findByIdAndUpdate(_id, { $push: { createdClass: { classID: _classID } } }).then(()=>{
         console.log('success user update')
         res.send('suc');
     }).catch((err)=>{
