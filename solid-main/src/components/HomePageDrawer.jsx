@@ -70,13 +70,13 @@ function HomePageDrawer({ clickLogout ,...props}) {
                                     <Typography style={{ fontSize: "12px", color: "#999999" }}>ID: {studentIdUrl}</Typography>
                                 </Box>
                             </ListItem>
-                            <ListItemButton>
+                            <ListItemButton onClick={() => navigate('/home')}>
                                 <ListItemIcon><HomeIcon style={{ color: "#EEEEEE" }} /></ListItemIcon>
-                                <ListItemText primary="Home" onClick={() => navigate('/home')}/>
+                                <ListItemText primary="Home" />
                             </ListItemButton>
-                            <ListItemButton>
+                            <ListItemButton onClick={() => navigate('/profile')} >
                                 <ListItemIcon><SettingsIcon style={{ color: "#EEEEEE" }} /></ListItemIcon>
-                                <ListItemText primary="Setting" onClick={() => navigate('/profile')} />
+                                <ListItemText primary="Setting" />
                             </ListItemButton>
                             <ListItemButton>
                                 <ListItemIcon><BarChartIcon style={{ color: "#EEEEEE" }} /></ListItemIcon>
