@@ -11,6 +11,7 @@ const user = new mongoose.Schema({
     thumbnail : String,
     email: String,
     googleid: String,
-    joinedClass : [{classID : String}]
+    joinedClass : [{classID : String}],
+    createdClass : [{classID : String}]
 });
 module.exports = mongoose.model("User",user);
