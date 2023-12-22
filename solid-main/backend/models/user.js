@@ -10,6 +10,7 @@ const user = new mongoose.Schema({
     studentID: String,
     thumbnail : String,
     email: String,
-    googleid: String
+    googleid: String,
+    joinedClass : [{classID : String}]
 });
 module.exports = mongoose.model("User",user);

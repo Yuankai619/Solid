@@ -12,6 +12,13 @@ function Auth(req, res, next) {
     }
   }
 
+router.post('/joinClass', (req, res) => {
+    const { _id, classID } = req.body;
+    User.findByIdAndUpdate(_id, { $push: { joinedClass: { classID } } }, { new: true })
+        .then(() => res.status(200).send('Class joined successfully'))
+        .catch(error => res.status(500).send('Server error'));
+});
+
 async function generateUniqueClassID() {
     let classID;
     let course;
@@ -25,49 +32,55 @@ async function generateUniqueClassID() {
 }
 
 
-router.post('/create',Auth,(req,res)=>{
+router.post('/create', (req, res) => {
     const _userID = req.body.userID;
     const _description = req.body.description;
     const _title = req.body.roomTitle;
     const _state = req.body.state;
     const _username = req.body.username;
-    let _classID;
-    generateUniqueClassID().then(classID => {
-        
-        _classID = classID;
-        //console.log(_classID)
-        const newCourse = new Course({
-            info : 
-            {
-                classID  :  _classID,
-                authorID :  _userID,
-                state    :  _state,
-                title    :  _title,
-                description : _description,
-                createDate :  new Date()
-            },
-            member : 
-            [
-                { userid : _userID }
-            ],
-            message : 
-            [
-                {
-                    userID: _userID,
-                    username : _username,
-                    message: "default text",
-                    timestamp: new Date()
-                }
-            ]
-        });
-        newCourse.save().then((err) => {
-            res.send(_classID);
-        }).catch(err => {
-            console.error(err);
-            res.status(500).send(err);
-        });
+    const _googleid = req.body.googleid;
+    generateUniqueClassID().then(_classID => {
+        User.findOneAndUpdate({ googleid: _googleid } , { $push: { joinedClass: { classID: _classID } } })
+            .then(() => {
+                const newCourse = new Course({
+                    info : 
+                    {
+                        classID  :  _classID,
+                        authorID :  _userID,
+                        state    :  _state,
+                        title    :  _title,
+                        description : _description,
+                        createDate :  new Date()
+                    },
+                    member : 
+                    [
+                        { userid : _userID }
+                    ],
+                    message : 
+                    [
+                        {
+                            userID: _userID,
+                            username : _username,
+                            message: "default text",
+                            timestamp: new Date()
+                        }
+                    ]
+                });
+
+                newCourse.save()
+                    .then(() => res.send(_classID))
+                    .catch(err => {
+                        console.error(err);
+                        res.status(500).send('Server error');
+                    });
+            })
+            .catch(error => {
+                console.error(error);
+                res.status(500).send('Server error');
+            });
     });
-})
+});
+
 
 router.post('/addComment', Auth,(req, res) => {
     const comment = {
@@ -82,6 +95,7 @@ router.post('/addComment', Auth,(req, res) => {
         { new: true, useFindAndModify: false }
     )
     .then(course => {
+ 
         res.send('Comment added successfully!');
     })
     .catch(err => {

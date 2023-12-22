@@ -25,6 +25,7 @@ function PrebuildDialog(props) {
     const [realName, setRealName] = useState('');
     const [studentID, setStudentId] = useState('');
     const [userID, setUserId] = useState('');
+    const [googleId,setgoogleId] = useState('');
 
     useEffect(() => {
         GetUserInfo();
@@ -45,6 +46,7 @@ function PrebuildDialog(props) {
             setRealName(res.data.realname);
             setStudentId(res.data.studentID);
             setUserId(res.data._id);
+            setgoogleId(res.data.googleid);
         })
         .catch((error) => {
             
@@ -63,13 +65,14 @@ function PrebuildDialog(props) {
               description: description,
               roomTitle : roomTitle,
               state : state.gilad,
-              username : username
+              username : username,
+              googleid : googleId
             }),
             withCredentials: true,
             url: "http://localhost:4000/course/create"
           })  
           .then((res) =>{
-            //console.log(res.data);
+            console.log(res.data);
             //alert(roomTitle + " " + description + " " + state.gilad)
             alert(" sucess create at "+res.data)
             // res is the classID

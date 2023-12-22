@@ -1,6 +1,15 @@
 const router = require('express').Router()
 const User = require('../models/user')
 
+function Auth(req, res, next) {
+    //return next();
+    // 記得開
+    if(req.session.passport && req.session.passport.user){
+      return next();
+    } else {
+      res.send('please login first');
+    }
+  }
 
 router.post('/updateinfo',(req,res)=>{
     console.log('try update info');
@@ -22,7 +31,8 @@ router.post('/updateinfo',(req,res)=>{
     });
 })
 
-router.get('/getUserInfo',(req,res)=>{
+router.get('/getUserInfo',Auth,(req,res)=>{
+    //console.log('??????????????????????????????????');
     //console.log(req.session.passport.user);
     res.json({
         _id : req.session.passport.user._id,

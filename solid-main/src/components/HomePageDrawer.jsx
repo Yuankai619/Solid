@@ -15,6 +15,7 @@ import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import { ThemeProvider } from '@mui/material/styles';
 import HomePageDrawerTheme from '../themes/HomePageDrawerTheme';
 import { useNavigate } from "react-router-dom";
+import LoginChecker from "../checker/LoginChecker"
 // deerufin
 import axios from 'axios';
 // deerufin
@@ -22,7 +23,9 @@ function HomePageDrawer({ clickLogout ,...props}) {
     const [imgUrl, setImgUrl] = useState('');
     const [usernameUrl, setusernameUrl] = useState('');
     const [studentIdUrl, setstudentIdUrl] = useState('');
+    
     useEffect(() => {
+        //LoginChecker();
         GetUserInfo();
     }, []);
     const GetUserInfo = async () => {

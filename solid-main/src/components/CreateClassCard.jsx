@@ -44,6 +44,7 @@ function CreateClassCard({data, onUpdate, onDelete}) {
   const handleDelete = (event) => {
     event.stopPropagation();
     onDelete();
+    console.log(data);
   };
   return (
     <ThemeProvider theme={CreateClassCardTheme}>
