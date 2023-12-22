@@ -1,6 +1,7 @@
 const router = require('express').Router()
 const User = require('../models/user')
-const Course = require('../models/course')
+const Course = require('../models/course');
+const { route } = require('./auth-routes');
 
 function Auth(req, res, next) {
     return next();
@@ -10,7 +11,15 @@ function Auth(req, res, next) {
     } else {
       res.send('please login first');
     }
-  }
+}
+
+router.post('/test',(req,res)=>{
+    const _id = req.body._id;
+    console.log(_id);
+    User.findById(_id)
+    res.send('suc');
+})
+
 
 router.post('/joinClass', (req, res) => {
     const { _id, classID } = req.body;
