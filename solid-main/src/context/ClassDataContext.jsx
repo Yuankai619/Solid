@@ -10,7 +10,20 @@ export const ClassDataProvider = ({ children }) => {
         // { id: 2, discussionName: "Card2", classID: "002", state: "open" },
         // { id: 3, discussionName: "Card3", classID: "003", state: "close" },
     ]);
+    //fetch class data
+    // useEffect(() => {
+    //     const fetchClassData = async () => {
+    //         try {
+    //             const response = await axios.get(''); // 更換為你的 API 端點
+    //             setClassData(response.data);
+    //         } catch (error) {
+    //             console.error('Error fetching class data:', error);
+    //         }
+    //     };
 
+    //     fetchClassData();
+    // }, []);
+    //
     const handleNewCreatedClass = newClass => {
         setCreatedClassData(prev => [...prev, newClass]);
     };
