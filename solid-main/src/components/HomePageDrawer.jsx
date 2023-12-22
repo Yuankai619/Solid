@@ -16,16 +16,14 @@ import { ThemeProvider } from '@mui/material/styles';
 import HomePageDrawerTheme from '../themes/HomePageDrawerTheme';
 import { useNavigate } from "react-router-dom";
 import LoginChecker from "../checker/LoginChecker"
-// deerufin
+import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import axios from 'axios';
-// deerufin
 function HomePageDrawer({ clickLogout ,...props}) {
     const [imgUrl, setImgUrl] = useState('');
     const [usernameUrl, setusernameUrl] = useState('');
     const [studentIdUrl, setstudentIdUrl] = useState('');
     
     useEffect(() => {
-        //LoginChecker();
         GetUserInfo();
     }, []);
     const GetUserInfo = async () => {
@@ -70,28 +68,32 @@ function HomePageDrawer({ clickLogout ,...props}) {
                                     <Typography style={{ fontSize: "12px", color: "#999999" }}>ID: {studentIdUrl}</Typography>
                                 </Box>
                             </ListItem>
-                            <ListItemButton onClick={() => navigate('/home')}>
+                            {/* <ListItemButton onClick={() => navigate('/home')}>
                                 <ListItemIcon><HomeIcon style={{ color: "#EEEEEE" }} /></ListItemIcon>
                                 <ListItemText primary="Home" />
-                            </ListItemButton>
+                            </ListItemButton> */}
                             <ListItemButton onClick={() => navigate('/profile')} >
-                                <ListItemIcon><SettingsIcon style={{ color: "#EEEEEE" }} /></ListItemIcon>
-                                <ListItemText primary="Setting" />
+                                <ListItemIcon><AccountBoxIcon style={{ color: "#EEEEEE" }} /></ListItemIcon>
+                                <ListItemText primary="Profile" />
                             </ListItemButton>
                             <ListItemButton>
                                 <ListItemIcon><BarChartIcon style={{ color: "#EEEEEE" }} /></ListItemIcon>
                                 <ListItemText primary="Statistics" />
                             </ListItemButton>
-                        </List>
-                    </Box>
-                    <Box>
-                        <List>
                             <ListItemButton onClick={clickLogout}>
                                 <ListItemIcon><ExitToAppIcon style={{ color: "#EEEEEE" }} /></ListItemIcon>
                                 <ListItemText primary="Logout" />
                             </ListItemButton>
                         </List>
                     </Box>
+                    {/* <Box>
+                        <List>
+                            <ListItemButton onClick={clickLogout}>
+                                <ListItemIcon><ExitToAppIcon style={{ color: "#EEEEEE" }} /></ListItemIcon>
+                                <ListItemText primary="Logout" />
+                            </ListItemButton>
+                        </List>
+                    </Box> */}
                 </Box>
             </Drawer>
 

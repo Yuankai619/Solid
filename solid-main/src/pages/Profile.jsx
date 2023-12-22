@@ -21,15 +21,20 @@ function ProfilepPage() {
     const [username, setUsername] = useState('');
     const [realName, setRealName] = useState('');
     const [studentID, setStudentId] = useState('');
-    //const [isTermsAccepted, setIsTermsAccepted] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-    
+    const [isLoginCheckComplete, setIsLoginCheckComplete] = useState(false);
+
     useEffect(() => {
-        const checkLoginStatus = async () => {
-            const loginStatus = await LoginChecker();
-            setIsLoggedIn(loginStatus);
+        const checkLogin = async () => {
+            const result = await LoginChecker();
+            setIsLoggedIn(result.isLoggedIn);
+            setIsLoginCheckComplete(true);
+            if (result.redirectTo) {
+                navigate(result.redirectTo);
+            }
         };
-        GetUserInfo();
+
+        checkLogin();
         document.body.style.background = "#222222";
         document.body.style.overflow = '';
         return () => {

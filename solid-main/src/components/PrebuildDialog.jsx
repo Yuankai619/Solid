@@ -75,12 +75,9 @@ function PrebuildDialog(props) {
             url: "http://localhost:4000/course/create"
           })  
           .then((res) =>{
-            console.log(res.data);
-            //alert(roomTitle + " " + description + " " + state.gilad)
-            alert(" sucess create at "+res.data)
-              handleNewCreatedClass(res.data);
-            // props.onNewClassCreated(res.data);
-            // res is the classID
+            // console.log(res.data);
+            handleNewCreatedClass(res.data);
+
           })
           .catch((error) => {
             console.error(error);
@@ -113,16 +110,14 @@ function PrebuildDialog(props) {
 
     const handleInputBlur = () => {
         setInputFocused(false);
-    };
-
-    
+    };    
     return (
         <ThemeProvider theme={PrebuildDialogTheme}> 
             <React.Fragment>
                 <Dialog open={props.dialogOpen} onClose={props.setDialogOpen} TransitionComponent={Transition}>
-                    <DialogTitle>Prebuild Quession</DialogTitle>
+                    <DialogTitle>Prebuild  Discussion</DialogTitle>
                     <DialogContent>
-                        <Box sx={{marginTop:'20px'}}>
+                        <Box sx={{marginTop:'10px'}}>
                             <Typography sx={{ color: '#EEEEEE', marginButtom: '20px' }}>
                             {"Room Title:"}
                         </Typography>

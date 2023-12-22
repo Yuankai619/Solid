@@ -18,44 +18,26 @@ function Home() {
 
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoginCheckComplete, setIsLoginCheckComplete] = useState(false);
+
   useEffect(() => {
-    const checkLoginStatus= async () => {
-      const loginStatus = await LoginChecker();
-      setIsLoggedIn(loginStatus);
+    const checkLogin = async () => {
+      const result = await LoginChecker();
+      setIsLoggedIn(result.isLoggedIn);
+      setIsLoginCheckComplete(true);
+      if (result.redirectTo) {
+        navigate(result.redirectTo);
+      }
     };
-    document.body.style.overflow = 'hidden';
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, []);
+
+    checkLogin();
+  }, [navigate]);
   // i  
   const [classIdError, classIdErrorError] = useState(false);
   const [inputClassId, setinputClassId] = useState('');
   const [dialogOpen, setDialogOpen] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [tabIndex, setTabIndex] = useState(0);
-
-  //connet backend
-  // const [createdClassData, setcreatedClassData] = useState([
-  //   { id: 1, discussionName: "Card1", classID: "001", state: "close" },
-  //   // { id: 2, discussionName: "Card2", classID: "002", state: "open" },
-  //   // { id: 3, discussionName: "Card3", classID: "003", state: "close" },
-  // ]);
-  // const handleNewClass = newClass => {
-  //   setcreatedClassData(prevClassData => [...prevClassData, newClass]);
-  // };
-
-  // const handleUpdateState = (id, newData) => {
-  //   setcreatedClassData(prevData =>
-  //     prevData.map(data => (data.id === id ? { ...data, ...newData } : data))
-  //   );
-  // };
-  // const handleDelete = (id) => {
-  //   setClassData(prevData =>
-  //     prevData.filter(data => data.id !== id)
-  //   );
-  // };
-
   const actions = [
     [{ icon: <DialpadIcon sx={{ color: '#EEEEEE' }} />, name: 'Join by ID' }],
     [{ icon: <EditNoteIcon sx={{ color: '#EEEEEE', fontSize: '32px' }} />, name: 'Prebuild' }, { icon: <FlashOnIcon sx={{ color: '#EEEEEE', fontSize: '30px' }} />, name: 'Quick create' }],
@@ -86,22 +68,6 @@ function Home() {
       navigate('/login');
     });
   }
-
-  // const [discussionData, setDiscussionData] = useState([//測試discussionData
-  //   {
-  //     id: 1,
-  //     title: "Card1",
-  //     accessID: "000001",
-  //     infoData: {
-  //       "classID": "001",
-  //       "state": "close",
-  //       "ownerID": "1234556",
-  //       "creat date": "2021/10/10",
-  //       "description": "this is a description"
-  //     }
-  //   },
-  // ]);
-
 
   return (
     <ClassDataProvider>
