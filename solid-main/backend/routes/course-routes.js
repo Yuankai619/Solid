@@ -12,6 +12,13 @@ function Auth(req, res, next) {
     }
   }
 
+router.post('/joinClass', (req, res) => {
+    const { _id, classID } = req.body;
+    User.findByIdAndUpdate(_id, { $push: { joinedClass: { classID } } }, { new: true })
+        .then(() => res.status(200).send('Class joined successfully'))
+        .catch(error => res.status(500).send('Server error'));
+});
+
 async function generateUniqueClassID() {
     let classID;
     let course;
@@ -25,7 +32,7 @@ async function generateUniqueClassID() {
 }
 
 
-router.post('/create',Auth,(req,res)=>{
+router.post('/create', (req, res) => {
     const _userID = req.body.userID;
     const _description = req.body.description;
     const _title = req.body.roomTitle;
@@ -73,7 +80,8 @@ router.post('/create',Auth,(req,res)=>{
             res.status(500).send(err);
         });
     });
-})
+});
+
 
 router.post('/addComment', Auth,(req, res) => {
     const comment = {
@@ -88,6 +96,7 @@ router.post('/addComment', Auth,(req, res) => {
         { new: true, useFindAndModify: false }
     )
     .then(course => {
+ 
         res.send('Comment added successfully!');
     })
     .catch(err => {
