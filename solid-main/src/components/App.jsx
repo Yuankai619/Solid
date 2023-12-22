@@ -18,7 +18,7 @@ function App() {
       <Route path="/home" element={<HomePage />} />
       <Route path="/updateinfo" element={<UpdateGoogleUserInfoPage />} />
       <Route path="/profile" element={<ProfilePage />} />
-      <Route path="/room/:discussionName" element={<Discussion />} />
+      <Route path="/room/:id" element={<Discussion />} />
     </Routes>
   );
 }

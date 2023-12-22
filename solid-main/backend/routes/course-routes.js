@@ -78,6 +78,7 @@ router.post('/create', (req, res) => {
         });
         newCourse.save().then((err) => {
             res.json({
+                id: _classID,
                 userID: _userID,
                 title: _title,
                 classID: _classID,

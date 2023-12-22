@@ -15,12 +15,13 @@ import { CardHeader } from "@mui/material";
 import CreateClassCardTheme from '../themes/CreateClassCardTheme';
 import { Link } from 'react-router-dom';
 import { useClassDataContext } from '../context/ClassDataContext'; 
-// { discussionName, classID, state }
+
 function CreateClassCard({data}) {
   const { handleChangeCreatedClassState, handleDeleteCreatedClass } = useClassDataContext();
   const navigate = useNavigate();
 
   const [stateColor, setStatecolor] = useState('#000');
+  const [menuState, setMenuState] = useState("Close");
   useEffect(() => {
     data.state === 'open' ? setStatecolor('#2D6CB6') : setStatecolor('#999999');
   }, [data.state]);
@@ -38,11 +39,12 @@ function CreateClassCard({data}) {
 
   const handleChangeState = (event) => {
     event.stopPropagation();
+    setMenuState(data.state ? 'Open' : 'Close');
     handleChangeCreatedClassState(data.id, !data.state);
   };
   const handleDelete = (event) => {
     event.stopPropagation();
-    console.log(data.classID)
+    console.log(data.id)
     handleDeleteCreatedClass(data.id);    
   };
   return (
@@ -80,17 +82,17 @@ function CreateClassCard({data}) {
               },
             }}
           >
-            <MenuItem onClick={handleChangeState}>Start</MenuItem>
+            <MenuItem onClick={handleChangeState}>{menuState}</MenuItem>
             <MenuItem onClick={handleDelete} sx={{color:"#CC0000"}}>Delete</MenuItem>
           </Menu>
-          <Link style={{ textDecoration: 'none', color: 'inherit' }} key={data.id} to={`/room/${data.title}`}> 
+          <Link style={{ textDecoration: 'none', color: 'inherit' }} key={data.id} to={`/room/${data.id}`}> 
           <React.Fragment>
             <CardContent >
                 <Typography sx={{ fontSize: 15, fontWeight: 600, marginTop: '12px' }} color={data.state ? '#2D6CB6' : '#999999'} component="div">
                   state: {data.state ? 'open' : 'close'}
               </Typography>
               <Typography sx={{ fontSize: 18, fontWeight: 600, }} color="#000" >
-                Class ID: {data.classID}
+                Class ID: {data.id}
               </Typography>
             </CardContent>
           </React.Fragment>

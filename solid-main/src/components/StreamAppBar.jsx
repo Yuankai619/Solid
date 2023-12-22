@@ -6,33 +6,59 @@ import Box from '@mui/material/Box';
 import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
-import { ThemeProvider } from '@mui/material/styles';
+import { ThemeProvider,createTheme } from '@mui/material/styles';
 import HomeAppBarTheme from '../themes/HomeAppBarTheme';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import InfoIcon from '@mui/icons-material/Info';
 import { Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-function StreamAppBar({ roomTitle, infoData }) {
+function StreamAppBar({ data}) {
     const navigate = useNavigate();
     // const handleTabChange = (event, newValue) => {
     //     props._setValue(newValue);
     // };
+    const StreamAppBarTheme = createTheme({
+        typography: {
+            fontFamily: [
+                'Poppins',
+                'sans-serif',
+            ].join(','),
+        },
+        components: {
+            MuiAppBar: {
+                styleOverrides: {
+                    colorPrimary: {
+                        backgroundColor: '#222',
+                    },
+                    root: {
+                        position: 'relative',
+                        paddingBottom: 'env(safe-area-inset-bottom)',
+                        paddingBottom: '10px',
+                    }
+
+                },
+            },
+        }
+    });
     return (
-        <ThemeProvider theme={HomeAppBarTheme}>
-            <AppBar>
-                <Toolbar p={0}>
+        <ThemeProvider theme={StreamAppBarTheme}>
+            <AppBar style={{
+                position: 'fixed',
+                paddingTop: '6px',
+                left: 0,
+                right: 0,
+            }}>
+                <Toolbar>
                     <IconButton
-                        
                         edge="start"
-                        color="inherit"
                         aria-label="menu"
                         onClick={()=>navigate('/home')}
-                        sx={{ flexGrow: 0 }}
+                        // sx={{ flexGrow: 0 }}
                     >
-                        <ChevronLeftIcon />
+                        <ChevronLeftIcon style={{ color: "#EEEEEE", fontSize: "36px"}} />
                     </IconButton>
                     <Typography variant='h1'  sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center',fontSize:'2rem', fontWeight:"700" }}> 
-                        {roomTitle} 
+                        {data.title} 
                     </Typography>
                     <IconButton
                         edge="start"
@@ -41,7 +67,7 @@ function StreamAppBar({ roomTitle, infoData }) {
                         // onClick={props._toggleDrawer(true)}
                         sx={{ flexGrow: 0 }}
                     >
-                        <InfoIcon />
+                        <InfoIcon style={{ color: "#EEEEEE", fontSize: "30px" }} />
                     </IconButton>
                 </Toolbar>
             </AppBar>

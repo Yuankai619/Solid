@@ -33,7 +33,7 @@ function ProfilepPage() {
                 navigate(result.redirectTo);
             }
         };
-
+        GetUserInfo();
         checkLogin();
         document.body.style.background = "#222222";
         document.body.style.overflow = '';

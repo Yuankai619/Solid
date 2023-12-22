@@ -29,10 +29,13 @@ function Home() {
         navigate(result.redirectTo);
       }
     };
-
+    document.body.style.overflow = 'hidden';
     checkLogin();
+    return () => {
+      document.body.style.overflow = '';
+    };
   }, [navigate]);
-  // i  
+  
   const [classIdError, classIdErrorError] = useState(false);
   const [inputClassId, setinputClassId] = useState('');
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -90,9 +93,7 @@ function Home() {
       )}
       {tabIndex === 1 && (
         <PrebuildDialog
-
           dialogOpen={dialogOpen} setDialogOpen={handleChangeDialog}
-
         />
       )}
       <HomeAppBar _value={tabIndex} _setValue={setTabIndex} _toggleDrawer={toggleDrawer} />
