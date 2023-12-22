@@ -88,7 +88,9 @@ function PrebuildDialog(props) {
                 withCredentials: true,
                 url: "http://localhost:4000/course/addClassToUser"
             })  
-            .then((res) =>{ console.log(tmp); })
+            .then((res) =>{ 
+                handleNewCreatedClass(tmp);
+             })
             .catch((error) => { console.error(error); });
         })
         .catch((error) => {
