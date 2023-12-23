@@ -43,6 +43,8 @@ function Discussion() {
             "description": "this is a description"
         }
     };
+    // loadALL
+    
     //fetch class data
     // useEffect(() => {
     //     const fetchClassData = async () => {
