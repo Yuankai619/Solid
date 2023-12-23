@@ -13,7 +13,14 @@ function Auth(req, res, next) {
     }
 }
 
+//get class info
+router.post('/loadClassInfo',Auth,(req,res)=>{
+
+})
+
+
 router.post('/sendMessage',Auth, async (req, res) => {
+    console.log('/sendMessage');
     const _classID = req.body.classID;
     const _isAnonymous = req.body.isAnonymous;
     const _message = req.body.message;
@@ -22,9 +29,9 @@ router.post('/sendMessage',Auth, async (req, res) => {
     // 建立新的訊息物件
     const newMessage = {
         messageid : _uuid,
-        userID: "/* 使用者 ID */",
-        username: "/* 使用者名稱 */",
-        userimg : "https://lh3.googleusercontent.com/a/ACg8ocKfrsU3O0mtWryIVmvkBJGWqoYYcxhiayn3du96-k4YYAc=s96-c",
+        userID: req.session.passport.user._id,
+        username: req.session.passport.user.username,
+        userimg : req.session.passport.user.thumbnail,
         message: _message,
         isAnonymous: _isAnonymous,
         score: _score,
@@ -40,7 +47,7 @@ router.post('/sendMessage',Auth, async (req, res) => {
     res.status(200).json({  message: '訊息已成功加入',messageId: _uuid });
 });
 
-
+//update commend score
 router.post('/scoreUpdate', async (req, res) => {
     const _classID = req.body.classID;
     const _messageID = req.body.messageID;
@@ -63,6 +70,7 @@ router.post('/scoreUpdate', async (req, res) => {
     res.status(200).send('分數已成功更新');
 });
 
+// change class state
 router.post('/changeState',Auth, async(req,res) =>{
     const _classID = req.body.classID;
     const _state = req.body.state;

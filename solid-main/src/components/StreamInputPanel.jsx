@@ -3,6 +3,7 @@ import { Paper, TextField, IconButton, Switch, FormControlLabel } from '@mui/mat
 import SendIcon from '@mui/icons-material/Send';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
+import axios from 'axios';
 
 function StreamInputPanel({ classID }) {
     //stream data
@@ -11,12 +12,33 @@ function StreamInputPanel({ classID }) {
     //
     const [inputFocused, setInputFocused] = useState(false);
     const [sendIconColor, setSendIconColor] = useState('#EEEEEE');
+
     const handleSubmit = (event) => {
         event.preventDefault();
         console.log(content);
         console.log(isAnonymous);
         console.log(classID);
+        //add comment
+        axios({
+            method: "POST",
+            headers: { 'Content-Type': 'application/json', },  
+            data: JSON.stringify({
+                classID : classID,
+                isAnonymous : isAnonymous,
+                message : content,
+                score : "null"
+            }),
+            withCredentials: true,
+            url: "http://localhost:4000/course/sendMessage"
+        })  
+        .then((res) =>{
+            // comment here
+            // .json({  message: '訊息已成功加入',messageId: _uuid })
+            console.log(res.data)
+        })
+        .catch((error) => { console.error(error); });
     };
+    
     const handleToggleChange = (event) => {
         setSendIconColor(sendIconColor === '#2D6CB6' ? '#EEEEEE' : '#2D6CB6');
         setIsAnonymous(event.target.checked);

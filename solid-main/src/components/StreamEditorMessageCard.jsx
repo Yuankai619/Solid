@@ -5,6 +5,8 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
+import axios from 'axios';
+
 const StreamEditorMessageCardTheme = createTheme({
     typography: {
         fontFamily: [
@@ -70,13 +72,36 @@ const StreamEditorMessageCardTheme = createTheme({
         },
     },
 });
-function StreamEditorMessageCard({data}) {
+function StreamEditorMessageCard({data,messageID,classID}) {
     const [selected, setSelected] = useState(data.selected); // Keep track of which button is selected
     const correctEnable = "#3DECAD", correctDisable ="#00764B";
     const incorrectEnable = "#EE592A", incorrectDisable = "#76270E";
     const handleButtonClick = (button) => {
         // If the button is already selected, deselect it, otherwise select it
-        setSelected(selected === button ? "null" : button);
+        setSelected(selected === button ?  "null" : button);
+        handleScoreUpdate(selected)
+    };
+    const handleScoreUpdate = (selected) => {
+        console.log(selected);
+        // messageID
+        // classID
+        // axios({
+        //     method: "POST",
+        //     headers: { 'Content-Type': 'application/json', },  
+        //     data: JSON.stringify({
+        //         classID : classID,
+        //         messageID : messageID,
+        //         score : selected
+        //     }),
+        //     withCredentials: true,
+        //     url: "http://localhost:4000/course/scoreUpdate"
+        // })  
+        // .then((res) =>{
+        //     // comment here
+        //     // .json({  message: '訊息已成功加入',messageId: _uuid })
+        //     console.log(res.data)
+        // })
+        // .catch((error) => { console.error(error); });
     };
     return (
         <ThemeProvider theme={StreamEditorMessageCardTheme}>
