@@ -43,7 +43,8 @@ function Discussion() {
         }
     };
     const location = useLocation();
-    const discussionName = location.pathname.split('/')[2];
+    const ClassID = location.pathname.split('/')[2];
+    console.log("roomID:",ClassID);
     // const pageData = data.find(item => item.discussionName === discussionName);
     // console.log(data);
     return (

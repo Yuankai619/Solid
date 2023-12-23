@@ -4,8 +4,11 @@ import SendIcon from '@mui/icons-material/Send';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 
-function StreamInputPanel() {
-    const [isAnonymous, setIsAnonymous] = useState(false);
+function StreamInputPanel({ClassID}) {
+    //stream data
+        const [message, setMessage] = useState('');
+        const [isAnonymous, setIsAnonymous] = useState(false);
+    //
     const [inputFocused, setInputFocused] = useState(false);
     const [sendIconColor, setSendIconColor] = useState('#EEEEEE');
     // document.body.style.background = "#222222";
@@ -65,7 +68,6 @@ function StreamInputPanel() {
             },
         }
     });
-
     return (
         <ThemeProvider theme={PrebuildDialogTheme}>
             <Paper style={{
