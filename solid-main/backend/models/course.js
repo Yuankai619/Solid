@@ -16,9 +16,13 @@ const course = new mongoose.Schema({
     message : 
     [
         {
+            messageid : String,
             userID: String,
             username : String,
+            userimg : String,
             message: String,
+            isAnonymous : String,
+            score: String,
             timestamp: Date
         }
     ]
