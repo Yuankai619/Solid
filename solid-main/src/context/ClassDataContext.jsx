@@ -5,6 +5,12 @@ const ClassDataContext = createContext();
 export const useClassDataContext = () => useContext(ClassDataContext);
 
 export const ClassDataProvider = ({ children }) => {
+    const [curIndex, setCurIndex] = useState(0); 
+
+    const handleChangeIndex = (index) => {
+        console.log("handleChangeIndex: ",index);
+        setCurIndex (index);
+    };
     const [createdClassData, setCreatedClassData] = useState([
         // { id: 1, title: "Card1", classID: "001", state: "close" },
         // { id: 2, title: "Card2", classID: "002", state: "open" },
@@ -92,7 +98,7 @@ export const ClassDataProvider = ({ children }) => {
     //     );
     // };
     return (
-        <ClassDataContext.Provider value={{ createdClassData, handleNewCreatedClass,handleChangeCreatedClassState,handleDeleteCreatedClass }}>
+        <ClassDataContext.Provider value={{ curIndex,setCurIndex,handleChangeIndex,createdClassData, handleNewCreatedClass,handleChangeCreatedClassState,handleDeleteCreatedClass, }}>
             {children}
         </ClassDataContext.Provider>
     );

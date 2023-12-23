@@ -8,9 +8,11 @@ import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import { ThemeProvider } from '@mui/material/styles';
 import HomeAppBarTheme from '../themes/HomeAppBarTheme';
+import { useClassDataContext } from '../context/ClassDataContext';
 function HomeAppBar(props) {
+    const { curIndex, handleChangeIndex } = useClassDataContext();
     const handleTabChange = (event, newValue) => {
-        props._setValue(newValue);
+        handleChangeIndex(newValue);
     };
     return (
         <ThemeProvider theme={HomeAppBarTheme}>
@@ -27,7 +29,7 @@ function HomeAppBar(props) {
                     </IconButton>
                     <Box sx={{ flexGrow: 1, display: 'flex' }}>
                         <Tabs
-                            value={props._value}
+                            value={curIndex}
                             onChange={handleTabChange}
                             aria-label="full width tabs"
                         >

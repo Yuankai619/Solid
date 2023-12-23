@@ -28,7 +28,7 @@ function StreamAppBar({ data}) {
             MuiAppBar: {
                 styleOverrides: {
                     colorPrimary: {
-                        backgroundColor: '#222',
+                        backgroundColor: '#222222',
                     },
                     root: {
                         position: 'relative',
@@ -44,11 +44,13 @@ function StreamAppBar({ data}) {
         <ThemeProvider theme={StreamAppBarTheme}>
             <AppBar style={{
                 position: 'fixed',
-                paddingTop: '6px',
+                height: '69px',
+                // paddingTop: '6px',
+                // marginButtom: '80px',
                 left: 0,
                 right: 0,
             }}>
-                <Toolbar>
+                <Toolbar p={0}>
                     <IconButton
                         edge="start"
                         aria-label="menu"
@@ -57,7 +59,7 @@ function StreamAppBar({ data}) {
                     >
                         <ChevronLeftIcon style={{ color: "#EEEEEE", fontSize: "36px"}} />
                     </IconButton>
-                    <Typography variant='h1'  sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center',fontSize:'2rem', fontWeight:"700" }}> 
+                    <Typography variant='h1'  sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center',fontSize:'26px', fontWeight:"700" }}> 
                         {data.title} 
                     </Typography>
                     <IconButton

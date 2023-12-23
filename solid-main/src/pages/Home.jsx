@@ -14,6 +14,8 @@ import { useNavigate } from 'react-router-dom';
 import PrebuildDialog from '../components/PrebuildDialog';
 import LoginChecker from '../checker/LoginChecker';
 import { ClassDataProvider } from '../context/ClassDataContext';
+import { useClassDataContext } from '../context/ClassDataContext';
+
 function Home() {
 
   const navigate = useNavigate();
@@ -36,11 +38,13 @@ function Home() {
     };
   }, [navigate]);
   
+  const { curIndex, handleChangeIndex } = useClassDataContext();
+  
   const [classIdError, classIdErrorError] = useState(false);
   const [inputClassId, setinputClassId] = useState('');
   const [dialogOpen, setDialogOpen] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [tabIndex, setTabIndex] = useState(0);
+
   const actions = [
     [{ icon: <DialpadIcon sx={{ color: '#EEEEEE' }} />, name: 'Join by ID' }],
     [{ icon: <EditNoteIcon sx={{ color: '#EEEEEE', fontSize: '32px' }} />, name: 'Prebuild' }, { icon: <FlashOnIcon sx={{ color: '#EEEEEE', fontSize: '30px' }} />, name: 'Quick create' }],
@@ -52,10 +56,7 @@ function Home() {
     }
     setDrawerOpen(open);
   };
-  const handleChangeIndex = (index) => {
-    console.log(index);
-    setTabIndex(index);
-  };
+
 
   const handleChangeDialog = () => {
     setDialogOpen(!dialogOpen);
@@ -71,34 +72,34 @@ function Home() {
       navigate('/login');
     });
   }
-
+  console.log("Debug: curIndex:", curIndex);
   return (
-    <ClassDataProvider>
+
     <Box sx={{ backgroundColor: '#444' }}>
       <HomePageDrawer
         _drawerOpen={drawerOpen} _toggleDrawer={toggleDrawer} clickLogout={handleLogout}
       />
       <HomeSwipeablePanel
-        tabIndex={tabIndex} _handleChangeIndex={handleChangeIndex} _theme={theme}
+       _theme={theme}
       />
       <HomeSpeedDial
-        actions={actions} tabIndex={tabIndex} dialogOpen={dialogOpen} setDialogOpen={handleChangeDialog}
+        actions={actions}  dialogOpen={dialogOpen} setDialogOpen={handleChangeDialog}
       />
-      {tabIndex === 0 && (
+        {curIndex === 0 && (
         <JoinClassByIdDialog
           label={"class ID"} errorText={"class id is invalid"} iserror={classIdError}
           dialogOpen={dialogOpen} setDialogOpen={handleChangeDialog}
 
         />
       )}
-      {tabIndex === 1 && (
+        {curIndex === 1 && (
         <PrebuildDialog
           dialogOpen={dialogOpen} setDialogOpen={handleChangeDialog}
         />
       )}
-      <HomeAppBar _value={tabIndex} _setValue={setTabIndex} _toggleDrawer={toggleDrawer} />
+      <HomeAppBar _toggleDrawer={toggleDrawer} />
     </Box>
-    </ClassDataProvider>
+
   );
 }
 export default Home;

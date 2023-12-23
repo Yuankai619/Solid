@@ -6,12 +6,14 @@ import ProfilePage from "../pages/Profile";
 import UpdateGoogleUserInfoPage from "../pages/UpdateGoogleUserInfo"
 import Discussion from "../pages/Discussion";
 import StreamEditorMessageCard from "./StreamEditorMessageCard";
+import { ClassDataProvider } from '../context/ClassDataContext';
 import {
   BrowserRouter as Router, Route, Routes
 } from "react-router-dom";
 
 function App() {
   return (
+    <ClassDataProvider>
     <Routes>
       <Route path="/" element={<HomePage />} />
       <Route path="/login" element={<LoginPage />} />
@@ -21,6 +23,7 @@ function App() {
       <Route path="/profile" element={<ProfilePage />} />
       <Route path="/room/:id" element={<Discussion />} />
     </Routes>
+    </ClassDataProvider>
   );
 }
 

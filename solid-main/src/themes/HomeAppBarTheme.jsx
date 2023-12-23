@@ -17,7 +17,7 @@ const HomeAppBarTheme = createTheme({
                 root: {
                     position: 'relative',
                     paddingBottom: 'env(safe-area-inset-bottom)',
-                    paddingBottom: '10px',
+                    paddingBottom: '15px',
                 }
 
             },

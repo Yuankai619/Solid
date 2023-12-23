@@ -74,7 +74,7 @@ function StreamInputPanel() {
                 bottom: 0,
                 left: 0,
                 right: 0,
-                padding: '20px',
+                padding: '0px 20px 20px 20px',
                 transition: 'all 0.3s ease',
                 transform: inputFocused ? 'translateTop(-50%)' : 'translateY(0)'
             }}>
@@ -84,17 +84,20 @@ function StreamInputPanel() {
                     rows={inputFocused ? 4 : 2}
                     placeholder="type...?"
                     variant="outlined"
-                    // fullWidth
+                    fullWidth
                     onFocus={handleInputFocus}
                     onBlur={handleInputBlur}
-                    style={{ margin: '10px 0' ,
-                        position: 'fixed',
-                        bottom: 50,
-                        left: 0,
-                        padding: '20px',
-                        right: 0,
-                        transition: 'all 0.3s ease',
-                        transform: inputFocused ? 'translateTop(-50%)' : 'translateY(0)'
+                    style={{ 
+                        margin: '10px 0' ,
+                        // paddingRight: 20
+                    //     position: 'fixed',
+                    // paddingButtom:"50px",
+                    //     bottom: 50,
+                    //     left: 0,
+                        // padding: '20px 0px 20px 20px',
+                    //     right: 0,
+                    //     // transition: 'all 0.3s ease',
+                    //     // transform: inputFocused ? 'translateTop(-50%)' : 'translateY(0)'
                     }}
                     InputProps={{
                         style: {
@@ -103,7 +106,7 @@ function StreamInputPanel() {
                         },
                     }}
                 /> 
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent:'space-between',padding:"0px 10px 0px 20px" }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent:'space-between',padding:"0px 6px 0px 20px" }}>
                     <FormControlLabel
                         control={
                             <Switch

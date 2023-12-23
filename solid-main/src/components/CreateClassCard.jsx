@@ -39,8 +39,8 @@ function CreateClassCard({data}) {
 
   const handleChangeState = (event) => {
     event.stopPropagation();
-    setMenuState(data.state == 'true' ? "false" : "true" );
-    handleChangeCreatedClassState(data.id, data.state == 'true');
+    setMenuState(menuState == 'true' ? 'false' : 'true');
+    handleChangeCreatedClassState(data.id, menuState == 'true'? 'false' : 'true');
   };
   const handleDelete = (event) => {
     event.stopPropagation();
@@ -82,14 +82,14 @@ function CreateClassCard({data}) {
               },
             }}
           >
-            <MenuItem onClick={handleChangeState}>{menuState}</MenuItem>
+            <MenuItem onClick={handleChangeState}>{menuState == 'true' ? "Close" : "Open"}</MenuItem>
             <MenuItem onClick={handleDelete} sx={{color:"#CC0000"}}>Delete</MenuItem>
           </Menu>
           <Link style={{ textDecoration: 'none', color: 'inherit' }} key={data.id} to={`/room/${data.classID}`}> 
           <React.Fragment>
             <CardContent >
-                <Typography sx={{ fontSize: 15, fontWeight: 600, marginTop: '12px' }} color={data.state == 'true' ? '#2D6CB6' : '#999999'} component="div">
-                  state: {data.state == 'true' ? 'open' : 'close'}
+                <Typography sx={{ fontSize: 15, fontWeight: 600, marginTop: '12px' }} color={menuState == 'true' ? '#2D6CB6' : '#999999'} component="div">
+                  state: {menuState == 'true' ? 'open' : 'close'}
               </Typography>
               <Typography sx={{ fontSize: 18, fontWeight: 600, }} color="#000" >
                 Class ID: {data.classID}

@@ -1,54 +1,119 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
 import Avatar from '@mui/material/Avatar';
-import { red, green } from '@mui/material/colors';
-import CancelIcon from '@mui/icons-material/Cancel';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import Button from '@mui/material/Button';
-
+const StreamEditorMessageCardTheme = createTheme({
+    typography: {
+        fontFamily: [
+            'Poppins',
+            'sans-serif',
+        ].join(','),
+    },
+    components: {
+        // 针对 MUI Card 组件的样式
+        MuiCard: {
+            styleOverrides: {
+                root: {
+                    position: 'relative',
+                    backgroundColor: "#222222",
+                    overflow: 'hidden',
+                    margin: "10px 15px 20px",
+                    borderRadius: '16px',
+                    borderColor: "#999999",
+                },
+            },
+        },
+        MuiCardContent: {
+            styleOverrides: {
+                root: {
+                    padding: "12px 6px 12px 12px !important",
+                },
+            },
+        },
+        // 针对 MUI Button 组件的样式
+        MuiButton: {
+            styleOverrides: {
+                root: {
+                    marginRight: "16px",
+                    minWidth: "36px",
+                    height: "24px",
+                    padding: "0",
+                    borderRadius: "16px",
+                },
+            },
+        },
+        // 针对 MUI Typography 组件的样式
+        MuiTypography: {
+            styleOverrides: {
+                subtitle1: {
+                    flexGrow: 1,
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    color: "#EEEEEE",
+                    marginLeft: "10px",
+                    fontSize: "18px",
+                    fontWeight: "700",
+                },
+                body1: {
+                    fontSize:"12px",
+                    color: "#EEEEEE",
+                    marginLeft: "12px",
+                    marginRight: "12px",
+                    marginTop: "16px",
+                    
+                },
+            },
+        },
+    },
+});
 function StreamEditorMessageCard({ username, content }) {
+    const [selected, setSelected] = useState(null); // Keep track of which button is selected
+    const correctEnable = "#3DECAD", correctDisable ="#00764B";
+    const incorrectEnable = "#EE592A", incorrectDisable = "#76270E";
+    const handleButtonClick = (button) => {
+        // If the button is already selected, deselect it, otherwise select it
+        setSelected(selected === button ? null : button);
+    };
     return (
-        <Card sx={{ maxWidth: '100%', bgcolor: 'background.paper', overflow: 'hidden' }}>
-            <CardContent>
-                <div style={{ display: 'flex', alignItems: 'center', marginBottom: 2 }}>
-                    <Avatar sx={{ mr: 2 }} />
-                    <Typography variant="subtitle1" sx={{ flexGrow: 1, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                        {"Yuankai"}
+        <ThemeProvider theme={StreamEditorMessageCardTheme}>
+            <Card  variant='outlined'>
+                <CardContent>
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                            <Avatar sx={{ mx: "10px", width: '28px', height: '28px' }} />
+                        <Typography variant="subtitle1" >
+                            {"Yuankai"}
+                        </Typography>
+                        <Button aria-label="incorrect"
+                            onClick={() => handleButtonClick('incorrect')}
+                            sx={{
+                                background: selected === 'incorrect' ? incorrectEnable : incorrectDisable,
+                                '&:hover': {
+                                    background: selected === 'incorrect' ? incorrectEnable : incorrectDisable, // 确保鼠标悬浮时的背景色与点击时相同
+                                },
+                            }}
+                        >
+                        </Button>
+                        <Button aria-label="correct"
+                            onClick={() => handleButtonClick('correct')}
+                            sx={{
+                                background: selected === 'correct' ? correctEnable : correctDisable,
+                                '&:hover': {
+                                    background: selected === 'correct' ? correctEnable : correctDisable, // 确保鼠标悬浮时的背景色与点击时相同
+                                },
+                            }}
+                        >
+                        </Button>
+                    </div>
+                    <Typography variant="body1">
+                        {"這裡是你的消息內容，可以非常長，組件會自動處理這裡是你的消息內容，可以非常長，組件會自動處理換行和高度調整。這裡是你的消息內容，可以非常長，組件會自動處理換行和高度調整這裡是你的消息內容，可以非常長，組件會自動處理換行和高度調整。這裡是你的消息內容，可以非常長，組件會自動處理換行和高度調整換行和高度調整。這裡是你的消息內容，可以非常長，組件會自動處理換行和高度調整。"}
                     </Typography>
-                    <Button aria-label="dislike"
-                        size="small"
-                        sx={{
-                            bgcolor: red[500],
-                            '&:hover': { bgcolor: red[700] },
-                            borderRadius: 6, // 這裡設置圓角大小
-                            width: 20, // 設置寬度，'auto' 或者具體數值
-                            height: 15, // 設置高度，可按需調整
-                            padding: '0 1px', // 左右內填充，根據按鈕內容增加或減少
-                        }}>
-                        {/* <CancelIcon style={{ color: 'white' }} /> */}
-                    </Button>
-                    <Button variant="contained"
-                        color="primary"
-                        sx={{
-                            borderRadius: '4px', // 为按钮添加圆角
-                            minWidth: 90, // 设置最小宽度，确保按钮是长方形的
-                            height: 36, // 设置按钮高度
-                            padding: '0 16px', // 水平方向的内填充
-                            '&:hover': {
-                                bgcolor: 'hover color here', // 鼠标悬浮时的背景颜色
-                            },
-                        }}>
-                        {/* <CheckCircleIcon style={{ color: 'white' }} /> */}
-                    </Button>
-                </div>
-                <Typography variant="body2" color="text.secondary" sx={{ wordWrap: 'break-word' }}>
-                    {"這裡是你的消息內容，可以非常長，組件會自動處理換行和高度fdsfsdfsdfsdfsfsdf調整。"}
-                </Typography>
-            </CardContent>
-        </Card>
+                </CardContent>
+            </Card>
+        </ThemeProvider>
     );
 }
 

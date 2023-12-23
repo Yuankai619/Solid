@@ -48,12 +48,20 @@ function Discussion() {
     // console.log(data);
     return (
         // <Container sx={{ backgroundColor: '#444' }}>
-        <div>  
+        <div style={{padding:0 , margin:"0px"}}>  
             <StreamAppBar data={data} />
-            <Container>
+            <div style={{paddingTop:'70px'}}>
+                <Container sx={{ position: 'fixed', height: 'calc(100vh - 252px)', overflow: "auto", px: "0px" }} maxWidth="100%">
 
-            <StreamEditorMessageCard />
-            </Container>
+                    <StreamEditorMessageCard  />
+                    <StreamEditorMessageCard />
+                    <StreamEditorMessageCard />
+                    <StreamEditorMessageCard />
+                    <StreamEditorMessageCard />
+                    <StreamEditorMessageCard />
+                    <StreamEditorMessageCard />
+                </Container>
+            </div>
 
             <StreamInputPanel />
         </div>

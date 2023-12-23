@@ -4,10 +4,10 @@ import SpeedDialIcon from '@mui/material/SpeedDialIcon';
 import SpeedDialAction from '@mui/material/SpeedDialAction';
 import { ThemeProvider } from '@mui/material/styles';
 import HomeSpeedDialTheme from '../themes/HomeSpeedDialTheme';
-
+import { useClassDataContext } from '../context/ClassDataContext';
 function HomeSpeedDial(props) {
     const [open, setOpen] = useState(false);
-
+    const { curIndex } = useClassDataContext();
     const handleActionClick = (event) => {
         event.stopPropagation();
         event.preventDefault();
@@ -15,7 +15,7 @@ function HomeSpeedDial(props) {
         // setOpen(false);//設定典擊後要不要收合action icon 
         console.log("Action clicked");
     };
-    const action = props.actions[props.tabIndex] ;
+    const action = props.actions[curIndex] ;
     // console.log(props.tabIndex);
     // console.log("Selected Actions:", actions);
     const handleClickSpeedDial = () => {
