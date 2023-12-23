@@ -21,9 +21,9 @@ export const ClassDataProvider = ({ children }) => {
                     url: 'http://localhost:4000/course/getClass',
                     withCredentials: true
                 });
-                const modifiedData = response.data.map(item => ({
+                const modifiedData = response.data.map(item => ({//加入id
                     ...item,
-                    id: parseInt(item.classID)  // 根据您的数据结构调整
+                    id: parseInt(item.classID)  
                 }));
                 console.log("sd;", modifiedData);
                 setCreatedClassData(modifiedData);

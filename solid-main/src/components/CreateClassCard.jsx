@@ -21,7 +21,7 @@ function CreateClassCard({data}) {
   const navigate = useNavigate();
 
   const [stateColor, setStatecolor] = useState('#000');
-  const [menuState, setMenuState] = useState("Close");
+  const [menuState, setMenuState] = useState(data.state);
   useEffect(() => {
     data.state === 'open' ? setStatecolor('#2D6CB6') : setStatecolor('#999999');
   }, [data.state]);

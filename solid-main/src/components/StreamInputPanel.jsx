@@ -68,7 +68,7 @@ function StreamInputPanel() {
 
     return (
         <ThemeProvider theme={PrebuildDialogTheme}>
-            {/* <Paper style={{
+            <Paper style={{
                 position: 'fixed',
                 backgroundColor: '#222222',
                 bottom: 0,
@@ -77,7 +77,7 @@ function StreamInputPanel() {
                 padding: '20px',
                 transition: 'all 0.3s ease',
                 transform: inputFocused ? 'translateTop(-50%)' : 'translateY(0)'
-            }}> */}
+            }}>
 
                 <TextField
                     multiline
@@ -102,8 +102,8 @@ function StreamInputPanel() {
                             color: '#EEEEEE',
                         },
                     }}
-                />
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent:'space-between' }}>
+                /> 
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent:'space-between',padding:"0px 10px 0px 20px" }}>
                     <FormControlLabel
                         control={
                             <Switch
@@ -123,7 +123,7 @@ function StreamInputPanel() {
                 {/* <IconButton aria-label="send">
                 {isAnonymous ? <VisibilityOffIcon /> : <SendIcon />}
             </IconButton> */}
-            {/* </Paper> */}
+            </Paper>
         </ThemeProvider>
     );
 }

@@ -5,6 +5,7 @@ import HomePage from "../pages/Home";
 import ProfilePage from "../pages/Profile";
 import UpdateGoogleUserInfoPage from "../pages/UpdateGoogleUserInfo"
 import Discussion from "../pages/Discussion";
+import StreamEditorMessageCard from "./StreamEditorMessageCard";
 import {
   BrowserRouter as Router, Route, Routes
 } from "react-router-dom";

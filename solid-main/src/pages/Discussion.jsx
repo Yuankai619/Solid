@@ -6,6 +6,7 @@ import Container from '@mui/material/Container';
 import { useParams, useLocation } from 'react-router-dom';
 import LoginChecker from '../checker/LoginChecker';
 import { useNavigate } from 'react-router-dom';
+import StreamEditorMessageCard from '../components/StreamEditorMessageCard';
 function Discussion() {
     const navigate = useNavigate();
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -49,14 +50,11 @@ function Discussion() {
         // <Container sx={{ backgroundColor: '#444' }}>
         <div>  
             <StreamAppBar data={data} />
-            {/* <h2>slfjsdlfsf</h2>
-            <h2>slfjsdlfsf</h2>
-            <h2>slfjsdlfsf</h2>
-            <h2>slfjsdlfsf</h2>
-            <h2>slfjsdlfsf</h2>
-            <h2>slfjsdlfsf</h2>
-            <h2>slfjsdlfsf</h2>
-            <h2>slfjsdlfsf</h2> */}
+            <Container>
+
+            <StreamEditorMessageCard />
+            </Container>
+
             <StreamInputPanel />
         </div>
         // </Container>
