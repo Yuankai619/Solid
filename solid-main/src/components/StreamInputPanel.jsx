@@ -5,7 +5,7 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import axios from 'axios';
 
-function StreamInputPanel({ classID, handleGetMessageID }) {
+function StreamInputPanel({ classID }) {
     //stream data
     const [content, setContent] = useState('');
     const [isAnonymous, setIsAnonymous] = useState(false);
@@ -33,9 +33,10 @@ function StreamInputPanel({ classID, handleGetMessageID }) {
         })  
         .then((res) =>{
             // comment here
+            setContent('');//clear inputext
             // .json({  message: '訊息已成功加入',messageId: _uuid })
             console.log(res.data)
-            handleGetMessageID(res.data.messageId);
+            
         })
         .catch((error) => { console.error(error); });
     };
@@ -113,6 +114,7 @@ function StreamInputPanel({ classID, handleGetMessageID }) {
                     placeholder="type...?"
                     variant="outlined"
                     fullWidth
+                    value={content}
                     onFocus={handleInputFocus}
                     onBlur={handleInputBlur}
                     style={{

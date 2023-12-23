@@ -133,7 +133,7 @@ function PrebuildDialog(props) {
                     <DialogContent>
                         <Box sx={{marginTop:'10px'}}>
                             <Typography sx={{ color: '#EEEEEE', marginButtom: '20px' }}>
-                            {"Room Title:"}
+                            {"Discussion Title:"}
                         </Typography>
                         <InputText
                             id={"room title"} 

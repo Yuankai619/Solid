@@ -32,17 +32,18 @@ function Discussion() {
         };
     }, []);
     //test Data
-    const data = {
-        id: 1,
-        title: "Card1",
-        infoData: {
-            "classID": "001",
-            "state": "close",
-            "ownerID": "1234556",
-            "creat date": "2021/10/10",
-            "description": "this is a description"
-        }
-    };
+    const [classData, setCreatedClassData] = useState([]);
+    // const data = {
+    //     id: 1,
+    //     title: "Card1",
+    //     infoData: {
+    //         "classID": "001",
+    //         "state": "close",
+    //         "ownerID": "1234556",
+    //         "creat date": "2021/10/10",
+    //         "description": "this is a description"
+    //     }
+    // };
     // loadALL
     
     //fetch class data
@@ -99,7 +100,7 @@ function Discussion() {
     // }
     return (
         <div style={{ padding: 0, margin: "0px" }}>
-            <StreamAppBar data={data} />
+            <StreamAppBar data={classData} />
             <div style={{ paddingTop: '70px' }}>
                 <Container sx={{ position: 'fixed', height: 'calc(100vh - 252px)', overflow: "auto", px: "0px" }} maxWidth="100%">
                     {messageData.map((data) => (

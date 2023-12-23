@@ -13,6 +13,49 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
+
+// const handleJoin = () => {
+//     props.setDialogOpen();
+//     let tmp
+//     axios({
+//         method: "POST",
+//         headers: {
+//             'Content-Type': 'application/json',
+//         },
+//         data: JSON.stringify({
+//             userID: userID,
+//             description: description,
+//             roomTitle: roomTitle,
+//             state: state.gilad,
+//             username: username,
+//             googleid: googleId
+//         }),
+//         withCredentials: true,
+//         url: "http://localhost:4000/course/create"
+//     })
+//         .then((res) => {
+//             // console.log(res.data);
+//             tmp = res.data;
+//             axios({
+//                 method: "POST",
+//                 headers: { 'Content-Type': 'application/json', },
+//                 data: JSON.stringify({
+//                     classID: tmp.classID
+//                 }),
+//                 withCredentials: true,
+//                 url: "http://localhost:4000/course/addClassToUser"
+//             })
+//                 .then((res) => {
+//                     handleNewCreatedClass(tmp);
+//                 })
+//                 .catch((error) => { console.error(error); });
+//         })
+//         .catch((error) => {
+//             console.error(error);
+//         });
+
+// }
+
 function JoinClassByIdDialog(props) {
     return (
         <ThemeProvider theme={JoinClassDialogTheme}>
