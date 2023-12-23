@@ -1,10 +1,10 @@
 const router = require('express').Router()
 const User = require('../models/user')
 const Course = require('../models/course');
-const { route } = require('./auth-routes');
+const uuid = require('uuid');
 
 function Auth(req, res, next) {
-    // return next();
+     return next();
     // 記得開
     if(req.session.passport && req.session.passport.user){
       return next();
@@ -12,6 +12,56 @@ function Auth(req, res, next) {
       res.send('please login first');
     }
 }
+
+router.post('/sendMessage',Auth, async (req, res) => {
+    const _classID = req.body.classID;
+    const _isAnonymous = req.body.isAnonymous;
+    const _message = req.body.message;
+    const _uuid = uuid.v4();
+    const _score = req.body.score;
+    // 建立新的訊息物件
+    const newMessage = {
+        messageid : _uuid,
+        userID: "/* 使用者 ID */",
+        username: "/* 使用者名稱 */",
+        userimg : "https://lh3.googleusercontent.com/a/ACg8ocKfrsU3O0mtWryIVmvkBJGWqoYYcxhiayn3du96-k4YYAc=s96-c",
+        message: _message,
+        isAnonymous: _isAnonymous,
+        score: _score,
+        timestamp: new Date()  
+    };
+    // 找到對應的課程並更新
+    const course = await Course.findOne({ 'info.classID': _classID });
+    if (!course) {
+        return res.status(404).send('找不到對應的課程');
+    }
+    course.message.push(newMessage);
+    await course.save();
+    res.status(200).json({  message: '訊息已成功加入',messageId: _uuid });
+});
+
+
+router.post('/scoreUpdate', async (req, res) => {
+    const _classID = req.body.classID;
+    const _messageID = req.body.messageID;
+    const _score = req.body.score;
+
+    // 找到對應的課程
+    const course = await Course.findOne({ 'info.classID': _classID });
+    if (!course) {
+        return res.status(404).send('找不到對應的課程');
+    }
+
+    // 在訊息陣列中找到對應的訊息並更新分數
+    const message = course.message.find(msg => msg.messageid === _messageID);
+    if (!message) {
+        return res.status(404).send('找不到對應的訊息');
+    }
+
+    message.score = _score;
+    await course.save();
+    res.status(200).send('分數已成功更新');
+});
 
 router.post('/changeState',Auth, async(req,res) =>{
     const _classID = req.body.classID;
@@ -28,6 +78,19 @@ router.post('/changeState',Auth, async(req,res) =>{
     }
 })
 
+router.post('/loadAllMessage',Auth,async(req,res)=>{
+    const _classID = req.body.classID;
+
+    // 找到對應的課程
+    const course = await Course.findOne({ 'info.classID': _classID });
+    if (!course) {
+        return res.status(404).send('找不到對應的課程');
+    }
+
+    // 回傳訊息陣列
+    console.log(course.message);
+    res.status(200).json(course.message);
+})
 
 router.post('/deleteClass',Auth, async(req,res) =>{
     // console.log(req.body);
