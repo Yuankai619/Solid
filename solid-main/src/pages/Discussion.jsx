@@ -93,8 +93,10 @@ function Discussion() {
         
     // ]);
 
-
-
+    // const [sendMessageID, setSendMessageID] = useState('');
+    // const handleGetMessageID = (messageID) => { 
+    //     setSendMessageID(messageID);
+    // }
     return (
         <div style={{ padding: 0, margin: "0px" }}>
             <StreamAppBar data={data} />

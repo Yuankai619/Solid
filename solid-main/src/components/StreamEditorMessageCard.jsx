@@ -72,18 +72,19 @@ const StreamEditorMessageCardTheme = createTheme({
         },
     },
 });
-function StreamEditorMessageCard({data,messageID,classID}) {
-    const [selected, setSelected] = useState(data.selected); // Keep track of which button is selected
-    const [score, setScore] = useState(); // Keep track of which button is selected
+function StreamEditorMessageCard({data}) {
+    const [selected, setSelected] = useState('null'); // Keep track of which button is selected    
     const correctEnable = "#3DECAD", correctDisable ="#00764B";
     const incorrectEnable = "#EE592A", incorrectDisable = "#76270E";
     const handleButtonClick = (button) => {
         // If the button is already selected, deselect it, otherwise select it
-        setSelected(selected === button ?  "null" : button);
-        handleScoreUpdate(selected)
+        const newSelected = selected === button ? null : button;
+        
+        setSelected(newSelected);
+        // console.log("selected: ",newSelected);
     };
     const handleScoreUpdate = (selected) => {
-        console.log(selected);
+        // console.log(selected);
         // messageID
         // classID
         // axios({

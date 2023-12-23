@@ -4,7 +4,7 @@ const Course = require('../models/course');
 const uuid = require('uuid');
 
 function Auth(req, res, next) {
-     return next();
+    //  return next();
     // 記得開
     if(req.session.passport && req.session.passport.user){
       return next();
