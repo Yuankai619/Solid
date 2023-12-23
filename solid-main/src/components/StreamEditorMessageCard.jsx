@@ -72,10 +72,12 @@ const StreamEditorMessageCardTheme = createTheme({
 });
 function StreamEditorMessageCard({data}) {
     const [selected, setSelected] = useState(data.selected); // Keep track of which button is selected
+    const [score, setScore] = useState(); // Keep track of which button is selected
     const correctEnable = "#3DECAD", correctDisable ="#00764B";
     const incorrectEnable = "#EE592A", incorrectDisable = "#76270E";
     const handleButtonClick = (button) => {
         // If the button is already selected, deselect it, otherwise select it
+        console.log(selected)
         setSelected(selected === button ? "null" : button);
     };
     return (
