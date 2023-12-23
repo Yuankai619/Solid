@@ -4,7 +4,7 @@ const Course = require('../models/course');
 const { route } = require('./auth-routes');
 
 function Auth(req, res, next) {
-    //return next();
+    return next();
     // 記得開
     if(req.session.passport && req.session.passport.user){
       return next();
@@ -13,32 +13,76 @@ function Auth(req, res, next) {
     }
 }
 
+router.post('/changeState',Auth, async(req,res) =>{
+    const _classID = req.body.classID;
+    const _state = req.body.state;
+    console.log(_classID,_state);
+    try {
+        await Course.findOneAndUpdate(
+            { 'info.classID': _classID },
+            { 'info.state': _state }
+        );
+        console.log("Course with classID " + _classID + " has been updated.");
+    } catch (err) {
+        console.log("Something wrong when updating data!", err);
+    }
+})
+
+
+router.post('/deleteClass',Auth, async(req,res) =>{
+    // console.log(req.body);
+    const _classID = req.body.classID;
+    //console.log(_classID);
+    try {
+        await Course.findOneAndDelete({ 'info.classID': _classID });
+        console.log("Course with classID " + _classID + " has been deleted.");
+    } catch (err) {
+        console.log("Something wrong when deleting data!", err);
+    }
+    res.send('yes')
+})
 
 router.get('/getClass',Auth, async (req,res)=>{
     console.log('hi');
-    console.log( req.session.passport);
+    //console.log( req.session.passport);
+    //console.log(_id);
     const _id = req.session.passport.user._id;
-    console.log(_id);
     try{
         const user = await User.findById(_id);
         const createdClass = user.createdClass;
         //console.log(createdClass)
         const coursesInfo = await Promise.all(createdClass.map(async ({ classID }) => {
-            const course = await Course.findOne({ 'info.classID': classID });
-            console.log(course.info)
-            return course.info;
+            try{
+                const course = await Course.findOne({ 'info.classID': classID });
+                console.log(course.info)
+                return course.info;
+            }catch(err){
+                console.log(err);
+            }
         }));
-        console.log(coursesInfo)
+        //console.log(coursesInfo)
         res.send(coursesInfo);
     }catch(err){
         console.log(err);
     }
 })
 
+router.post('/deleteClassFromUser',Auth,(req,res)=>{
+    const _id = req.session.passport.user._id;
+    const _classID = req.body.classID;
+    // console.log(_id);
+    // console.log(_classID);
+    User.findByIdAndUpdate(_id, { $pull: { createdClass: { classID: _classID } } }).then(()=>{
+        console.log('success user delete')
+        res.send('suc');
+    }).catch((err)=>{
+        console.log(err)
+    });
+})
 
 
 router.post('/addClassToUser',Auth,(req,res)=>{
-    const _id = req.body.userID;
+    const _id = req.session.passport.user._id;
     const _classID = req.body.classID;
     // console.log(_id);
     // console.log(_classID);
