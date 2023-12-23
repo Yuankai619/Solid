@@ -4,7 +4,7 @@ const Course = require('../models/course');
 const uuid = require('uuid');
 
 function Auth(req, res, next) {
-    //  return next();
+      //return next();
     // 記得開
     if(req.session.passport && req.session.passport.user){
       return next();
@@ -13,11 +13,19 @@ function Auth(req, res, next) {
     }
 }
 
-//get class info
-router.post('/loadClassInfo',Auth,(req,res)=>{
+router.post('/loadClassAll', Auth, async (req, res) => {
+    const _classID = req.body.classID;
+    console.log(req.body)
+    console.log(_classID)
+    // 找到對應的課程
+    const course = await Course.findOne({ 'info.classID': _classID });
+    if (!course) {
+        return res.status(404).send('找不到對應的課程');
+    }
 
-})
-
+    // 回傳課程的所有資料
+    res.status(200).json(course);
+});
 
 router.post('/sendMessage',Auth, async (req, res) => {
     console.log('/sendMessage');
@@ -114,7 +122,7 @@ router.post('/deleteClass',Auth, async(req,res) =>{
 })
 
 router.get('/getClass',Auth, async (req,res)=>{
-    console.log('hi');
+    //console.log('hi');
     //console.log( req.session.passport);
     //console.log(_id);
     const _id = req.session.passport.user._id;
@@ -125,7 +133,7 @@ router.get('/getClass',Auth, async (req,res)=>{
         const coursesInfo = await Promise.all(createdClass.map(async ({ classID }) => {
             try{
                 const course = await Course.findOne({ 'info.classID': classID });
-                console.log(course.info)
+                //console.log(course.info)
                 return course.info;
             }catch(err){
                 console.log(err);
