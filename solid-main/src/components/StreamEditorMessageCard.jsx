@@ -70,13 +70,13 @@ const StreamEditorMessageCardTheme = createTheme({
         },
     },
 });
-function StreamEditorMessageCard({ username, content }) {
-    const [selected, setSelected] = useState(null); // Keep track of which button is selected
+function StreamEditorMessageCard({data}) {
+    const [selected, setSelected] = useState(data.selected); // Keep track of which button is selected
     const correctEnable = "#3DECAD", correctDisable ="#00764B";
     const incorrectEnable = "#EE592A", incorrectDisable = "#76270E";
     const handleButtonClick = (button) => {
         // If the button is already selected, deselect it, otherwise select it
-        setSelected(selected === button ? null : button);
+        setSelected(selected === button ? "null" : button);
     };
     return (
         <ThemeProvider theme={StreamEditorMessageCardTheme}>
@@ -85,7 +85,7 @@ function StreamEditorMessageCard({ username, content }) {
                     <div style={{ display: 'flex', alignItems: 'center' }}>
                             <Avatar sx={{ mx: "10px", width: '28px', height: '28px' }} />
                         <Typography variant="subtitle1" >
-                            {"Yuankai"}
+                            {data.username}
                         </Typography>
                         <Button aria-label="incorrect"
                             onClick={() => handleButtonClick('incorrect')}
@@ -109,7 +109,7 @@ function StreamEditorMessageCard({ username, content }) {
                         </Button>
                     </div>
                     <Typography variant="body1">
-                        {"這裡是你的消息內容，可以非常長，組件會自動處理這裡是你的消息內容，可以非常長，組件會自動處理換行和高度調整。這裡是你的消息內容，可以非常長，組件會自動處理換行和高度調整這裡是你的消息內容，可以非常長，組件會自動處理換行和高度調整。這裡是你的消息內容，可以非常長，組件會自動處理換行和高度調整換行和高度調整。這裡是你的消息內容，可以非常長，組件會自動處理換行和高度調整。"}
+                        {data.content}
                     </Typography>
                 </CardContent>
             </Card>

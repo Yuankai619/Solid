@@ -4,24 +4,27 @@ import SendIcon from '@mui/icons-material/Send';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 
-function StreamInputPanel({ClassID}) {
+function StreamInputPanel({ classID }) {
     //stream data
-        const [message, setMessage] = useState('');
-        const [isAnonymous, setIsAnonymous] = useState(false);
+    const [content, setContent] = useState('');
+    const [isAnonymous, setIsAnonymous] = useState(false);
     //
     const [inputFocused, setInputFocused] = useState(false);
     const [sendIconColor, setSendIconColor] = useState('#EEEEEE');
-    // document.body.style.background = "#222222";
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        console.log(content);
+        console.log(isAnonymous);
+        console.log(classID);
+    };
     const handleToggleChange = (event) => {
         setSendIconColor(sendIconColor === '#2D6CB6' ? '#EEEEEE' : '#2D6CB6');
         setIsAnonymous(event.target.checked);
     };
-
     const handleInputFocus = (e) => {
         e.stopPropagation();
         setInputFocused(true);
     };
-
     const handleInputBlur = (e) => {
         e.stopPropagation();
         setInputFocused(false);
@@ -89,17 +92,8 @@ function StreamInputPanel({ClassID}) {
                     fullWidth
                     onFocus={handleInputFocus}
                     onBlur={handleInputBlur}
-                    style={{ 
-                        margin: '10px 0' ,
-                        // paddingRight: 20
-                    //     position: 'fixed',
-                    // paddingButtom:"50px",
-                    //     bottom: 50,
-                    //     left: 0,
-                        // padding: '20px 0px 20px 20px',
-                    //     right: 0,
-                    //     // transition: 'all 0.3s ease',
-                    //     // transform: inputFocused ? 'translateTop(-50%)' : 'translateY(0)'
+                    style={{
+                        margin: '10px 0',
                     }}
                     InputProps={{
                         style: {
@@ -107,8 +101,9 @@ function StreamInputPanel({ClassID}) {
                             color: '#EEEEEE',
                         },
                     }}
-                /> 
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent:'space-between',padding:"0px 6px 0px 20px" }}>
+                    onChange={(e) => setContent(e.target.value)}
+                />
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: "0px 6px 0px 20px" }}>
                     <FormControlLabel
                         control={
                             <Switch
@@ -118,11 +113,9 @@ function StreamInputPanel({ClassID}) {
                             />
                         }
                         label="Anonymous"
-                        // style={{ marginRight: 'auto' }} // 保持 Switch 在左
-                    // sx={{zIndex: 1000}}
                     />
-                    <IconButton aria-label="send">
-                        <SendIcon sx={{ color: sendIconColor }} />
+                    <IconButton aria-label="send" onClick={handleSubmit}>
+                        <SendIcon sx={{ color: sendIconColor }}/>
                     </IconButton>
                 </div>
                 {/* <IconButton aria-label="send">

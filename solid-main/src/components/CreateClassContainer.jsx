@@ -9,7 +9,7 @@ function CreateClassContainer({data,...props}) {
     <Container>
       {createdClassData.map((data) => (
         <CreateClassCard
-          key={data.classID}
+          key={data.id}
           data={data}
         />
       ))}

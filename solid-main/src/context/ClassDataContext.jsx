@@ -92,11 +92,9 @@ export const ClassDataProvider = ({ children }) => {
         .then((res) =>{ })
         .catch((error) => { console.error(error); });
     };
-    // const handleDeleteCreatedClass = classID => {
-    //     setCreatedClassData(prevClassData =>
-    //         prevClassData.filter(data => data.classID !== classID)
-    //     );
-    // };
+
+
+    
     return (
         <ClassDataContext.Provider value={{ curIndex,setCurIndex,handleChangeIndex,createdClassData, handleNewCreatedClass,handleChangeCreatedClassState,handleDeleteCreatedClass, }}>
             {children}
