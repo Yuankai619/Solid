@@ -21,9 +21,9 @@ function CreateClassCard({data}) {
   const navigate = useNavigate();
 
   const [stateColor, setStatecolor] = useState('#000');
-  const [menuState, setMenuState] = useState("Close");
+  const [menuState, setMenuState] = useState(data.state);
   useEffect(() => {
-    data.state === 'open' ? setStatecolor('#2D6CB6') : setStatecolor('#999999');
+    data.state == 'true' ? setStatecolor('#2D6CB6') : setStatecolor('#999999');
   }, [data.state]);
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -39,8 +39,8 @@ function CreateClassCard({data}) {
 
   const handleChangeState = (event) => {
     event.stopPropagation();
-    setMenuState(data.state ? 'Open' : 'Close');
-    handleChangeCreatedClassState(data.id, !data.state);
+    setMenuState(data.state == 'true' ? "false" : "true" );
+    handleChangeCreatedClassState(data.id, data.state == 'true');
   };
   const handleDelete = (event) => {
     event.stopPropagation();
@@ -88,8 +88,8 @@ function CreateClassCard({data}) {
           <Link style={{ textDecoration: 'none', color: 'inherit' }} key={data.id} to={`/room/${data.classID}`}> 
           <React.Fragment>
             <CardContent >
-                <Typography sx={{ fontSize: 15, fontWeight: 600, marginTop: '12px' }} color={data.state ? '#2D6CB6' : '#999999'} component="div">
-                  state: {data.state ? 'open' : 'close'}
+                <Typography sx={{ fontSize: 15, fontWeight: 600, marginTop: '12px' }} color={data.state == 'true' ? '#2D6CB6' : '#999999'} component="div">
+                  state: {data.state == 'true' ? 'open' : 'close'}
               </Typography>
               <Typography sx={{ fontSize: 18, fontWeight: 600, }} color="#000" >
                 Class ID: {data.classID}

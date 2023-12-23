@@ -82,7 +82,6 @@ function PrebuildDialog(props) {
                 method: "POST",
                 headers: { 'Content-Type': 'application/json', },  
                 data: JSON.stringify({
-                    userID : userID,
                     classID : tmp.classID
                 }),
                 withCredentials: true,

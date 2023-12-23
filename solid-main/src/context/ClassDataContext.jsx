@@ -37,17 +37,54 @@ export const ClassDataProvider = ({ children }) => {
     const handleNewCreatedClass = newClass => {
         setCreatedClassData(prev => [...prev, newClass]);
     };
+
     const handleChangeCreatedClassState = (id, newState) => {
         setCreatedClassData(prevClassData =>
             prevClassData.map(data =>
                 data.id === id ? { ...data, state: newState } : data
             )
         );
+        //alert(newState);
+        axios({
+            method: "POST",
+            headers: { 'Content-Type': 'application/json', },  
+            data: JSON.stringify({
+                classID : id,
+                state : newState
+            }),
+            withCredentials: true,
+            url: "http://localhost:4000/course/changeState"
+        })  
+        .then((res) =>{})
+        .catch((error) => { console.error(error); });
     };
+
     const handleDeleteCreatedClass = id => {
         setCreatedClassData(prevClassData =>
             prevClassData.filter(data => data.id !== id)
         );
+        axios({
+            method: "POST",
+            headers: { 'Content-Type': 'application/json', },  
+            data: JSON.stringify({
+                classID : id
+            }),
+            withCredentials: true,
+            url: "http://localhost:4000/course/deleteClass"
+        })  
+        .then((res) =>{})
+        .catch((error) => { console.error(error); });
+        axios({
+            method: "POST",
+            headers: { 'Content-Type': 'application/json', },  
+            data: JSON.stringify({
+                classID : id
+            }),
+            withCredentials: true,
+            url: "http://localhost:4000/course/deleteClassFromUser"
+        })  
+        .then((res) =>{ })
+        .catch((error) => { console.error(error); });
     };
     // const handleDeleteCreatedClass = classID => {
     //     setCreatedClassData(prevClassData =>
