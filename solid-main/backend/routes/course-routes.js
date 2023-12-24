@@ -3,6 +3,45 @@ const User = require('../models/user')
 const Course = require('../models/course');
 const uuid = require('uuid');
 
+const express = require('express')
+const app = express()
+
+//將 express 放進 http 中開啟 Server 的 3000 port ，正確開啟後會在 console 中印出訊息
+const server = require('http').Server(app)
+    .listen(3000, () => { console.log('open server!') })
+
+//將啟動的 Server 送給 socket.io 處理
+const io = require('socket.io')(server)
+
+io.on('connection', socket => {
+    //經過連線後在 console 中印出訊息
+    console.log('success connect!')
+    //監聽透過 connection 傳進來的事件
+    socket.on('getMessage', message => {
+        //回傳 message 給發送訊息的 Client
+        socket.emit('getMessage', message)
+        handleIncomingMessage(message, socket);
+    })
+})
+function handleIncomingMessage(data, ws) {
+    handleWebSocketMessage(data);
+    console.log(data);
+};
+function handleWebSocketMessage(data) {
+    // 解析数据
+    const { classID, isAnonymous, message, score } = data;
+
+    // 使用与 '/sendMessage' 相同的逻辑保存消息
+    // 省略了保存逻辑...
+
+    // 广播消息给所有客户端
+    wss.clients.forEach(client => {
+        if (client.readyState === WebSocket.OPEN) {
+            client.send(JSON.stringify(data));
+        }
+    });
+}
+
 function Auth(req, res, next) {
     //  return next();
     // 記得開

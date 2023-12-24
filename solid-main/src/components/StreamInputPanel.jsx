@@ -1,11 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Paper, TextField, IconButton, Switch, FormControlLabel } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import axios from 'axios';
-
+import webSocket from 'socket.io-client'
 function StreamInputPanel({ classID }) {
+    const [ws, setWs] = useState(null);
+
+    useEffect(() => {
+        const websocket = new WebSocket('ws://localhost:4000'); // 根据你的 WebSocket 服务器地址进行调整
+        setWs(websocket);
+        websocket.onopen = () => console.log("WebSocket connected");
+        websocket.onclose = () => console.log("WebSocket disconnected");
+        // 处理接收到的消息
+        websocket.onmessage = (event) => {
+            // 这里可以添加代码来处理接收到的消息
+            console.log("Received message:", event.data);
+        };
+
+        return () => {
+            websocket.close();
+        };
+    }, []);
     //stream data
     const [content, setContent] = useState('');
     const [isAnonymous, setIsAnonymous] = useState(false);
@@ -13,33 +30,46 @@ function StreamInputPanel({ classID }) {
     const [inputFocused, setInputFocused] = useState(false);
     const [sendIconColor, setSendIconColor] = useState('#EEEEEE');
 
+    
     const handleSubmit = (event) => {
 
         event.preventDefault();
-        console.log(content);
-        console.log(isAnonymous);
-        console.log(classID);
+        // console.log(content);
+        // console.log(isAnonymous);
+        // console.log(classID);
         //add comment
-        axios({
-            method: "POST",
-            headers: { 'Content-Type': 'application/json', },  
-            data: JSON.stringify({
-                classID : classID,
-                isAnonymous : isAnonymous,
-                message : content,
-                score : "null"
-            }),
-            withCredentials: true,
-            url: "http://localhost:4000/course/sendMessage"
-        })  
-        .then((res) =>{
-            // comment here
-            setContent('');//clear inputext
-            // .json({  message: '訊息已成功加入',messageId: _uuid })
-            console.log(res.data)
+        if (ws && ws.readyState === WebSocket.OPEN) {
+            const messageData = {
+                classID: classID,
+                isAnonymous: isAnonymous,
+                message: content,
+                score: "null"
+            };
+            ws.send(JSON.stringify(messageData)); // 将消息数据转换为 JSON 字符串并发送
+            setContent(''); // 清除输入框
+        } else {
+            console.error("WebSocket is not connected.");
+        }
+        // axios({
+        //     method: "POST",
+        //     headers: { 'Content-Type': 'application/json', },  
+        //     data: JSON.stringify({
+        //         classID : classID,
+        //         isAnonymous : isAnonymous,
+        //         message : content,
+        //         score : "null"
+        //     }),
+        //     withCredentials: true,
+        //     url: "http://localhost:4000/course/sendMessage"
+        // })  
+        // .then((res) =>{
+        //     // comment here
+        //     setContent('');//clear inputext
+        //     // .json({  message: '訊息已成功加入',messageId: _uuid })
+        //     console.log(res.data)
             
-        })
-        .catch((error) => { console.error(error); });
+        // })
+        // .catch((error) => { console.error(error); });
     };
     
     const handleToggleChange = (event) => {
