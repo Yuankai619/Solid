@@ -13,6 +13,8 @@ function Auth(req, res, next) {
     }
 }
 
+//wtf
+
 router.post('/loadClassAll', Auth, async (req, res) => {
     const _classID = req.body.classID;
     console.log(req.body)
