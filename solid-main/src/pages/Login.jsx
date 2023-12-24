@@ -23,7 +23,7 @@ function LoginPage() {
     document.body.style.backgroundSize = "400% 400%";
     document.body.style.animation = "gradient 10s ease infinite";
     console.log('load login page');
-
+    document.body.style.overflow = 'auto';
     return () => {
       document.body.style.background = '';
       document.body.style.backgroundSize = '';
@@ -89,7 +89,7 @@ function LoginPage() {
         <Box my={0}>
           <p className="login-panel-subtitle">Please login to access your account.</p>
         </Box>
-        <Box sx={BoxTextFieldTheme}>
+        {/* <Box sx={BoxTextFieldTheme}>
           <InputText
             id="username"
             iserror={usernameError} errorText={"error"} isrequired={true} label="username"
@@ -119,7 +119,7 @@ function LoginPage() {
         </Box>
         <Box my={boxGap}>
           <Divider sx={DividerTheme} >Or Login With</Divider>
-        </Box>
+        </Box> */}
         <Box sx={BoxButtonTheme} >
           <GoogleLoginButton
             id="loginwithgoogle"

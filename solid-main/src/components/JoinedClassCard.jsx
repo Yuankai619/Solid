@@ -49,24 +49,22 @@ const JoinedClassCardTheme = createTheme({
 
 function JoinedClassCard({data}) {
   const navigate = useNavigate();
-  const handleClick = () => {
-    navigate('/signup'); // 在这里设置目标路由
-  };
+
   return (
     <ThemeProvider theme={JoinedClassCardTheme}>
       <Box sx={{ minWidth: 275 }} >
         <Link style={{ textDecoration: 'none', color: 'inherit' }} to={`/joinedroom/${data.classID}`}>
         <Card variant="outlined" sx={{ cursor: 'pointer' }} > 
          <React.Fragment>
-          <CardContent onClick={handleClick}>
+          <CardContent >
             <Typography variant="h2" sx={{ fontSize: 20, fontWeight: 700 }} color="#000" >
-              Discussion Name
+              {data.title}
             </Typography>
             <Typography sx={{ fontSize: 15, fontWeight: 500, marginTop: '32px' }} color="#999" component="div">
-              owner: somebody
+                  owner:{data.authorID}
             </Typography>
             <Typography sx={{ fontSize: 18, fontWeight: 500, }} color="#000" >
-              Class ID: 123456789
+              Class ID: {data.classID}
             </Typography>
           </CardContent>
           {/* <CardActions>
