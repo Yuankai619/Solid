@@ -52,6 +52,7 @@ function CreateClassCard({ data }) {
   const handleDelete = (event) => {
     event.stopPropagation();
     console.log(data.id)
+    handleClose();
     handleDeleteCreatedClass(data.id);
   };
   return (

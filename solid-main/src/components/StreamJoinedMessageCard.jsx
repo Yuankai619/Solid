@@ -93,46 +93,35 @@ function StreamJoinedMessageCard({ data, classID, setMessageData }) {
     const [selected, setSelected] = useState(data.score); // Keep track of which button is selected    
     const [currentUserId, setCurrentUserId] = useState('');
     let a;
-    const GetUserInfo = async () => {
-        axios({
-          method: "GET",
-          headers: {
-            'Content-Type': 'application/json',
-          },  
-          withCredentials: true,
-          url: "http://localhost:4000/api/getUserInfo"
-        })  
-        .then((res) =>{
-            console.log('get',res.data._id)
-            setCurrentUserId(res.data._id);
-            a=res.data._id;
-            console.log('gget',a)
-            //console.log('gget',currentUserId)
-        })
-        .catch((error) => {
-            
-        });
-    };
     useEffect(() => {
         async function fetchData() {
-            const response = await GetUserInfo();    
+            await GetUserInfo();
         }
         fetchData();
-        console.log('jj');
-        console.log(a);
-        if(currentUserId != data.userID){
-            setIsMyMessage(false);
-        }else{
-            setIsMyMessage(true);
+    }, []); // 確保只在組件掛載時調用一次
+    const GetUserInfo = async () => {
+        try {
+            const res = await axios({
+                method: "GET",
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                withCredentials: true,
+                url: "http://localhost:4000/api/getUserInfo"
+            });
+            console.log('get', res.data._id);
+            setCurrentUserId(res.data._id);
+            setIsMyMessage(res.data._id === data.userID);
+        } catch (error) {
+            console.error('Error in GetUserInfo:', error);
         }
-        if (selected === 'null'){
-            console.log("???",selected, isMyMessage);
+    };
+
+    useEffect(() => {
+        if (selected === 'null') {
             setIsShowScore(false);
         }
-        console.log('+',a)
-        console.log(currentUserId,'+',)
-    }, []); 
-    useEffect(() => {
+        console.log(currentUserId);
     }, [selected, isMyMessage]);
     console.log(isShowScore);
 

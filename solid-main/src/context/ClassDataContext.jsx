@@ -105,7 +105,7 @@ export const ClassDataProvider = ({ children }) => {
     return (
         <ClassDataContext.Provider value={{
             curIndex, setCurIndex, handleChangeIndex,
-            joinedCLassData, handleNewCreatedClass,
+            joinedCLassData, handleNewJoinedClass,
             createdClassData, handleNewCreatedClass, handleChangeCreatedClassState, handleDeleteCreatedClass,
         }}>
             {children}
