@@ -2,7 +2,7 @@ const router = require('express').Router()
 const User = require('../models/user')
 
 function Auth(req, res, next) {
-    return next();
+    // return next();
     // 記得開
     if(req.session.passport && req.session.passport.user){
       return next();
