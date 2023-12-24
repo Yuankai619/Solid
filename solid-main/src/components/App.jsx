@@ -12,6 +12,7 @@ import {
 } from "react-router-dom";
 import JoinedDisscussion from "../pages/JoinedDisscussion";
 
+const ws = new WebSocket('ws://localhost:8080');
 function App() {
   return (
     <ClassDataProvider>

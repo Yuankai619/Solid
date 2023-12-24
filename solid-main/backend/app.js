@@ -15,6 +15,19 @@ const courseRoutes = require('./routes/course-routes')
 const passportSetup = require('./config/passportConfig');
 require('dotenv').config();
 
+//
+// const WebSocket = require('ws');
+
+// const wss = new WebSocket.Server({ port: 8080 });
+
+// wss.on('connection', ws => {
+//     console.log('A client connected to the chat room!');
+//     ws.on('message', message => {
+//       console.log(`Received: ${message}`);
+//       ws.send(`Hello, you sent -> ${message}`);
+//     });
+//   });
+//
 // connect Database
 
 const app = express();
@@ -27,7 +40,8 @@ mongoose.connect(process.env.mongoDB)
 // cors
 const corsOptions = {
     origin: [
-        'http://localhost:3000'
+        'http://localhost:3000',
+        'http://localhost:8080'
     ],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     credentials: true,

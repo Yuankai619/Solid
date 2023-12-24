@@ -8,13 +8,22 @@ import LoginChecker from '../checker/LoginChecker';
 import { useNavigate } from 'react-router-dom';
 import StreamEditorMessageCard from '../components/StreamEditorMessageCard';
 import axios from 'axios';
+import io from 'socket.io-client';
 
 function Discussion() {
+    const [ws, setWs] = useState(null);
     const navigate = useNavigate();
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [isLoginCheckComplete, setIsLoginCheckComplete] = useState(false);
     const location = useLocation();
     const ClassID = location.pathname.split('/')[2];
+    useEffect(() => {
+        const ws = new WebSocket('ws://localhost:8080');
+        ws.onmessage = function(event) {
+            console.log(`Received: ${event.data}`);
+            console.log('ddd')
+        };
+    }, []);
     useEffect(() => {
         const checkLogin = async () => {
             const result = await LoginChecker();

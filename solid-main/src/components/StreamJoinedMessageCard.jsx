@@ -109,7 +109,7 @@ function StreamJoinedMessageCard({ data, classID, setMessageData }) {
                 withCredentials: true,
                 url: "http://localhost:4000/api/getUserInfo"
             });
-            console.log('get', res.data._id);
+            // console.log('get', res.data._id);
             setCurrentUserId(res.data._id);
             setIsMyMessage(res.data._id === data.userID);
         } catch (error) {
@@ -123,7 +123,7 @@ function StreamJoinedMessageCard({ data, classID, setMessageData }) {
         }
         console.log(currentUserId);
     }, [selected, isMyMessage]);
-    console.log(isShowScore);
+    // console.log(isShowScore);
 
     const correctEnable = "#3DECAD", correctDisable = "#00764B";
     const incorrectEnable = "#EE592A", incorrectDisable = "#76270E";

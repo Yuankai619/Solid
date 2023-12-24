@@ -1,23 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { Paper, TextField, IconButton, Switch, FormControlLabel } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import axios from 'axios';
+import io from 'socket.io-client';
+
+//const socket = io.connect('http://localhost:8080');
 
 function StreamInputPanel({ classID }) {
+    const [ws, setWs] = useState(null);
     //stream data
     const [content, setContent] = useState('');
     const [isAnonymous, setIsAnonymous] = useState(false);
     //
     const [inputFocused, setInputFocused] = useState(false);
     const [sendIconColor, setSendIconColor] = useState('#EEEEEE');
-
+    useEffect(() => {
+        const ws = new WebSocket('ws://localhost:8080');
+        setWs(ws);
+        ws.onmessage = function(event) {
+            console.log(`Received: ${event.data}`);
+            console.log('oooo')
+        };
+    }, []);
     const handleSubmit = (event) => {
+        
+        console.log('test');
         event.preventDefault();
-        console.log(content);
-        console.log(isAnonymous);
-        console.log(classID);
+        // console.log(content);
+        // console.log(isAnonymous);
+        // console.log(classID);
         //add comment
         axios({
             method: "POST",
@@ -32,13 +45,16 @@ function StreamInputPanel({ classID }) {
             url: "http://localhost:4000/course/sendMessage"
         })  
         .then((res) =>{
+            
             // comment here
             setContent('');//clear inputext
             // .json({  message: '訊息已成功加入',messageId: _uuid })
             console.log(res.data)
-            
+            ws.send('hello server');
         })
         .catch((error) => { console.error(error); });
+
+        
     };
     
     const handleToggleChange = (event) => {

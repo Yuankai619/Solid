@@ -3,6 +3,19 @@ const User = require('../models/user')
 const Course = require('../models/course');
 const uuid = require('uuid');
 
+const WebSocket = require('ws');
+
+const wss = new WebSocket.Server({ port: 8080 });
+
+wss.on('connection', ws => {
+    console.log('A client connected to the chat room!');
+    ws.send('You are connected!');  // 確認訊息
+    ws.on('message', message => {
+      console.log(`Received: ${message}`);
+      ws.send(`Hello, you sent -> ${message}`);
+    });
+});
+
 function Auth(req, res, next) {
     //  return next();
     // 記得開
