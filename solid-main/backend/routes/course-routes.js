@@ -4,7 +4,7 @@ const Course = require('../models/course');
 const uuid = require('uuid');
 
 function Auth(req, res, next) {
-    // return next();
+    //  return next();
     // 記得開
     if(req.session.passport && req.session.passport.user){
       return next();
@@ -15,8 +15,9 @@ function Auth(req, res, next) {
 
 //從使用者新增joinedClass
 router.post('/userAddJoinedClass',Auth,async(req,res)=>{
+    // console.log('??');
     const _userid = req.session.passport.user._id;
-    // const _userid = req.body.userID;
+    //  const _userid = req.body.userID;
     const _classid = req.body.classID;
     const course = await Course.findOne({ 'info.classID': _classid });
     if(!course){
@@ -24,7 +25,7 @@ router.post('/userAddJoinedClass',Auth,async(req,res)=>{
     }
     User.findByIdAndUpdate(_userid, { $push: { joinedClass: { classID: _classid } } }).then(()=>{
         console.log('從使用者新增joinedClass成功')
-        return res.send('SuccessfullyJoinCourse');
+        return res.send(course.info);
     }).catch((err)=>{
         console.log(err);
         console.log('從使用者新增joinedClass失敗')
@@ -94,6 +95,30 @@ router.post('/sendMessage',Auth, async (req, res) => {
     await course.save();
     console.log('發送留言',_message,'到課程',_classID,"匿名",_isAnonymous,'成功');
     res.status(200).json({  message: '訊息已成功加入',messageId: _uuid });
+});
+
+
+router.post('/deleteMessage',Auth, async (req, res) => {
+    const _classID = req.body.classID;
+    const _messageID = messageID;
+    //console.log('發送留言',_message,'到課程',_classID,"匿名",_isAnonymous);
+    // 建立新的訊息物件
+    const course = await Course.findOne({ 'info.classID': _classID });
+    if (!course) {
+        console.log('找不到對應的課程');
+        return res.status(404).send('找不到對應的課程');
+    }
+    Course.updateOne(
+        { 'info.classID': _classID }, 
+        { $pull: { message: { messageid: _messageID } } },
+        function(err, result) {
+            if (err) {
+                res.send(err);
+            } else {
+                res.send(result);
+            }
+        }
+    );
 });
 
 //留言區加分扣分
@@ -175,6 +200,15 @@ router.post('/deleteClass',Auth, async(req,res) =>{
 })
 
 
+
+// router.post('/userDeleteMessage',Auth,(req,res)=>{
+//     const _id = req.session.passport.user._id;
+//     const _classID = req.body.classID;
+//     const _messageID = req.body.state;
+    
+// })
+
+
 router.get('/getCreatedClass', Auth, async (req, res) => {
     const _id = req.session.passport.user._id;
     try {
@@ -239,6 +273,8 @@ router.get('/getJoinedClass', Auth, async (req, res) => {
 });
 
 
+
+
 router.post('/deleteClassFromUser',Auth,(req,res)=>{
     const _id = req.session.passport.user._id;
     const _classID = req.body.classID;
@@ -287,7 +323,7 @@ router.post('/create',Auth, (req, res) => {
     let _classID;
     generateUniqueClassID().then(classID => {
         _classID = classID;
-        //console.log(_classID)
+        console.log(_classID)
         const newCourse = new Course({
             info : 
             {
@@ -304,12 +340,7 @@ router.post('/create',Auth, (req, res) => {
             ],
             message : 
             [
-                {
-                    userID: _userID,
-                    username : _username,
-                    message: "default text",
-                    timestamp: new Date()
-                }
+                
             ]
         });
         newCourse.save().then((err) => {

@@ -9,7 +9,8 @@ function Auth(req, res, next) {
     } else {
       res.send('please login first');
     }
-  }
+}
+
 
 router.post('/updateinfo',(req,res)=>{
     console.log('try update info');

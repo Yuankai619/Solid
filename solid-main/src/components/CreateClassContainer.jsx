@@ -7,9 +7,9 @@ function CreateClassContainer({data,...props}) {
 
   return (
     <Container>
-      {createdClassData.map((data) => (
+      {createdClassData.map((data,index) => (
         <CreateClassCard
-          key={data.id}
+          key={index}
           data={data}
         />
       ))}

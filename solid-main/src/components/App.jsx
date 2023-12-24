@@ -16,7 +16,7 @@ function App() {
   return (
     <ClassDataProvider>
     <Routes>
-        <Route path="/" element={<JoinedDisscussion />} />
+        <Route path="/" element={<HomePage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/signup" element={<SignupPage />} />
       <Route path="/home" element={<HomePage />} />

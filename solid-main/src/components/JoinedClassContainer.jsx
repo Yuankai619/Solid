@@ -7,9 +7,9 @@ function JoinedClassCardContainer(){
   
   return(
     <Container>
-      {joinedCLassData.map((data) => (
+      {joinedCLassData.map((data,index) => (
         <JoinedClassCard
-          key={data.id}
+          key={index}
           data={data}
         />
       ))}
