@@ -43,7 +43,7 @@ function CreateClassCard({ data }) {
     setAnchorEl(null);
     setAllowNavigate(true);
   };
-
+  
   const handleChangeState = (event) => {
     event.stopPropagation();
     setMenuState(menuState == 'true' ? 'false' : 'true');
@@ -100,8 +100,8 @@ function CreateClassCard({ data }) {
             <React.Fragment>
 
               <CardContent onClick={(e) => { if (!allowNavigate) e.stopPropagation(); }}>
-                <Typography sx={{ fontSize: 15, fontWeight: 600, marginTop: '12px' }} color={menuState == 'true' ? '#2D6CB6' : '#999999'} component="div">
-                  state: {menuState == 'true' ? 'open' : 'close'}
+                <Typography sx={{ fontSize: 15, fontWeight: 600, marginTop: '12px' }} color={menuState == true? '#2D6CB6' : '#999999'} component="div">
+                  state: {menuState == true ? 'open' : 'close'}
                 </Typography>
                 <Typography sx={{ fontSize: 18, fontWeight: 600, }} color="#000" >
                   Class ID: {data.classID}

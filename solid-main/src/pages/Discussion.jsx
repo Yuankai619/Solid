@@ -21,7 +21,7 @@ function Discussion() {
             setIsLoggedIn(result.isLoggedIn);
             setIsLoginCheckComplete(true);
             if (result.redirectTo) {
-                navigate(result.redirectTo);
+                window.location.assign(result.redirectTo);//刷新當前頁
             }
         };
         document.body.style.overflow = 'hidden';

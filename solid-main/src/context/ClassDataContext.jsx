@@ -1,16 +1,25 @@
 // ClassDataContext.js
-import React, { createContext, useState, useContext,useEffect } from 'react';
+import React, { createContext, useState, useContext, useEffect } from 'react';
 import axios from 'axios';
 const ClassDataContext = createContext();
 export const useClassDataContext = () => useContext(ClassDataContext);
 
 export const ClassDataProvider = ({ children }) => {
-    const [curIndex, setCurIndex] = useState(0); 
+    const [curIndex, setCurIndex] = useState(0);
 
     const handleChangeIndex = (index) => {
-        console.log("handleChangeIndex: ",index);
-        setCurIndex (index);
+        console.log("handleChangeIndex: ", index);
+        setCurIndex(index);
     };
+    const [joinedCLassData, setJoinedClassData] = useState([
+        // { id: 1, title: "Card1", classID: "001", state: "close" },
+        // { id: 2, title: "Card2", classID: "002", state: "open" },
+        // { id: 3, title: "Card3", classID: "003", state: "close" },
+    ]);
+    const handleNewJoinedClass = newClass => {
+        setJoinedClassData(prev => [...prev, newClass]);
+    };
+
     const [createdClassData, setCreatedClassData] = useState([
         // { id: 1, title: "Card1", classID: "001", state: "close" },
         // { id: 2, title: "Card2", classID: "002", state: "open" },
@@ -29,7 +38,7 @@ export const ClassDataProvider = ({ children }) => {
                 });
                 const modifiedData = response.data.map(item => ({//加入id
                     ...item,
-                    id: parseInt(item.classID)  
+                    id: parseInt(item.classID)
                 }));
                 console.log("sd;", modifiedData);
                 setCreatedClassData(modifiedData);
@@ -53,16 +62,16 @@ export const ClassDataProvider = ({ children }) => {
         //alert(newState);
         axios({
             method: "POST",
-            headers: { 'Content-Type': 'application/json', },  
+            headers: { 'Content-Type': 'application/json', },
             data: JSON.stringify({
-                classID : id,
-                state : newState
+                classID: id,
+                state: newState
             }),
             withCredentials: true,
             url: "http://localhost:4000/course/changeState"
-        })  
-        .then((res) =>{})
-        .catch((error) => { console.error(error); });
+        })
+            .then((res) => { })
+            .catch((error) => { console.error(error); });
     };
 
     const handleDeleteCreatedClass = id => {
@@ -71,32 +80,35 @@ export const ClassDataProvider = ({ children }) => {
         );
         axios({
             method: "POST",
-            headers: { 'Content-Type': 'application/json', },  
+            headers: { 'Content-Type': 'application/json', },
             data: JSON.stringify({
-                classID : id
+                classID: id
             }),
             withCredentials: true,
             url: "http://localhost:4000/course/deleteClass"
-        })  
-        .then((res) =>{})
-        .catch((error) => { console.error(error); });
+        })
+            .then((res) => { })
+            .catch((error) => { console.error(error); });
         axios({
             method: "POST",
-            headers: { 'Content-Type': 'application/json', },  
+            headers: { 'Content-Type': 'application/json', },
             data: JSON.stringify({
-                classID : id
+                classID: id
             }),
             withCredentials: true,
             url: "http://localhost:4000/course/deleteClassFromUser"
-        })  
-        .then((res) =>{ })
-        .catch((error) => { console.error(error); });
+        })
+            .then((res) => { })
+            .catch((error) => { console.error(error); });
     };
-
 
     
     return (
-        <ClassDataContext.Provider value={{ curIndex,setCurIndex,handleChangeIndex,createdClassData, handleNewCreatedClass,handleChangeCreatedClassState,handleDeleteCreatedClass, }}>
+        <ClassDataContext.Provider value={{
+            curIndex, setCurIndex, handleChangeIndex,
+            joinedCLassData, handleNewCreatedClass,
+            createdClassData, handleNewCreatedClass, handleChangeCreatedClassState, handleDeleteCreatedClass,
+        }}>
             {children}
         </ClassDataContext.Provider>
     );

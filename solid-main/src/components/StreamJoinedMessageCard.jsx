@@ -6,8 +6,11 @@ import Typography from '@mui/material/Typography';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import axios from 'axios';
-
-const StreamEditorMessageCardTheme = createTheme({
+import { IconButton } from '@mui/material';
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+const StreamJoinedMessageCardTheme = createTheme({
     typography: {
         fontFamily: [
             'Poppins',
@@ -47,6 +50,18 @@ const StreamEditorMessageCardTheme = createTheme({
                 },
             },
         },
+        MuiIconButton: {
+            styleOverrides: {
+                root: {
+                    marginRight: "16px",
+                    minWidth: "36px",
+                    height: "24px",
+                    padding: "0",
+                    borderRadius: "16px",
+                    // border: "1px solid #999999",
+                },
+            },
+        },
         // 针对 MUI Typography 组件的样式
         MuiTypography: {
             styleOverrides: {
@@ -61,71 +76,124 @@ const StreamEditorMessageCardTheme = createTheme({
                     fontWeight: "700",
                 },
                 body1: {
-                    fontSize:"12px",
+                    fontSize: "12px",
                     color: "#EEEEEE",
                     marginLeft: "12px",
                     marginRight: "12px",
                     marginTop: "16px",
-                    
+
                 },
             },
         },
     },
 });
-function StreamEditorMessageCard({data,classID}) {
+function StreamJoinedMessageCard({ data, classID }) {
     const [selected, setSelected] = useState(data.score); // Keep track of which button is selected    
-    const correctEnable = "#3DECAD", correctDisable ="#00764B";
+    const [scoreColor, setScoreColor] = useState("222222"); // Keep track of which button is selected
+    const correctEnable = "#3DECAD", correctDisable = "#00764B";
     const incorrectEnable = "#EE592A", incorrectDisable = "#76270E";
     const handleButtonClick = (button) => {
         // If the button is already selected, deselect it, otherwise select it
         const newSelected = selected === button ? null : button;
-        
+
         setSelected(newSelected);
         handleScoreUpdate(newSelected);
         // console.log("selected: ",newSelected);
     };
-    const avatarSrc = data.isAnonymous === 'true' ? undefined : data.userimg ;
+    const avatarSrc = data.isAnonymous === 'true' ? undefined : data.userimg;
     const username = data.isAnonymous === 'true' ? 'Anonymous' : data.username;
     const handleScoreUpdate = (selected) => {
         console.log(selected);
         axios({
             method: "POST",
-            headers: { 'Content-Type': 'application/json', },  
+            headers: { 'Content-Type': 'application/json', },
             data: JSON.stringify({
-                classID : classID,
-                messageID : data.messageid,
-                score : selected
+                classID: classID,
+                messageID: data.messageid,
+                score: selected
             }),
             withCredentials: true,
             url: "http://localhost:4000/course/scoreUpdate"
-        })  
-        .then((res) =>{
-            // comment here
-            // .json({  message: '訊息已成功加入',messageId: _uuid })
-            console.log(res.data)
         })
-        .catch((error) => { console.error(error); });
+            .then((res) => {
+                // comment here
+                // .json({  message: '訊息已成功加入',messageId: _uuid })
+                console.log(res.data)
+            })
+            .catch((error) => { console.error(error); });
+    };
+
+
+    const [anchorEl, setAnchorEl] = useState(null);
+    const open = Boolean(anchorEl);
+
+    const handleClickMenu = (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        setAnchorEl(event.currentTarget);
+        // setAllowNavigate(false); // 打开 Menu 时禁止跳转F
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+        // setAllowNavigate(true);
     };
     return (
-        <ThemeProvider theme={StreamEditorMessageCardTheme}>
-            <Card  variant='outlined'>
+        <ThemeProvider theme={StreamJoinedMessageCardTheme}>
+            <Card variant='outlined'>
                 <CardContent>
                     <div style={{ display: 'flex', alignItems: 'center' }}>
                         <Avatar sx={{ mx: "10px", width: '28px', height: '28px' }} src={avatarSrc} />
                         <Typography variant="subtitle1" >
                             {username}
                         </Typography>
-                        <Button aria-label="incorrect"
-                            onClick={() => handleButtonClick('incorrect')}
+                        <IconButton aria-label="scroeState"
+                            // onClick={() => handleButtonClick('incorrect')}
                             sx={{
                                 background: selected === 'incorrect' ? incorrectEnable : incorrectDisable,
                                 '&:hover': {
                                     background: selected === 'incorrect' ? incorrectEnable : incorrectDisable, // 确保鼠标悬浮时的背景色与点击时相同
                                 },
                             }}
+                            disabled={selected==='null'}
                         >
-                        </Button>
-                        <Button aria-label="correct"
+                        </IconButton>
+                        <IconButton aria-label="menu"
+                            // onClick={() => handleButtonClick('incorrect')}
+                            sx={{
+                                background: "#222222",
+                                '&:hover': {
+                                    background: "#222222", // 确保鼠标悬浮时的背景色与点击时相同
+                                },
+                            }}
+                            disabled={selected === 'null'}
+                            onClick={handleClickMenu}
+                        >
+                            <MoreHorizIcon sx={{color:"#999999"}}/>
+                        </IconButton>
+                        <Menu
+                            id="long-menu"
+                            anchorEl={anchorEl}
+                            open={open}
+                            onClose={handleClose}
+                            anchorOrigin={{
+                                vertical: 'top',
+                                horizontal: 'left',
+                            }}
+                            transformOrigin={{
+                                vertical: 'top',
+                                horizontal: 'left',
+                            }}
+                            sx={{
+                                '& .MuiPaper-root': {
+                                    backgroundColor: '#333333',
+                                    color: 'white',
+                                },
+                            }}
+                        >
+                            <MenuItem onClick={undefined}>{"set Anonymous"}</MenuItem>
+                            <MenuItem onClick={undefined} sx={{ color: "#CC0000" }}>Delete</MenuItem>
+                        </Menu>
+                        {/* <Button aria-label="menu"
                             onClick={() => handleButtonClick('correct')}
                             sx={{
                                 background: selected === 'correct' ? correctEnable : correctDisable,
@@ -134,7 +202,7 @@ function StreamEditorMessageCard({data,classID}) {
                                 },
                             }}
                         >
-                        </Button>
+                        </Button> */}
                     </div>
                     <Typography variant="body1">
                         {data.message}
@@ -145,4 +213,4 @@ function StreamEditorMessageCard({data,classID}) {
     );
 }
 
-export default StreamEditorMessageCard;
+export default StreamJoinedMessageCard;

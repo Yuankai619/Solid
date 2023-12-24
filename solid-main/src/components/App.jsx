@@ -10,12 +10,13 @@ import { ClassDataProvider } from '../context/ClassDataContext';
 import {
   BrowserRouter as Router, Route, Routes
 } from "react-router-dom";
+import JoinedDisscussion from "../pages/JoinedDisscussion";
 
 function App() {
   return (
     <ClassDataProvider>
     <Routes>
-      <Route path="/" element={<HomePage />} />
+        <Route path="/" element={<JoinedDisscussion />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/signup" element={<SignupPage />} />
       <Route path="/home" element={<HomePage />} />

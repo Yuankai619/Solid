@@ -54,7 +54,11 @@ function StreamAppBar({ data}) {
                     <IconButton
                         edge="start"
                         aria-label="menu"
-                        onClick={()=>navigate('/home')}
+                        onClick={
+                            ()=>{navigate('/home');
+                                window.location.assign('/home');
+                            }
+                            }
                         // sx={{ flexGrow: 0 }}
                     >
                         <ChevronLeftIcon style={{ color: "#EEEEEE", fontSize: "36px"}} />

@@ -17,7 +17,8 @@ import { ClassDataProvider } from '../context/ClassDataContext';
 import { useClassDataContext } from '../context/ClassDataContext';
 
 function Home() {
-
+  // window.location.reload();
+  // window.location.assign('/home');//刷新當前頁
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoginCheckComplete, setIsLoginCheckComplete] = useState(false);
@@ -87,7 +88,6 @@ function Home() {
       />
         {curIndex === 0 && (
         <JoinClassByIdDialog
-          label={"class ID"} errorText={"class id is invalid"} iserror={classIdError}
           dialogOpen={dialogOpen} setDialogOpen={handleChangeDialog}
 
         />

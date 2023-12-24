@@ -58,7 +58,7 @@ function PrebuildDialog(props) {
 
     const handleCreate = () => {
         props.setDialogOpen();
-        console.log("debug:" +state.gilad);//
+        console.log("state debug>>>:" +state.gilad);//
         let tmp
         axios({
             method: "POST",
@@ -78,7 +78,7 @@ function PrebuildDialog(props) {
           })  
           .then((res) =>{
             // console.log(res.data);
-            tmp = res.data;
+            // tmp = res.data;
             axios({
                 method: "POST",
                 headers: { 'Content-Type': 'application/json', },  
@@ -89,7 +89,7 @@ function PrebuildDialog(props) {
                 url: "http://localhost:4000/course/addClassToUser"
             })  
             .then((res) =>{ 
-                handleNewCreatedClass(tmp);
+                handleNewCreatedClass(res.data);
              })
             .catch((error) => { console.error(error); });
         })
@@ -116,12 +116,11 @@ function PrebuildDialog(props) {
     
     const [roomTitle, setRoomTitle] = useState("");
     const [description, setDescription] = useState("");
-    const [open, setOpen] = useState(true);
+    // const [open, setOpen] = useState(true);
     const [inputFocused, setInputFocused] = useState(false);
     const handleInputFocus = () => {
         setInputFocused(true);
     };
-    console.log("debug");
 
     const handleInputBlur = () => {
         setInputFocused(false);

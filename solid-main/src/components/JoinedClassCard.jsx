@@ -7,7 +7,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
-
+import { Link } from 'react-router-dom';
 const JoinedClassCardTheme = createTheme({
   // typography: {
   //     fontFamily: [
@@ -46,24 +46,6 @@ const JoinedClassCardTheme = createTheme({
   },
 });
 
-// const card = (
-//   <React.Fragment>
-//     <CardContent onClick={handleClick}>
-//       <Typography variant="h2" sx={{ fontSize: 20, fontWeight: 700 }} color="#000" >
-//         Discussion Name
-//       </Typography>
-//       <Typography sx={{ fontSize: 15, fontWeight: 500, marginTop: '32px' }} color="#999" component="div">
-//         owner: somebody
-//       </Typography>
-//       <Typography sx={{ fontSize: 18, fontWeight: 500, }} color="#000" >
-//         Date: ...
-//       </Typography>
-//     </CardContent>
-//     {/* <CardActions>
-//       <Button size="small" >Learn More</Button>
-//     </CardActions> */}
-//   </React.Fragment>
-// );
 
 function JoinedClassCard() {
   const navigate = useNavigate();
@@ -83,7 +65,7 @@ function JoinedClassCard() {
               owner: somebody
             </Typography>
             <Typography sx={{ fontSize: 18, fontWeight: 500, }} color="#000" >
-              Start date: ...
+              Class ID: 123456789
             </Typography>
           </CardContent>
           {/* <CardActions>
