@@ -19,6 +19,7 @@ export const ClassDataProvider = ({ children }) => {
     const handleNewJoinedClass = newClass => {
         setJoinedClassData(prev => [...prev, newClass]);
     };
+
     const [createdClassData, setCreatedClassData] = useState([
         // { id: 1, title: "Card1", classID: "001", state: "close" },
         // { id: 2, title: "Card2", classID: "002", state: "open" },
@@ -45,6 +46,25 @@ export const ClassDataProvider = ({ children }) => {
                 console.error('Error fetching class data:', error);
             }
         };
+        const fetchJoinedClassData = async () => {
+            try {
+
+                const response = await axios({
+                    method: 'get',
+                    url: 'http://localhost:4000/course/getJoinedClass',
+                    withCredentials: true
+                });
+                const modifiedData = response.data.map(item => ({//加入id
+                    ...item,
+                    id: parseInt(item.classID)
+                }));
+                console.log("sd;", modifiedData);
+                setJoinedClassData(modifiedData);
+            } catch (error) {
+                console.error('Error fetching class data:', error);
+            }
+        };
+        fetchJoinedClassData();
         fetchClassData();
     }, []);
     // //
@@ -101,7 +121,7 @@ export const ClassDataProvider = ({ children }) => {
             .catch((error) => { console.error(error); });
     };
 
-    
+
     return (
         <ClassDataContext.Provider value={{
             curIndex, setCurIndex, handleChangeIndex,
