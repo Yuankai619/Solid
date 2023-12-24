@@ -141,7 +141,7 @@ function StreamJoinedMessageCard({ data, classID, setMessageData }) {
                     messageID : data.messageid
                 }),
                 withCredentials: true,
-                url: "http://localhost:4000/course/userDeleteMessage"
+                url: "http://localhost:4000/course/deleteMessage"
             });
             if(!response)console.log('error');
             else console.log(response);
@@ -151,11 +151,31 @@ function StreamJoinedMessageCard({ data, classID, setMessageData }) {
         console.log("delete message");
     };
     const [anonymousState, setAnonymousState] = useState(data.isAnonymous);
-    const handleChangeAnonymousState = () => {
-        //更改後端資料庫
+
+    const handleChangeAnonymousState = async () => {
+        try {
+            const response = await axios({
+                method: "POST",
+                headers: { 'Content-Type': 'application/json', },
+                data: JSON.stringify({
+                    classID: classID,
+                    messageID : data.messageid,
+                    isAnonymous : data.isAnonymous
+                }),
+                withCredentials: true,
+                url: "http://localhost:4000/course/setAnonymous"
+            });
+            if(!response)console.log('error');
+            else console.log(response);
+        } catch (error) {
+            console.error('Error fetching class data:', error);
+        }
+        console.log("setAnonymous message");
     }
+
     const handleChangeAnonymous = (event) => {
         event.stopPropagation();
+        handleChangeAnonymousState();
         setAnonymousState(!anonymousState);
     };
     const [anchorEl, setAnchorEl] = useState(null);
