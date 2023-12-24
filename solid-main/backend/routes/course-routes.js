@@ -13,6 +13,19 @@ function Auth(req, res, next) {
     }
 }
 
+router.post('/getOnesInfo',Auth,async (req,res)=>{
+    //console.log('??????????????????????????????????',req.body.id);
+    //console.log(req.session.passport.user);
+    const _user = await  User.findById(req.body.id);
+    if (!_user) {
+        console.log('User not found');
+    }
+    console.log('ha',_user.username)
+    res.json({
+        authorName : _user.username
+    })
+})
+
 //從使用者新增joinedClass
 router.post('/userAddJoinedClass',Auth,async(req,res)=>{
     // console.log('??');

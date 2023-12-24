@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState, useEffect } from "react";
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -8,6 +8,7 @@ import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 const JoinedClassCardTheme = createTheme({
   // typography: {
   //     fontFamily: [
@@ -48,6 +49,31 @@ const JoinedClassCardTheme = createTheme({
 
 
 function JoinedClassCard({data}) {
+  const [authorName , setAuthorName] = useState('');
+  useEffect(() => {
+    async function fetchData() {
+        await GetUserInfo();
+    }
+    fetchData();
+  }, []); // 確保只在組件掛載時調用一次
+  const GetUserInfo = async () => {
+    
+    try{
+      const response = await axios({
+        method: "post",
+        headers: {
+          'Content-Type': 'application/json',
+        }, data: JSON.stringify({
+          id : data.authorID
+        }),
+        withCredentials: true,
+        url: "http://localhost:4000/course/getOnesInfo"
+      });
+      setAuthorName(response.data.authorName);
+    }catch(err){
+      console.log(err);
+    }
+  };
   const navigate = useNavigate();
 
   return (
@@ -61,7 +87,7 @@ function JoinedClassCard({data}) {
               {data.title}
             </Typography>
             <Typography sx={{ fontSize: 15, fontWeight: 500, marginTop: '32px' }} color="#999" component="div">
-                  owner:{data.authorID}
+                  owner: {authorName}
             </Typography>
             <Typography sx={{ fontSize: 18, fontWeight: 500, }} color="#000" >
               Class ID: {data.classID}
