@@ -58,6 +58,7 @@ function PrebuildDialog(props) {
 
     const handleCreate = () => {
         props.setDialogOpen();
+        console.log("debug:" +state.gilad);//
         let tmp
         axios({
             method: "POST",

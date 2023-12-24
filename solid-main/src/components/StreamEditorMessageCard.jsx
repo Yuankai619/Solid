@@ -72,7 +72,7 @@ const StreamEditorMessageCardTheme = createTheme({
         },
     },
 });
-function StreamEditorMessageCard({data}) {
+function StreamEditorMessageCard({data,classID}) {
     const [selected, setSelected] = useState('null'); // Keep track of which button is selected    
     const correctEnable = "#3DECAD", correctDisable ="#00764B";
     const incorrectEnable = "#EE592A", incorrectDisable = "#76270E";
@@ -83,6 +83,8 @@ function StreamEditorMessageCard({data}) {
         setSelected(newSelected);
         // console.log("selected: ",newSelected);
     };
+    const avatarSrc = data.isAnonymous === 'true' ? undefined : data.userimg ;
+    const username = data.isAnonymous === 'true' ? 'Anonymous' : data.username;
     const handleScoreUpdate = (selected) => {
         // console.log(selected);
         // messageID
@@ -110,9 +112,9 @@ function StreamEditorMessageCard({data}) {
             <Card  variant='outlined'>
                 <CardContent>
                     <div style={{ display: 'flex', alignItems: 'center' }}>
-                            <Avatar sx={{ mx: "10px", width: '28px', height: '28px' }} />
+                        <Avatar sx={{ mx: "10px", width: '28px', height: '28px' }} src={avatarSrc} />
                         <Typography variant="subtitle1" >
-                            {data.username}
+                            {username}
                         </Typography>
                         <Button aria-label="incorrect"
                             onClick={() => handleButtonClick('incorrect')}
@@ -136,7 +138,7 @@ function StreamEditorMessageCard({data}) {
                         </Button>
                     </div>
                     <Typography variant="body1">
-                        {data.content}
+                        {data.message}
                     </Typography>
                 </CardContent>
             </Card>
