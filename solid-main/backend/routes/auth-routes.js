@@ -1,6 +1,16 @@
 const router = require('express').Router()
 const passport = require('passport')
 
+function Auth(req, res, next) {
+    return next();
+    // 記得開
+    if(req.session.passport && req.session.passport.user){
+      return next();
+    } else {
+      res.send('please login first');
+    }
+  }
+
 router.get('/auth-state',(req,res)=>{
     //console.log('auth check if login----------------------')
     // console.log(req.session);
@@ -43,7 +53,7 @@ router.get('/auth-state',(req,res)=>{
 
 
 //auth logout
-router.get('/logout',(req,res)=>{
+router.get('/logout',Auth,(req,res)=>{
     console.log('try logout')
     req.session.destroy((err) => {
         if(err) {

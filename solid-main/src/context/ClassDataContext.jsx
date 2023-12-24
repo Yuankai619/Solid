@@ -24,7 +24,7 @@ export const ClassDataProvider = ({ children }) => {
 
                 const response = await axios({
                     method: 'get',
-                    url: 'http://localhost:4000/course/getClass',
+                    url: 'http://localhost:4000/course/getCreatedClass',
                     withCredentials: true
                 });
                 const modifiedData = response.data.map(item => ({//加入id

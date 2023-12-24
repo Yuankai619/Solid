@@ -4,7 +4,7 @@ const Course = require('../models/course');
 const uuid = require('uuid');
 
 function Auth(req, res, next) {
-      //return next();
+    // return next();
     // 記得開
     if(req.session.passport && req.session.passport.user){
       return next();
@@ -13,29 +13,65 @@ function Auth(req, res, next) {
     }
 }
 
-//wtf
+//從使用者新增joinedClass
+router.post('/userAddJoinedClass',Auth,async(req,res)=>{
+    const _userid = req.session.passport.user._id;
+    // const _userid = req.body.userID;
+    const _classid = req.body.classID;
+    const course = await Course.findOne({ 'info.classID': _classid });
+    if(!course){
+        return res.send('CourseNotFound');
+    }
+    User.findByIdAndUpdate(_userid, { $push: { joinedClass: { classID: _classid } } }).then(()=>{
+        console.log('從使用者新增joinedClass成功')
+        return res.send('SuccessfullyJoinCourse');
+    }).catch((err)=>{
+        console.log(err);
+        console.log('從使用者新增joinedClass失敗')
+        return res.send('FailedJoinCourse');
+    });
+})
 
+//從使用者刪除joinedClass
+router.post('/userPullJoinedClass',Auth,async(req,res)=>{
+    const _userid = req.session.passport.user._id;
+    // const _userid = req.body.userID;
+    const _classid = req.body.classID;
+    User.findByIdAndUpdate(_userid, { $pull: { joinedClass: { classID: _classid } } }).then(()=>{
+        console.log('從使用者刪除joinedClass成功')
+        return res.send('從使用者刪除joinedClass成功');
+    }).catch((err)=>{
+        console.log(err);
+        console.log('從使用者刪除joinedClass失敗')
+        return res.send('從使用者刪除joinedClass失敗')
+    });
+})
+
+//回傳該classid對應的class全內容
 router.post('/loadClassAll', Auth, async (req, res) => {
     const _classID = req.body.classID;
-    console.log(req.body)
-    console.log(_classID)
+    console.log('載入課程',_classID,'中的資訊')
+    //console.log(req.body)
+    //console.log(_classID)
     // 找到對應的課程
     const course = await Course.findOne({ 'info.classID': _classID });
     if (!course) {
+        console.log('載入課程',_classID,'中的資訊失敗')
         return res.status(404).send('找不到對應的課程');
     }
 
     // 回傳課程的所有資料
+    console.log('載入課程',_classID,'中的資訊成功')
     res.status(200).json(course);
 });
 
 router.post('/sendMessage',Auth, async (req, res) => {
-    console.log('/sendMessage');
     const _classID = req.body.classID;
     const _isAnonymous = req.body.isAnonymous;
     const _message = req.body.message;
     const _uuid = uuid.v4();
     const _score = req.body.score;
+    console.log('發送留言',_message,'到課程',_classID,"匿名",_isAnonymous);
     // 建立新的訊息物件
     const newMessage = {
         messageid : _uuid,
@@ -50,14 +86,17 @@ router.post('/sendMessage',Auth, async (req, res) => {
     // 找到對應的課程並更新
     const course = await Course.findOne({ 'info.classID': _classID });
     if (!course) {
+        console.log('發送留言',_message,'到課程',_classID,"匿名",_isAnonymous,'失敗');
+        console.log('找不到對應的課程');
         return res.status(404).send('找不到對應的課程');
     }
     course.message.push(newMessage);
     await course.save();
+    console.log('發送留言',_message,'到課程',_classID,"匿名",_isAnonymous,'成功');
     res.status(200).json({  message: '訊息已成功加入',messageId: _uuid });
 });
 
-//update commend score
+//留言區加分扣分
 router.post('/scoreUpdate', async (req, res) => {
     const _classID = req.body.classID;
     const _messageID = req.body.messageID;
@@ -72,81 +111,133 @@ router.post('/scoreUpdate', async (req, res) => {
     // 在訊息陣列中找到對應的訊息並更新分數
     const message = course.message.find(msg => msg.messageid === _messageID);
     if (!message) {
-        return res.status(404).send('找不到對應的訊息');
+        return res.status(404).send('找不到對應的留言');
     }
 
     message.score = _score;
     await course.save();
-    res.status(200).send('分數已成功更新');
+    res.status(200).send('留言分數已成功更新');
 });
 
-// change class state
+// 改變課程是否開放
 router.post('/changeState',Auth, async(req,res) =>{
     const _classID = req.body.classID;
     const _state = req.body.state;
-    console.log(_classID,_state);
+    console.log('嘗試更改課程',_classID,'狀態到',_state);
     try {
         await Course.findOneAndUpdate(
             { 'info.classID': _classID },
             { 'info.state': _state }
         );
-        console.log("Course with classID " + _classID + " has been updated.");
+        console.log('更改課程狀態成功');
+        return res.send('更改課程狀態成功')
     } catch (err) {
-        console.log("Something wrong when updating data!", err);
+        console.log(err,'更改課程狀態失敗');
+        return res.send('更改課程狀態失敗')
     }
 })
 
-router.post('/loadAllMessage',Auth,async(req,res)=>{
-    const _classID = req.body.classID;
+// 用不到了
+//載入所有留言
+// router.post('/loadAllMessage',Auth,async(req,res)=>{
+//     const _classID = req.body.classID;
 
-    // 找到對應的課程
-    const course = await Course.findOne({ 'info.classID': _classID });
-    if (!course) {
-        return res.status(404).send('找不到對應的課程');
-    }
+//     // 找到對應的課程
+//     const course = await Course.findOne({ 'info.classID': _classID });
+//     if (!course) {
+//         return res.status(404).send('找不到對應的課程');
+//     }
 
-    // 回傳訊息陣列
-    console.log(course.message);
-    res.status(200).json(course.message);
-})
+//     // 回傳訊息陣列
+//     //console.log(course.message);
+//     console.log('回傳訊息陣列成功');
+//     res.status(200).json(course.message);
+// })
 
+//刪除createdClass
 router.post('/deleteClass',Auth, async(req,res) =>{
     // console.log(req.body);
     const _classID = req.body.classID;
     //console.log(_classID);
+    console.log('嘗試刪除課程' , _classID , '成功');
     try {
+        const course = await Course.findOne({ 'info.classID': _classID });
+        if (!course) {
+            return res.status(404).send('找不到對應的課程');
+        }
         await Course.findOneAndDelete({ 'info.classID': _classID });
-        console.log("Course with classID " + _classID + " has been deleted.");
+        console.log('刪除課程' , _classID , '成功');
+        return res.send('suc');
     } catch (err) {
-        console.log("Something wrong when deleting data!", err);
+        console.log(err,'嘗試刪除課程' , _classID , '失敗');
+        return res.send('fail');
     }
-    res.send('yes')
 })
 
-router.get('/getClass',Auth, async (req,res)=>{
-    //console.log('hi');
-    //console.log( req.session.passport);
-    //console.log(_id);
+
+router.get('/getCreatedClass', Auth, async (req, res) => {
     const _id = req.session.passport.user._id;
-    try{
+    try {
         const user = await User.findById(_id);
-        const createdClass = user.createdClass;
-        //console.log(createdClass)
-        const coursesInfo = await Promise.all(createdClass.map(async ({ classID }) => {
-            try{
-                const course = await Course.findOne({ 'info.classID': classID });
-                //console.log(course.info)
-                return course.info;
-            }catch(err){
-                console.log(err);
+        let createdClass = user.createdClass;
+
+        const coursesInfo = [];
+        for (let i = 0; i < createdClass.length; i++) {
+            const classID = createdClass[i].classID;
+            const course = await Course.findOne({ 'info.classID': classID });
+            if (!course) {
+                // 如果課程不存在，從 createdClass 中刪除該課程ID
+                createdClass = createdClass.filter(item => item.classID !== classID);
+            } else {
+                coursesInfo.push(course.info);
             }
-        }));
-        //console.log(coursesInfo)
+        }
+
+        // 更新使用者的 createdClass
+        user.createdClass = createdClass;
+        await user.save();
+
         res.send(coursesInfo);
-    }catch(err){
+    } catch (err) {
+        console.log('在用戶創建的課程名單中查詢課程錯誤');
         console.log(err);
+        res.send('查詢課程錯誤');
     }
-})
+});
+
+
+// 返回USER加入的全部courseINFO
+router.get('/getJoinedClass', Auth, async (req, res) => {
+    const _id = req.session.passport.user._id;
+    // const _id = req.body.userID;
+    try {
+        const user = await User.findById(_id);
+        let joinedClass = user.joinedClass;
+
+        const coursesInfo = [];
+        for (let i = 0; i < joinedClass.length; i++) {
+            const classID = joinedClass[i].classID;
+            const course = await Course.findOne({ 'info.classID': classID });
+            if (!course) {
+                // 如果課程不存在，從 joinedClass 中刪除該課程ID
+                joinedClass = joinedClass.filter(item => item.classID !== classID);
+            } else {
+                coursesInfo.push(course.info);
+            }
+        }
+
+        // 更新使用者的 joinedClass
+        user.joinedClass = joinedClass;
+        await user.save();
+
+        res.send(coursesInfo);
+    } catch (err) {
+        console.log('在用戶加入的課程名單中查詢課程錯誤');
+        console.log(err);
+        res.send('查詢課程錯誤');
+    }
+});
+
 
 router.post('/deleteClassFromUser',Auth,(req,res)=>{
     const _id = req.session.passport.user._id;
