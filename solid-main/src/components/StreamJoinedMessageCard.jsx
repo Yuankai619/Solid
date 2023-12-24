@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -87,43 +87,36 @@ const StreamJoinedMessageCardTheme = createTheme({
         },
     },
 });
-function StreamJoinedMessageCard({ data, classID }) {
+function StreamJoinedMessageCard({ data, classID, setMessageData }) {
+    const [isMyMessage, setIsMyMessage] = useState(true); //比對message的userID是不是==自己的userID
+    const [isShowScore, setIsShowScore] = useState(true); //要不要顯示score
     const [selected, setSelected] = useState(data.score); // Keep track of which button is selected    
-    const [scoreColor, setScoreColor] = useState("222222"); // Keep track of which button is selected
+    useEffect(() => {
+
+        if (selected === 'null' || isMyMessage ==false){
+            console.log("???",selected, isMyMessage);
+            setIsShowScore(false);
+        }
+    }, [selected, isMyMessage]);
+    console.log(isShowScore);
+
     const correctEnable = "#3DECAD", correctDisable = "#00764B";
     const incorrectEnable = "#EE592A", incorrectDisable = "#76270E";
-    const handleButtonClick = (button) => {
-        // If the button is already selected, deselect it, otherwise select it
-        const newSelected = selected === button ? null : button;
 
-        setSelected(newSelected);
-        handleScoreUpdate(newSelected);
-        // console.log("selected: ",newSelected);
-    };
     const avatarSrc = data.isAnonymous === 'true' ? undefined : data.userimg;
     const username = data.isAnonymous === 'true' ? 'Anonymous' : data.username;
-    const handleScoreUpdate = (selected) => {
-        console.log(selected);
-        axios({
-            method: "POST",
-            headers: { 'Content-Type': 'application/json', },
-            data: JSON.stringify({
-                classID: classID,
-                messageID: data.messageid,
-                score: selected
-            }),
-            withCredentials: true,
-            url: "http://localhost:4000/course/scoreUpdate"
-        })
-            .then((res) => {
-                // comment here
-                // .json({  message: '訊息已成功加入',messageId: _uuid })
-                console.log(res.data)
-            })
-            .catch((error) => { console.error(error); });
+
+    const handleDeleteMessage = () => {//要記得寫setMessageData
+        console.log("delete message");
     };
-
-
+    const [anonymousState, setAnonymousState] = useState(data.isAnonymous);
+    const handleChangeAnonymousState = () => {
+        //更改後端資料庫
+    }
+    const handleChangeAnonymous = (event) => {
+        event.stopPropagation();
+        setAnonymousState(!anonymousState);
+    };
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
 
@@ -146,17 +139,20 @@ function StreamJoinedMessageCard({ data, classID }) {
                         <Typography variant="subtitle1" >
                             {username}
                         </Typography>
-                        <IconButton aria-label="scroeState"
+                        { isShowScore && 
+                        <Button aria-label="scroeState"
                             // onClick={() => handleButtonClick('incorrect')}
                             sx={{
-                                background: selected === 'incorrect' ? incorrectEnable : incorrectDisable,
+                                background: data.score == 'correct' ? correctEnable : incorrectEnable,
                                 '&:hover': {
-                                    background: selected === 'incorrect' ? incorrectEnable : incorrectDisable, // 确保鼠标悬浮时的背景色与点击时相同
+                            background: data.score == 'correct' ? correctEnable : incorrectEnable, // 确保鼠标悬浮时的背景色与点击时相同
                                 },
                             }}
-                            disabled={selected==='null'}
+                            // disabled={selected==='null'}
                         >
-                        </IconButton>
+                        </Button>
+                        }
+                        { isMyMessage &&
                         <IconButton aria-label="menu"
                             // onClick={() => handleButtonClick('incorrect')}
                             sx={{
@@ -170,6 +166,7 @@ function StreamJoinedMessageCard({ data, classID }) {
                         >
                             <MoreHorizIcon sx={{color:"#999999"}}/>
                         </IconButton>
+                        }
                         <Menu
                             id="long-menu"
                             anchorEl={anchorEl}
@@ -190,8 +187,8 @@ function StreamJoinedMessageCard({ data, classID }) {
                                 },
                             }}
                         >
-                            <MenuItem onClick={undefined}>{"set Anonymous"}</MenuItem>
-                            <MenuItem onClick={undefined} sx={{ color: "#CC0000" }}>Delete</MenuItem>
+                            <MenuItem onClick={handleChangeAnonymous}>{anonymousState ==true? 'Not Anonymous' : 'Set Anonymous'}</MenuItem>
+                            <MenuItem onClick={handleDeleteMessage} sx={{ color: "#CC0000" }}>Delete</MenuItem>
                         </Menu>
                         {/* <Button aria-label="menu"
                             onClick={() => handleButtonClick('correct')}

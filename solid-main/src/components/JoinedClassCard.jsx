@@ -47,7 +47,7 @@ const JoinedClassCardTheme = createTheme({
 });
 
 
-function JoinedClassCard() {
+function JoinedClassCard({data}) {
   const navigate = useNavigate();
   const handleClick = () => {
     navigate('/signup'); // 在这里设置目标路由
@@ -55,6 +55,7 @@ function JoinedClassCard() {
   return (
     <ThemeProvider theme={JoinedClassCardTheme}>
       <Box sx={{ minWidth: 275 }} >
+        <Link style={{ textDecoration: 'none', color: 'inherit' }} to={`/joinedroom/${data.classID}`}>
         <Card variant="outlined" sx={{ cursor: 'pointer' }} > 
          <React.Fragment>
           <CardContent onClick={handleClick}>
@@ -71,7 +72,9 @@ function JoinedClassCard() {
           {/* <CardActions>
       <Button size="small" >Learn More</Button>
     </CardActions> */}
-        </React.Fragment></Card>
+        </React.Fragment>
+        </Card>
+        </Link>
       </Box>
     </ThemeProvider>
   )

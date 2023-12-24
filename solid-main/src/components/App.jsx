@@ -23,6 +23,7 @@ function App() {
       <Route path="/updateinfo" element={<UpdateGoogleUserInfoPage />} />
       <Route path="/profile" element={<ProfilePage />} />
       <Route path="/room/:id" element={<Discussion />} />
+        <Route path="/joinedroom/:id/" element={<JoinedDisscussion />} />
     </Routes>
     </ClassDataProvider>
   );
