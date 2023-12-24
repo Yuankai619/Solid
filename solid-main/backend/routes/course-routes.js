@@ -100,26 +100,54 @@ router.post('/sendMessage',Auth, async (req, res) => {
 
 router.post('/deleteMessage',Auth, async (req, res) => {
     const _classID = req.body.classID;
-    const _messageID = messageID;
+    const _messageID = req.body.messageID;
     //console.log('發送留言',_message,'到課程',_classID,"匿名",_isAnonymous);
     // 建立新的訊息物件
+    console.log(_classID,_messageID,'?')
     const course = await Course.findOne({ 'info.classID': _classID });
     if (!course) {
         console.log('找不到對應的課程');
         return res.status(404).send('找不到對應的課程');
     }
-    Course.updateOne(
-        { 'info.classID': _classID }, 
-        { $pull: { message: { messageid: _messageID } } },
-        function(err, result) {
-            if (err) {
-                res.send(err);
-            } else {
-                res.send(result);
-            }
-        }
-    );
+    Course.findOneAndUpdate(
+        { 'info.classID': req.body.classID },
+        { $pull: { message : {messageid : _messageID }} }
+        // { new: true, useFindAndModify: false }
+    )
+    .then(course => {
+        console.log('刪除留言成功')
+        res.send('Comment delete successfully!');
+    })
+    .catch(err => {
+        console.error(err);
+        console.log('刪除留言失敗')
+        res.status(500).send(err);
+    });
 });
+
+router.post('/setAnonymous', Auth, async (req, res) => {
+    console.log('hello')
+    const _classID = req.body.classID;
+    const _messageID = req.body.messageID;
+    let _isAnonymous = req.body.isAnonymous;
+    if(_isAnonymous == 'true') _isAnonymous = 'false';
+    else _isAnonymous = 'true';
+    console.log('將留言設定成',_isAnonymous);
+    Course.findOneAndUpdate(
+        { 'info.classID': _classID, 'message.messageid': _messageID },
+        { $set: { 'message.$.isAnonymous': _isAnonymous } }
+    )
+    .then(course => {
+        console.log('更改留言狀態成功')
+        res.send('Comment status updated successfully!');
+    })
+    .catch(err => {
+        console.error(err);
+        console.log('更改留言狀態失敗')
+        res.status(500).send(err);
+    });
+});
+
 
 //留言區加分扣分
 router.post('/scoreUpdate', async (req, res) => {
