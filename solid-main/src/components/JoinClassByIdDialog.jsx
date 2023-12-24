@@ -9,6 +9,8 @@ import Slide from '@mui/material/Slide';
 import InputText from '../components/InputText';
 import JoinClassDialogTheme from '../themes/JoinClassDialogTheme';
 import { useClassDataContext } from '../context/ClassDataContext';
+import axios from 'axios';
+
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -18,11 +20,11 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 function JoinClassByIdDialog(props) {
     const { handleNewJoinedClass } = useClassDataContext();
     const [inputClassID, setInputClassID] = useState('');
-    // const [username, setUsername] = useState('');
-    // const [realName, setRealName] = useState('');
-    // const [studentID, setStudentId] = useState('');
-    // const [userID, setUserId] = useState('');
-    // const [googleId, setgoogleId] = useState('');
+    const [username, setUsername] = useState('');
+    const [realName, setRealName] = useState('');
+    const [studentID, setStudentId] = useState('');
+    const [userID, setUserId] = useState('');
+    const [googleId, setgoogleId] = useState('');
 
     // useEffect(() => {
     //     GetUserInfo();
@@ -34,60 +36,42 @@ function JoinClassByIdDialog(props) {
     //             'Content-Type': 'application/json',
     //         },
     //         withCredentials: true,
-    //         url: "http://localhost:4000/api/getUserInfo"
+    //         url: "http://localhost:4000/course/getJoinedClass"
     //     })
-    //         .then((res) => {
-    //             console.log(res.data.username);
-    //             setUsername(res.data.username)
-    //             setRealName(res.data.realname);
-    //             setStudentId(res.data.studentID);
-    //             setUserId(res.data._id);
-    //             setgoogleId(res.data.googleid);
-    //         })
-    //         .catch((error) => {
+    //     .then((res) => {
+    //         console.log(res.data.username);
+    //         setUsername(res.data.username)
+    //         setRealName(res.data.realname);
+    //         setStudentId(res.data.studentID);
+    //         setUserId(res.data._id);
+    //         setgoogleId(res.data.googleid);
+    //     })
+    //     .catch((error) => {
 
-    //         });
+    //     });
     // };
     const handleJoin = () => {
         props.setDialogOpen();
         console.log(inputClassID);
         // let tmp
-        // axios({
-        //     method: "POST",
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //     },
-        //     data: JSON.stringify({
-        //         userID: userID,
-        //         description: description,
-        //         roomTitle: roomTitle,
-        //         state: state.gilad,
-        //         username: username,
-        //         googleid: googleId
-        //     }),
-        //     withCredentials: true,
-        //     url: "http://localhost:4000/course/create"
-        // })
-        //     .then((res) => {
-        //         // console.log(res.data);
-        //         tmp = res.data;
-        //         axios({
-        //             method: "POST",
-        //             headers: { 'Content-Type': 'application/json', },
-        //             data: JSON.stringify({
-        //                 classID: tmp.classID
-        //             }),
-        //             withCredentials: true,
-        //             url: "http://localhost:4000/course/addClassToUser"
-        //         })
-        //             .then((res) => {
-        //                 handleNewCreatedClass(tmp);
-        //             })
-        //             .catch((error) => { console.error(error); });
-        //     })
-        //     .catch((error) => {
-        //         console.error(error);
-            // });
+        axios({
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            data: JSON.stringify({
+                classID : inputClassID
+            }),
+            withCredentials: true,
+            url: "http://localhost:4000/course/userAddJoinedClass"
+        })
+        .then((res) => {
+            console.log('fgo',res.data);
+            handleNewJoinedClass(res.data);
+        })
+        .catch((error) => {
+            console.error(error);
+        });
     
     }
     
@@ -104,8 +88,8 @@ function JoinClassByIdDialog(props) {
                         ></InputText>
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={handleJoin} sx={{ color: '#EEEEEE', marginRight: '30px', fontSize: '1rem' }}>Cancel</Button>
-                        <Button onClick={props.setDialogOpen} sx={{ fontWeight: 'bold', marginRight: '30px', fontSize: '1.2rem' }}>Join</Button>
+                        <Button onClick={props.setDialogOpen} sx={{ color: '#EEEEEE', marginRight: '30px', fontSize: '1rem' }}>Cancel</Button>
+                        <Button onClick={handleJoin} sx={{ fontWeight: 'bold', marginRight: '30px', fontSize: '1.2rem' }}>Join</Button>
                     </DialogActions>
                 </Dialog>
             </React.Fragment>

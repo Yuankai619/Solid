@@ -91,12 +91,48 @@ function StreamJoinedMessageCard({ data, classID, setMessageData }) {
     const [isMyMessage, setIsMyMessage] = useState(true); //比對message的userID是不是==自己的userID
     const [isShowScore, setIsShowScore] = useState(true); //要不要顯示score
     const [selected, setSelected] = useState(data.score); // Keep track of which button is selected    
+    const [currentUserId, setCurrentUserId] = useState('');
+    let a;
+    const GetUserInfo = async () => {
+        axios({
+          method: "GET",
+          headers: {
+            'Content-Type': 'application/json',
+          },  
+          withCredentials: true,
+          url: "http://localhost:4000/api/getUserInfo"
+        })  
+        .then((res) =>{
+            console.log('get',res.data._id)
+            setCurrentUserId(res.data._id);
+            a=res.data._id;
+            console.log('gget',a)
+            //console.log('gget',currentUserId)
+        })
+        .catch((error) => {
+            
+        });
+    };
     useEffect(() => {
-
-        if (selected === 'null' || isMyMessage ==false){
+        async function fetchData() {
+            const response = await GetUserInfo();    
+        }
+        fetchData();
+        console.log('jj');
+        console.log(a);
+        if(currentUserId != data.userID){
+            setIsMyMessage(false);
+        }else{
+            setIsMyMessage(true);
+        }
+        if (selected === 'null'){
             console.log("???",selected, isMyMessage);
             setIsShowScore(false);
         }
+        console.log('+',a)
+        console.log(currentUserId,'+',)
+    }, []); 
+    useEffect(() => {
     }, [selected, isMyMessage]);
     console.log(isShowScore);
 
@@ -106,7 +142,23 @@ function StreamJoinedMessageCard({ data, classID, setMessageData }) {
     const avatarSrc = data.isAnonymous === 'true' ? undefined : data.userimg;
     const username = data.isAnonymous === 'true' ? 'Anonymous' : data.username;
 
-    const handleDeleteMessage = () => {//要記得寫setMessageData
+    const handleDeleteMessage = async ()  => {//要記得寫setMessageData
+        try {
+            const response = await axios({
+                method: "POST",
+                headers: { 'Content-Type': 'application/json', },
+                data: JSON.stringify({
+                    classID: classID,
+                    messageID : data.messageid
+                }),
+                withCredentials: true,
+                url: "http://localhost:4000/course/userDeleteMessage"
+            });
+            if(!response)console.log('error');
+            else console.log(response);
+        } catch (error) {
+            console.error('Error fetching class data:', error);
+        }
         console.log("delete message");
     };
     const [anonymousState, setAnonymousState] = useState(data.isAnonymous);
@@ -161,7 +213,7 @@ function StreamJoinedMessageCard({ data, classID, setMessageData }) {
                                     background: "#222222", // 确保鼠标悬浮时的背景色与点击时相同
                                 },
                             }}
-                            disabled={selected === 'null'}
+                            //disabled={selected === 'null'}
                             onClick={handleClickMenu}
                         >
                             <MoreHorizIcon sx={{color:"#999999"}}/>

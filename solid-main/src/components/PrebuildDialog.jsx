@@ -77,21 +77,21 @@ function PrebuildDialog(props) {
             url: "http://localhost:4000/course/create"
           })  
           .then((res) =>{
-            // console.log(res.data);
-            // tmp = res.data;
+            console.log('haha',res.data.classID);
             axios({
                 method: "POST",
                 headers: { 'Content-Type': 'application/json', },  
                 data: JSON.stringify({
-                    classID : tmp.classID
+                    classID : res.data.classID
                 }),
                 withCredentials: true,
                 url: "http://localhost:4000/course/addClassToUser"
             })  
             .then((res) =>{ 
-                handleNewCreatedClass(res.data);
-             })
+                console.log('ahah',res.data);
+            })
             .catch((error) => { console.error(error); });
+            handleNewCreatedClass(res.data);
         })
         .catch((error) => {
             console.error(error);

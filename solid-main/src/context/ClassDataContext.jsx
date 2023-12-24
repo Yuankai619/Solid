@@ -46,6 +46,25 @@ export const ClassDataProvider = ({ children }) => {
                 console.error('Error fetching class data:', error);
             }
         };
+        const fetchJoinedClassData = async () => {
+            try {
+
+                const response = await axios({
+                    method: 'get',
+                    url: 'http://localhost:4000/course/getJoinedClass',
+                    withCredentials: true
+                });
+                const modifiedData = response.data.map(item => ({//加入id
+                    ...item,
+                    id: parseInt(item.classID)
+                }));
+                console.log("sd;", modifiedData);
+                setJoinedClassData(modifiedData);
+            } catch (error) {
+                console.error('Error fetching class data:', error);
+            }
+        };
+        fetchJoinedClassData();
         fetchClassData();
     }, []);
     // //
@@ -106,7 +125,7 @@ export const ClassDataProvider = ({ children }) => {
     return (
         <ClassDataContext.Provider value={{
             curIndex, setCurIndex, handleChangeIndex,
-            joinedCLassData, handleNewCreatedClass,
+            joinedCLassData, handleNewJoinedClass,
             createdClassData, handleNewCreatedClass, handleChangeCreatedClassState, handleDeleteCreatedClass,
         }}>
             {children}
