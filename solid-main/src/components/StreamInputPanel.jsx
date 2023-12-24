@@ -14,6 +14,7 @@ function StreamInputPanel({ classID }) {
     const [sendIconColor, setSendIconColor] = useState('#EEEEEE');
 
     const handleSubmit = (event) => {
+
         event.preventDefault();
         console.log(content);
         console.log(isAnonymous);
@@ -139,7 +140,7 @@ function StreamInputPanel({ classID }) {
                         }
                         label="Anonymous"
                     />
-                    <IconButton aria-label="send" onClick={handleSubmit}>
+                    <IconButton aria-label="send" onClick={handleSubmit} disabled={content.length==0}>
                         <SendIcon sx={{ color: sendIconColor }}/>
                     </IconButton>
                 </div>
