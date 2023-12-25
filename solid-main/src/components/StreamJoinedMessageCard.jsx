@@ -10,6 +10,10 @@ import { IconButton } from '@mui/material';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import io from 'socket.io-client'
+let socket = io.connect('http://localhost:5000')
+
+
 const StreamJoinedMessageCardTheme = createTheme({
     typography: {
         fontFamily: [
@@ -88,6 +92,12 @@ const StreamJoinedMessageCardTheme = createTheme({
     },
 });
 function StreamJoinedMessageCard({ data, classID, setMessageData }) {
+    useEffect(()=>{
+        socket.emit('join_room',classID);
+        socket.on('refresh',(data)=>{
+            console.log(data);
+        })
+    },[socket])
     const [isMyMessage, setIsMyMessage] = useState(true); //比對message的userID是不是==自己的userID
     const [isShowScore, setIsShowScore] = useState(true); //要不要顯示score
     const [selected, setSelected] = useState(data.score); // Keep track of which button is selected    
@@ -112,18 +122,23 @@ function StreamJoinedMessageCard({ data, classID, setMessageData }) {
             console.log('get', res.data._id);
             setCurrentUserId(res.data._id);
             setIsMyMessage(res.data._id === data.userID);
+            
         } catch (error) {
             console.error('Error in GetUserInfo:', error);
         }
     };
 
     useEffect(() => {
-        if (selected === 'null') {
+        if (data.score == 'null') {
             setIsShowScore(false);
+        }else{
+            setIsShowScore(true);
         }
         console.log(currentUserId);
-    }, [selected, isMyMessage]);
-    console.log(isShowScore);
+    }, [data.score, isMyMessage]);
+    console.log('pp',isShowScore);
+
+    console.log('a',data.score)
 
     const correctEnable = "#3DECAD", correctDisable = "#00764B";
     const incorrectEnable = "#EE592A", incorrectDisable = "#76270E";
@@ -149,6 +164,7 @@ function StreamJoinedMessageCard({ data, classID, setMessageData }) {
             console.error('Error fetching class data:', error);
         }
         console.log("delete message");
+        socket.emit('send_message',classID);
     };
     const [anonymousState, setAnonymousState] = useState(data.isAnonymous);
 
@@ -171,6 +187,7 @@ function StreamJoinedMessageCard({ data, classID, setMessageData }) {
             console.error('Error fetching class data:', error);
         }
         console.log("setAnonymous message");
+        socket.emit('send_message',classID);
     }
 
     const handleChangeAnonymous = (event) => {

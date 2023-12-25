@@ -17,7 +17,6 @@ function JoinedDisscussion() {
     const [isLoginCheckComplete, setIsLoginCheckComplete] = useState(false);
     const location = useLocation();
     const ClassID = location.pathname.split('/')[2];
-    const [room ,setRoom] = useState(''); 
     const [classData, setClassData] = useState([]);
 
     const [messageData, setMessageData] = useState([
@@ -35,30 +34,12 @@ function JoinedDisscussion() {
     useEffect(() => {
         joinRoom();
         socket.on('refresh',(data)=>{
-            console.log('yyyes')
-            const fetchClassData = async () => {
-                //alert('ji');
-                console.log('pp')
-                try {
-                    console.log(ClassID);
-                    const response = await axios({
-                        method: "POST",
-                        headers: { 'Content-Type': 'application/json', },
-                        data: JSON.stringify({
-                            classID: ClassID
-                        }),
-                        withCredentials: true,
-                        url: "http://localhost:4000/course/loadClassAll"
-                    });
-                    console.log('pp')
-                    console.log('uu',response,'uu');
-                    setClassData(response.data.info);
-                    setMessageData(response.data.message);
-                } catch (error) {
-                    console.error('Error fetching class data:', error);
-                }
-            };
-            fetchClassData();
+            setTimeout(function() {
+                // 在這裡寫入您希望在等待後執行的程式碼
+                fetchClassData();
+                //console.log('0.1 秒已過');
+            }, 100);
+        //    document.location.reload();
         })
     }, [socket]);
     //test Data
@@ -88,7 +69,7 @@ function JoinedDisscussion() {
 
     const fetchClassData = async () => {
         //alert('ji');
-        console.log('pp')
+        // console.log('pp')
         try {
             console.log(ClassID);
             const response = await axios({
@@ -100,10 +81,10 @@ function JoinedDisscussion() {
                 withCredentials: true,
                 url: "http://localhost:4000/course/loadClassAll"
             });
-            console.log('pp')
-            console.log('uu',response,'uu');
+            // console.log('uu',response,'uu');
             setClassData(response.data.info);
             setMessageData(response.data.message);
+            console.log('ppsdasdasda')
         } catch (error) {
             console.error('Error fetching class data:', error);
         }

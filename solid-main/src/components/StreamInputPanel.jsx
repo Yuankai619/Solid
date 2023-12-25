@@ -14,14 +14,9 @@ function StreamInputPanel({ classID }) {
     //
     const [inputFocused, setInputFocused] = useState(false);
     const [sendIconColor, setSendIconColor] = useState('#EEEEEE');
-
-    const [room ,setRoom] = useState(''); 
-    const joinRoom = () =>{
-        socket.emit('join_room',classID);
-    }
-
+    
     useEffect(()=>{
-        joinRoom();
+        socket.emit('join_room',classID);
         socket.on('refresh',(data)=>{
             console.log(data);
         })
