@@ -138,6 +138,12 @@ function StreamInputPanel({ classID }) {
                         },
                     }}
                     onChange={(e) => setContent(e.target.value)}
+                    onKeyPress={(e) => {
+                        if (e.key === 'Enter' && !e.shiftKey) {
+                            e.preventDefault(); // Prevents the default action of the enter key
+                            handleSubmit(e);    // Calls your existing submit handler
+                        }
+                    }}
                 />
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: "0px 6px 0px 20px" }}>
                     <FormControlLabel
@@ -154,9 +160,6 @@ function StreamInputPanel({ classID }) {
                         <SendIcon sx={{ color: sendIconColor }}/>
                     </IconButton>
                 </div>
-                {/* <IconButton aria-label="send">
-                {isAnonymous ? <VisibilityOffIcon /> : <SendIcon />}
-            </IconButton> */}
             </Paper>
         </ThemeProvider>
     );

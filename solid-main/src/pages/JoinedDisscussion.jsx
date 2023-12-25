@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useRef } from 'react';
 import StreamInputPanel from '../components/StreamInputPanel';
 import StreamAppBar from '../components/StreamAppBar';
 import Box from '@mui/material/Box';
@@ -38,7 +38,7 @@ function JoinedDisscussion() {
                 // 在這裡寫入您希望在等待後執行的程式碼
                 fetchClassData();
                 //console.log('0.1 秒已過');
-            }, 100);
+            }, 150);
         //    document.location.reload();
         })
     }, [socket]);
@@ -93,12 +93,17 @@ function JoinedDisscussion() {
     const handleSetMessageData = (newMessageData) => {
         setMessageData(newMessageData);
     }
-
+    // const scrollRef = useRef(null);//預設載入時滾動條在最下面
+    // useEffect(() => {
+    //     if (scrollRef.current) {
+    //         scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    //     }
+    // }, [messageData]);
     return (
         <div style={{ padding: 0, margin: "0px" }}>
             <StreamAppBar data={classData} />
             <div style={{ paddingTop: '70px' }}>
-                <Container sx={{ position: 'fixed', height: 'calc(100vh - 252px)', overflow: "auto", px: "0px" }} maxWidth="100%">
+                <Container  sx={{ position: 'fixed', height: 'calc(100vh - 252px)', overflow: "auto", px: "0px", paddingBottom:"32px"}} maxWidth="100%">
                     {messageData.map((data, index) => (
                         <StreamJoinedMessageCard
                             key={index}

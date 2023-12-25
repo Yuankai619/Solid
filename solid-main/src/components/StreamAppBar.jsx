@@ -6,13 +6,13 @@ import Box from '@mui/material/Box';
 import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
-import { ThemeProvider,createTheme } from '@mui/material/styles';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 import HomeAppBarTheme from '../themes/HomeAppBarTheme';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import InfoIcon from '@mui/icons-material/Info';
 import { Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-function StreamAppBar({ data}) {
+function StreamAppBar({ data }) {
     const navigate = useNavigate();
     // const handleTabChange = (event, newValue) => {
     //     props._setValue(newValue);
@@ -54,17 +54,18 @@ function StreamAppBar({ data}) {
                     <IconButton
                         edge="start"
                         aria-label="menu"
-                        onClick={
-                            ()=>{navigate('/home');
-                                window.location.assign('/home');
-                            }
-                            }
-                        // sx={{ flexGrow: 0 }}
+                        onClick={()=>{
+                            setTimeout(function() {
+                                navigate('/home'); 
+                            }, 150);
+                        }
+                        }
+                    // sx={{ flexGrow: 0 }}
                     >
-                        <ChevronLeftIcon style={{ color: "#EEEEEE", fontSize: "36px"}} />
+                        <ChevronLeftIcon style={{ color: "#EEEEEE", fontSize: "36px" }} />
                     </IconButton>
-                    <Typography variant='h1'  sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center',fontSize:'26px', fontWeight:"700" }}> 
-                        {data.title} 
+                    <Typography variant='h1' sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center', fontSize: '26px', fontWeight: "700" }}>
+                        {data.title}
                     </Typography>
                     <IconButton
                         edge="start"

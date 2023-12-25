@@ -11,86 +11,9 @@ import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import io from 'socket.io-client'
+import StreamJoinedMessageCardTheme from '../themes/StreamJoinedMessageCardTheme';
 let socket = io.connect('http://localhost:5000')
 
-
-const StreamJoinedMessageCardTheme = createTheme({
-    typography: {
-        fontFamily: [
-            'Poppins',
-            'sans-serif',
-        ].join(','),
-    },
-    components: {
-        // 针对 MUI Card 组件的样式
-        MuiCard: {
-            styleOverrides: {
-                root: {
-                    position: 'relative',
-                    backgroundColor: "#222222",
-                    overflow: 'hidden',
-                    margin: "10px 15px 20px",
-                    borderRadius: '16px',
-                    borderColor: "#999999",
-                },
-            },
-        },
-        MuiCardContent: {
-            styleOverrides: {
-                root: {
-                    padding: "12px 6px 12px 12px !important",
-                },
-            },
-        },
-        // 针对 MUI Button 组件的样式
-        MuiButton: {
-            styleOverrides: {
-                root: {
-                    marginRight: "16px",
-                    minWidth: "36px",
-                    height: "24px",
-                    padding: "0",
-                    borderRadius: "16px",
-                },
-            },
-        },
-        MuiIconButton: {
-            styleOverrides: {
-                root: {
-                    marginRight: "16px",
-                    minWidth: "36px",
-                    height: "24px",
-                    padding: "0",
-                    borderRadius: "16px",
-                    // border: "1px solid #999999",
-                },
-            },
-        },
-        // 针对 MUI Typography 组件的样式
-        MuiTypography: {
-            styleOverrides: {
-                subtitle1: {
-                    flexGrow: 1,
-                    whiteSpace: 'nowrap',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    color: "#EEEEEE",
-                    marginLeft: "10px",
-                    fontSize: "18px",
-                    fontWeight: "700",
-                },
-                body1: {
-                    fontSize: "12px",
-                    color: "#EEEEEE",
-                    marginLeft: "12px",
-                    marginRight: "12px",
-                    marginTop: "16px",
-
-                },
-            },
-        },
-    },
-});
 function StreamJoinedMessageCard({ data, classID, setMessageData }) {
     useEffect(()=>{
         socket.emit('join_room',classID);
@@ -165,6 +88,7 @@ function StreamJoinedMessageCard({ data, classID, setMessageData }) {
         }
         console.log("delete message");
         socket.emit('send_message',classID);
+        setAnchorEl(null);
     };
     const [anonymousState, setAnonymousState] = useState(data.isAnonymous);
 
@@ -265,19 +189,9 @@ function StreamJoinedMessageCard({ data, classID, setMessageData }) {
                                 },
                             }}
                         >
-                            <MenuItem onClick={handleChangeAnonymous}>{anonymousState ==true? 'Not Anonymous' : 'Set Anonymous'}</MenuItem>
+                            <MenuItem onClick={handleChangeAnonymous}>{anonymousState ==false? 'Not Anonymous' : 'Set Anonymous'}</MenuItem>
                             <MenuItem onClick={handleDeleteMessage} sx={{ color: "#CC0000" }}>Delete</MenuItem>
                         </Menu>
-                        {/* <Button aria-label="menu"
-                            onClick={() => handleButtonClick('correct')}
-                            sx={{
-                                background: selected === 'correct' ? correctEnable : correctDisable,
-                                '&:hover': {
-                                    background: selected === 'correct' ? correctEnable : correctDisable, // 确保鼠标悬浮时的背景色与点击时相同
-                                },
-                            }}
-                        >
-                        </Button> */}
                     </div>
                     <Typography variant="body1">
                         {data.message}
