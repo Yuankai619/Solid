@@ -25,6 +25,9 @@ function StreamInputPanel({ classID }) {
     const handleSubmit = (event) => {
 
         event.preventDefault();
+        if (!content.trim().length) {
+            return; // 如果是，則不執行後續操作
+        }   
         console.log(content);
         console.log(isAnonymous);
         console.log(classID);
@@ -106,6 +109,11 @@ function StreamInputPanel({ classID }) {
             },
         }
     });
+    const isWhitespaceOrNewline=(str)=> {
+        // 使用正则表达式匹配字符串是否只包含换行或空白字符
+        return /^\s*$/.test(str);
+    }
+
     return (
         <ThemeProvider theme={PrebuildDialogTheme}>
             <Paper style={{
@@ -139,9 +147,11 @@ function StreamInputPanel({ classID }) {
                     }}
                     onChange={(e) => setContent(e.target.value)}
                     onKeyPress={(e) => {
-                        if (e.key === 'Enter' && !e.shiftKey && content.length > 0) {
+                        if (e.key === 'Enter' && !e.shiftKey && !content.trim().length > 0 ) {
                             e.preventDefault(); // Prevents the default action of the enter key
-                            handleSubmit(e);    // Calls your existing submit handler
+                            if (content.trim().length) { // 只有當content不只是空白或換行時
+                                handleSubmit(e); // 觸發提交函數
+                            }
                         }
                     }}
                 />
@@ -156,7 +166,7 @@ function StreamInputPanel({ classID }) {
                         }
                         label="Anonymous"
                     />
-                    <IconButton aria-label="send" onClick={handleSubmit} disabled={content.length==0}>
+                    <IconButton aria-label="send" onClick={handleSubmit} disabled={!content.trim().length > 0}>
                         <SendIcon sx={{ color: sendIconColor }}/>
                     </IconButton>
                 </div>

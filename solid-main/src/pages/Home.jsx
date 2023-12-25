@@ -76,7 +76,7 @@ function Home() {
   // setTimeout(()=>{}, 10500);
   console.log("Debug: curIndex:", curIndex);
   return (
-
+    <div style = {{ padding: 0, margin: "0px" }} >
     <Box sx={{ backgroundColor: '#444' }}>
       <HomePageDrawer
         _drawerOpen={drawerOpen} _toggleDrawer={toggleDrawer} clickLogout={handleLogout}
@@ -100,7 +100,7 @@ function Home() {
       )}
       <HomeAppBar _toggleDrawer={toggleDrawer} />
     </Box>
-
+    </div>
   );
 }
 export default Home;
