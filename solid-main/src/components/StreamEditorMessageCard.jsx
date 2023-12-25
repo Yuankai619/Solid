@@ -7,7 +7,7 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import axios from 'axios';
 import io from 'socket.io-client'
-let socket = io.connect('http://localhost:4000')
+let socket = io.connect(`${process.env.REACT_APP_API_URL}`)
 
 const StreamEditorMessageCardTheme = createTheme({
     

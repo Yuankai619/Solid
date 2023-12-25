@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import StreamEditorMessageCard from '../components/StreamEditorMessageCard';
 import axios from 'axios';
 import io from 'socket.io-client'
-let socket = io.connect('http://localhost:4000')
+let socket = io.connect(`${process.env.REACT_APP_API_URL}`)
 
 function Discussion() {
     const navigate = useNavigate();
