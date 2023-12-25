@@ -50,29 +50,25 @@ function JoinClassByIdDialog(props) {
 
     //     });
     // };
-    const handleJoin = () => {
+    const handleJoin = async() => {
         props.setDialogOpen();
         console.log(inputClassID);
-        // let tmp
-        axios({
-            method: "POST",
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            data: JSON.stringify({
-                classID : inputClassID
-            }),
-            withCredentials: true,
-            url: `${process.env.REACT_APP_API_URL}/course/userAddJoinedClass`
-        })
-        .then((res) => {
-            console.log('fgo',res.data);
-            handleNewJoinedClass(res.data);
-        })
-        .catch((error) => {
-            console.error(error);
-        });
-    
+
+        try {
+            const response = await axios.post(
+                `${process.env.REACT_APP_API_URL}/course/userAddJoinedClass`,
+                JSON.stringify({ classID: inputClassID }),
+                {
+                    headers: { 'Content-Type': 'application/json' },
+                    withCredentials: true
+                }
+            );
+
+            console.log('Joined class:', response.data);
+            handleNewJoinedClass(response.data);
+        } catch (error) {
+            console.error("Error in handleJoin:", error);
+        }
     }
     
     return (

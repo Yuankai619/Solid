@@ -28,7 +28,7 @@ function PrebuildDialog(props) {
     const [realName, setRealName] = useState('');
     const [studentID, setStudentId] = useState('');
     const [userID, setUserId] = useState('');
-    const [googleId,setgoogleId] = useState('');
+    const [googleId, setgoogleId] = useState('');
 
     useEffect(() => {
         GetUserInfo();
@@ -36,67 +36,64 @@ function PrebuildDialog(props) {
 
     const GetUserInfo = async () => {
         axios({
-          method: "GET",
-          headers: {
-            'Content-Type': 'application/json',
-          },  
-          withCredentials: true,
-          url: `${process.env.REACT_APP_API_URL}/api/getUserInfo`
-        })  
-        .then((res) =>{
-            console.log(res.data.username);
-            setUsername(res.data.username)
-            setRealName(res.data.realname);
-            setStudentId(res.data.studentID);
-            setUserId(res.data._id);
-            setgoogleId(res.data.googleid);
+            method: "GET",
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            withCredentials: true,
+            url: `${process.env.REACT_APP_API_URL}/api/getUserInfo`
         })
-        .catch((error) => {
-            
-        });
+            .then((res) => {
+                console.log(res.data.username);
+                setUsername(res.data.username)
+                setRealName(res.data.realname);
+                setStudentId(res.data.studentID);
+                setUserId(res.data._id);
+                setgoogleId(res.data.googleid);
+            })
+            .catch((error) => {
+
+            });
     };
 
-    const handleCreate = () => {
+    const handleCreate = async() => {
         props.setDialogOpen();
-        console.log("state debug>>>:" +state.gilad);//
-        let tmp
-        axios({
-            method: "POST",
-            headers: {
-              'Content-Type': 'application/json',
-            },  
-            data: JSON.stringify({
-              userID : userID,
-              description: description,
-              roomTitle : roomTitle,
-              state : state.gilad,
-              username : username,
-              googleid : googleId
-            }),
-            withCredentials: true,
-            url: `${process.env.REACT_APP_API_URL}/course/create`
-          })  
-          .then((res) =>{
-            console.log('haha',res.data.classID);
-            axios({
-                method: "POST",
-                headers: { 'Content-Type': 'application/json', },  
-                data: JSON.stringify({
-                    classID : res.data.classID
+
+        try {
+            const courseCreationResponse = await axios.post(
+                `${process.env.REACT_APP_API_URL}/course/create`,
+                JSON.stringify({
+                    userID: userID,
+                    description: description,
+                    roomTitle: roomTitle,
+                    state: state.gilad,
+                    username: username,
+                    googleid: googleId
                 }),
-                withCredentials: true,
-                url: `${process.env.REACT_APP_API_URL}/course/addClassToUser`
-            })  
-            .then((res) =>{ 
-                console.log('ahah',res.data);
-            })
-            .catch((error) => { console.error(error); });
-            handleNewCreatedClass(res.data);
-        })
-        .catch((error) => {
-            console.error(error);
-        });
-        
+                {
+                    headers: { 'Content-Type': 'application/json' },
+                    withCredentials: true
+                }
+            );
+
+            console.log('Course created:', courseCreationResponse.data.classID);
+
+            const addUserClassResponse = await axios.post(
+                `${process.env.REACT_APP_API_URL}/course/addClassToUser`,
+                JSON.stringify({ classID: courseCreationResponse.data.classID }),
+                {
+                    headers: { 'Content-Type': 'application/json' },
+                    withCredentials: true
+                }
+            );
+
+            console.log('Class added to user:', addUserClassResponse.data);
+
+            handleNewCreatedClass(courseCreationResponse.data);
+        } catch (error) {
+            console.error("Error in handleCreate:", error);
+        }
+
     }
 
 
@@ -113,7 +110,7 @@ function PrebuildDialog(props) {
         });
     };
     //switch setting
-    
+
     const [roomTitle, setRoomTitle] = useState("");
     const [description, setDescription] = useState("");
     // const [open, setOpen] = useState(true);
@@ -124,29 +121,29 @@ function PrebuildDialog(props) {
 
     const handleInputBlur = () => {
         setInputFocused(false);
-    };    
+    };
     return (
-        <ThemeProvider theme={PrebuildDialogTheme}> 
+        <ThemeProvider theme={PrebuildDialogTheme}>
             <React.Fragment>
                 <Dialog open={props.dialogOpen} onClose={props.setDialogOpen} TransitionComponent={Transition}>
                     <DialogTitle>Prebuild  Discussion</DialogTitle>
                     <DialogContent>
-                        <Box sx={{marginTop:'10px'}}>
+                        <Box sx={{ marginTop: '10px' }}>
                             <Typography sx={{ color: '#EEEEEE', marginButtom: '20px' }}>
-                            {"Discussion Title:"}
-                        </Typography>
-                        <InputText
-                            id={"room title"} 
-                            placeholder="your title ?"
-                            iserror={false} errorText={"error title name"} isrequired={true} 
-                            onChange={(e) => setRoomTitle(e.target.value)} 
-                        ></InputText>
+                                {"Discussion Title:"}
+                            </Typography>
+                            <InputText
+                                id={"room title"}
+                                placeholder="your title ?"
+                                iserror={false} errorText={"error title name"} isrequired={true}
+                                onChange={(e) => setRoomTitle(e.target.value)}
+                            ></InputText>
                         </Box>
                         <Box sx={{ margin: '20px 0px 20px' }}>
                             <Typography sx={{ color: '#EEEEEE', marginButtom: '20px' }}>
                                 {"Description:"}
                             </Typography>
-                            <TextField      
+                            <TextField
                                 multiline
                                 rows={inputFocused ? 4 : 2}
                                 placeholder="your description ?"
@@ -154,10 +151,10 @@ function PrebuildDialog(props) {
                                 fullWidth
                                 onFocus={handleInputFocus}
                                 onBlur={handleInputBlur}
-                                style={{ margin: '10px 0', borderColor:'#EEEEEE' }}
+                                style={{ margin: '10px 0', borderColor: '#EEEEEE' }}
                                 InputProps={{
                                     style: {
-                                        color:'#EEEEEE',
+                                        color: '#EEEEEE',
                                         padding: '15px', // 這裡增加padding來調整文字和框的間距
                                     },
                                 }}
@@ -165,7 +162,7 @@ function PrebuildDialog(props) {
                             />
                         </Box>
                         <FormControlLabel
-                            sx={{color:'#EEEEEE'}}
+                            sx={{ color: '#EEEEEE' }}
                             control={
                                 <Switch checked={state.gilad} onChange={handleChange} name="gilad" />
                             }

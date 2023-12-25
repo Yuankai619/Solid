@@ -24,11 +24,6 @@ function CreateClassCard({ data }) {
   const [menuState, setMenuState] = useState(data.state);
   const [allowNavigate, setAllowNavigate] = useState(true); // 新增状态来控制是否允许跳转
 
-
-  useEffect(() => {
-    data.state == 'true' ? setStatecolor('#2D6CB6') : setStatecolor('#999999');
-  }, [data.state]);
-
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
@@ -46,12 +41,12 @@ function CreateClassCard({ data }) {
   
   const handleChangeState = (event) => {
     event.stopPropagation();
-    setMenuState(menuState == true ? false : true);
-    setTimeout(function () {
+    handleChangeCreatedClassState(data.id, menuState == 'true' ? 'false' : 'true');
+    // setTimeout(function () {
       // 在這裡寫入您希望在等待後執行的程式碼
-      handleChangeCreatedClassState(data.id, menuState == 'true' ? 'false' : 'true');
-      //console.log('0.1 秒已過');
-    }, 100);
+      // console.log('0.1 秒已過');
+    // }, 300);
+    setMenuState(menuState == 'true' ? 'false' : 'true');
     
   };
   const handleDelete = (event) => {
@@ -102,14 +97,14 @@ function CreateClassCard({ data }) {
                 },
               }}
             >
-              <MenuItem onClick={handleChangeState}>{menuState == true ? "Close" : "Open"}</MenuItem>
+              <MenuItem onClick={handleChangeState}>{menuState == 'true' ? "Close" : "Open"}</MenuItem>
               <MenuItem onClick={handleDelete} sx={{ color: "#CC0000" }}>Delete</MenuItem>
             </Menu>
             <React.Fragment>
 
               <CardContent onClick={(e) => { if (!allowNavigate) e.stopPropagation(); }}>
-                <Typography sx={{ fontSize: 15, fontWeight: 600, marginTop: '12px' }} color={menuState == true? '#2D6CB6' : '#999999'} component="div">
-                  state: {menuState == true ? 'open' : 'close'}
+                <Typography sx={{ fontSize: 15, fontWeight: 600, marginTop: '12px' }} color={menuState == 'true'? '#2D6CB6' : '#999999'} component="div">
+                  state: {data.state == 'true' ? 'open' : 'close'}
                 </Typography>
                 <Typography sx={{ fontSize: 18, fontWeight: 600, }} color="#000" >
                   Class ID: {data.classID}

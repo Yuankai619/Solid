@@ -152,8 +152,8 @@ function JoinedClassCard({data}) {
   return (
     <ThemeProvider theme={JoinedClassCardTheme}>
       <Box sx={{ minWidth: 275 }} >
-        <Link style={{ textDecoration: 'none', color: 'inherit' }} to={`/joinedroom/${data.classID}`}>
         <Card variant="outlined" sx={{ cursor: 'pointer' }} > 
+        <Link style={{ textDecoration: 'none', color: 'inherit' }} to={`/joinedroom/${data.classID}`}>
             <CardHeader
               // action={
               //   <IconButton
@@ -201,8 +201,8 @@ function JoinedClassCard({data}) {
           </CardContent>
     
         
-        </Card>
         </Link>
+        </Card>
       </Box>
     </ThemeProvider>
   )

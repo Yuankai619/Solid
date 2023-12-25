@@ -15,12 +15,12 @@ import StreamJoinedMessageCardTheme from '../themes/StreamJoinedMessageCardTheme
 let socket = io.connect(`${process.env.REACT_APP_API_URL}`)
 
 function StreamJoinedMessageCard({ data, classID, setMessageData }) {
-    useEffect(()=>{
-        socket.emit('join_room',classID);
-        socket.on('refresh',(data)=>{
+    useEffect(() => {
+        socket.emit('join_room', classID);
+        socket.on('refresh', (data) => {
             console.log(data);
         })
-    },[socket])
+    }, [socket])
     const [isMyMessage, setIsMyMessage] = useState(true); //比對message的userID是不是==自己的userID
     const [isShowScore, setIsShowScore] = useState(true); //要不要顯示score
     const [selected, setSelected] = useState(data.score); // Keep track of which button is selected    
@@ -45,7 +45,7 @@ function StreamJoinedMessageCard({ data, classID, setMessageData }) {
             console.log('get', res.data._id);
             setCurrentUserId(res.data._id);
             setIsMyMessage(res.data._id === data.userID);
-            
+
         } catch (error) {
             console.error('Error in GetUserInfo:', error);
         }
@@ -54,14 +54,14 @@ function StreamJoinedMessageCard({ data, classID, setMessageData }) {
     useEffect(() => {
         if (data.score == 'null') {
             setIsShowScore(false);
-        }else{
+        } else {
             setIsShowScore(true);
         }
         console.log(currentUserId);
     }, [data.score, isMyMessage]);
-    console.log('pp',isShowScore);
+    console.log('pp', isShowScore);
 
-    console.log('a',data.score)
+    console.log('a', data.score)
 
     const correctEnable = "#3DECAD", correctDisable = "#00764B";
     const incorrectEnable = "#EE592A", incorrectDisable = "#76270E";
@@ -69,25 +69,25 @@ function StreamJoinedMessageCard({ data, classID, setMessageData }) {
     const avatarSrc = data.isAnonymous === 'true' ? undefined : data.userimg;
     const username = data.isAnonymous === 'true' ? 'Anonymous' : data.username;
 
-    const handleDeleteMessage = async ()  => {//要記得寫setMessageData
+    const handleDeleteMessage = async () => {//要記得寫setMessageData
         try {
             const response = await axios({
                 method: "POST",
                 headers: { 'Content-Type': 'application/json', },
                 data: JSON.stringify({
                     classID: classID,
-                    messageID : data.messageid
+                    messageID: data.messageid
                 }),
                 withCredentials: true,
                 url: `${process.env.REACT_APP_API_URL}/course/deleteMessage`
             });
-            if(!response)console.log('error');
+            if (!response) console.log('error');
             else console.log(response);
         } catch (error) {
             console.error('Error fetching class data:', error);
         }
         console.log("delete message");
-        socket.emit('send_message',classID);
+        socket.emit('send_message', classID);
         setAnchorEl(null);
     };
     const [anonymousState, setAnonymousState] = useState(data.isAnonymous);
@@ -99,19 +99,19 @@ function StreamJoinedMessageCard({ data, classID, setMessageData }) {
                 headers: { 'Content-Type': 'application/json', },
                 data: JSON.stringify({
                     classID: classID,
-                    messageID : data.messageid,
-                    isAnonymous : data.isAnonymous
+                    messageID: data.messageid,
+                    isAnonymous: data.isAnonymous
                 }),
                 withCredentials: true,
                 url: `${process.env.REACT_APP_API_URL}/course/setAnonymous`
             });
-            if(!response)console.log('error');
+            if (!response) console.log('error');
             else console.log(response);
         } catch (error) {
             console.error('Error fetching class data:', error);
         }
         console.log("setAnonymous message");
-        socket.emit('send_message',classID);
+        socket.emit('send_message', classID);
     }
 
     const handleChangeAnonymous = (event) => {
@@ -141,33 +141,33 @@ function StreamJoinedMessageCard({ data, classID, setMessageData }) {
                         <Typography variant="subtitle1" >
                             {username}
                         </Typography>
-                        { isShowScore && 
-                        <Button aria-label="scroeState"
-                            // onClick={() => handleButtonClick('incorrect')}
-                            sx={{
-                                background: data.score == 'correct' ? correctEnable : incorrectEnable,
-                                '&:hover': {
-                            background: data.score == 'correct' ? correctEnable : incorrectEnable, // 确保鼠标悬浮时的背景色与点击时相同
-                                },
-                            }}
+                        {isShowScore &&
+                            <Button aria-label="scroeState"
+                                // onClick={() => handleButtonClick('incorrect')}
+                                sx={{
+                                    background: data.score == 'correct' ? correctEnable : incorrectEnable,
+                                    '&:hover': {
+                                        background: data.score == 'correct' ? correctEnable : incorrectEnable, // 确保鼠标悬浮时的背景色与点击时相同
+                                    },
+                                }}
                             // disabled={selected==='null'}
-                        >
-                        </Button>
+                            >
+                            </Button>
                         }
-                        { isMyMessage &&
-                        <IconButton aria-label="menu"
-                            // onClick={() => handleButtonClick('incorrect')}
-                            sx={{
-                                background: "#222222",
-                                '&:hover': {
-                                    background: "#222222", // 确保鼠标悬浮时的背景色与点击时相同
-                                },
-                            }}
-                            //disabled={selected === 'null'}
-                            onClick={handleClickMenu}
-                        >
-                            <MoreHorizIcon sx={{color:"#999999"}}/>
-                        </IconButton>
+                        {isMyMessage &&
+                            <IconButton aria-label="menu"
+                                // onClick={() => handleButtonClick('incorrect')}
+                                sx={{
+                                    background: "#222222",
+                                    '&:hover': {
+                                        background: "#222222", // 确保鼠标悬浮时的背景色与点击时相同
+                                    },
+                                }}
+                                //disabled={selected === 'null'}
+                                onClick={handleClickMenu}
+                            >
+                                <MoreHorizIcon sx={{ color: "#999999" }} />
+                            </IconButton>
                         }
                         <Menu
                             id="long-menu"
@@ -189,7 +189,7 @@ function StreamJoinedMessageCard({ data, classID, setMessageData }) {
                                 },
                             }}
                         >
-                            <MenuItem onClick={handleChangeAnonymous}>{anonymousState ==false? 'Not Anonymous' : 'Set Anonymous'}</MenuItem>
+                            <MenuItem onClick={handleChangeAnonymous}>{anonymousState == false ? 'Not Anonymous' : 'Set Anonymous'}</MenuItem>
                             <MenuItem onClick={handleDeleteMessage} sx={{ color: "#CC0000" }}>Delete</MenuItem>
                         </Menu>
                     </div>
