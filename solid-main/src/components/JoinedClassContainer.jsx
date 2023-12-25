@@ -6,7 +6,7 @@ function JoinedClassCardContainer(){
   const { joinedCLassData } = useClassDataContext();
   
   return(
-    <Container>
+    <Container >
       {joinedCLassData.map((data,index) => (
         <JoinedClassCard
           key={index}

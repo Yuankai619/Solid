@@ -6,7 +6,7 @@ function CreateClassContainer({data,...props}) {
   const { createdClassData } = useClassDataContext();
 
   return (
-    <Container>
+    <Container >
       {createdClassData.map((data,index) => (
         <CreateClassCard
           key={index}

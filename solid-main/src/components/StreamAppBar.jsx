@@ -57,7 +57,7 @@ function StreamAppBar({ data }) {
                         onClick={()=>{
                             setTimeout(function() {
                                 navigate('/home'); 
-                            }, 150);
+                            }, 300);
                         }
                         }
                     // sx={{ flexGrow: 0 }}

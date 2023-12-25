@@ -52,7 +52,7 @@ function ProfilepPage() {
             'Content-Type': 'application/json',
           },  
           withCredentials: true,
-          url: "http://localhost:4000/api/getUserInfo"
+          url: `${process.env.REACT_APP_API_URL}/api/getUserInfo`
         })  
         .then((res) =>{
 
@@ -113,7 +113,7 @@ function ProfilepPage() {
             studentID : studentID
           }),
           withCredentials: true,
-          url: "http://localhost:4000/api/updateinfo"
+          url: `${process.env.REACT_APP_API_URL}/api/updateinfo`
         })  
         .then((res) =>{
             console.log('ss');
@@ -152,7 +152,7 @@ function ProfilepPage() {
                         src={imgUrl}
                         sx={{ width: 120, height: 120, marginBottom:'20px'}}
                     />
-                    <input
+                    {/* <input
                         accept="image/*"
                         style={{ display: 'none' }}
                         id="icon-button-file"
@@ -163,7 +163,7 @@ function ProfilepPage() {
                         <IconButton color="primary" aria-label="upload picture" component="span">
                             <PhotoCamera style={{color:"#EEEEEE"}}/>
                         </IconButton>
-                    </label>
+                    </label> */}
                 </Box>
                 <Box my={boxGap}>
                     <InputText

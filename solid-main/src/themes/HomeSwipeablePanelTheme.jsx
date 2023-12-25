@@ -28,9 +28,13 @@ const HomeSwipeablePanelTheme = createTheme({
                     width: '100%',
                     '.MuiTabs-indicator': {
                         backgroundColor: '#EEEEEE',
+                        height: '9px',  // 設定底線的粗細
+                        width: '50%',    // 設定底線的寬度
                     },
+                    
 
                 },
+                
             },
         },
     }

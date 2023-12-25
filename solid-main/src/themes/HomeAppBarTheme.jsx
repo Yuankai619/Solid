@@ -41,8 +41,11 @@ const HomeAppBarTheme = createTheme({
             styleOverrides: {
                 root: {
                     width: '100%',
+                    // paddingRight: '10px',
+                    // paddingLeft: '10px',
                     '.MuiTabs-indicator': {
                         backgroundColor: '#EEEEEE',
+                        height: '3px',  // 設定底線的粗細
                     },
 
                 },

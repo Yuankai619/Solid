@@ -32,6 +32,7 @@ function HomeAppBar(props) {
                             value={curIndex}
                             onChange={handleTabChange}
                             aria-label="full width tabs"
+                            
                         >
                             <Tab label="Joined Class" />
                             <Tab label="Created Class" />

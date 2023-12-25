@@ -48,7 +48,7 @@ function Home() {
 
   const actions = [
     [{ icon: <DialpadIcon sx={{ color: '#EEEEEE' }} />, name: 'Join by ID' }],
-    [{ icon: <EditNoteIcon sx={{ color: '#EEEEEE', fontSize: '32px' }} />, name: 'Prebuild' }, { icon: <FlashOnIcon sx={{ color: '#EEEEEE', fontSize: '30px' }} />, name: 'Quick create' }],
+    [{ icon: <EditNoteIcon sx={{ color: '#EEEEEE', fontSize: '32px' }} />, name: 'Prebuild' }],// { icon: <FlashOnIcon sx={{ color: '#EEEEEE', fontSize: '30px' }} />, name: 'Quick create' }],
   ];
   const theme = useTheme();
   const toggleDrawer = (open) => (event) => {
@@ -66,13 +66,14 @@ function Home() {
   const handleLogout = () => {
     axios({
       method: 'get',
-      url: 'http://localhost:4000/auth/logout',
+      url: `${process.env.REACT_APP_API_URL}/auth/logout`,
       withCredentials: true
     }).then((res) => {
       console.log(res.data.logoutState);
       navigate('/login');
     });
   }
+  // setTimeout(()=>{}, 10500);
   console.log("Debug: curIndex:", curIndex);
   return (
 

@@ -33,7 +33,7 @@ function HomePageDrawer({ clickLogout ,...props}) {
             'Content-Type': 'application/json',
           },  
           withCredentials: true,
-          url: "http://localhost:4000/api/getUserInfo"
+          url: `${process.env.REACT_APP_API_URL}/api/getUserInfo`
         })  
         .then((res) =>{
             
@@ -76,10 +76,10 @@ function HomePageDrawer({ clickLogout ,...props}) {
                                 <ListItemIcon><AccountBoxIcon style={{ color: "#EEEEEE" }} /></ListItemIcon>
                                 <ListItemText primary="Profile" />
                             </ListItemButton>
-                            <ListItemButton>
+                            {/* <ListItemButton>
                                 <ListItemIcon><BarChartIcon style={{ color: "#EEEEEE" }} /></ListItemIcon>
                                 <ListItemText primary="Statistics" />
-                            </ListItemButton>
+                            </ListItemButton> */}
                             <ListItemButton onClick={clickLogout}>
                                 <ListItemIcon><ExitToAppIcon style={{ color: "#EEEEEE" }} /></ListItemIcon>
                                 <ListItemText primary="Logout" />

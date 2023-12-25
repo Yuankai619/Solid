@@ -19,9 +19,9 @@ import axios from 'axios';
 function LoginPage() {
   useEffect(() => {
     document.body.style.background = "linear-gradient(-45deg, #32854b, #243B55,#a4c44d)";
-    document.body.style.backgroundSize = "400% 400%";
+    document.body.style.backgroundSize = "1000% 1000%";
     document.body.style.animation = "gradient 10s ease infinite";
-    console.log('load login page');
+    
     document.body.style.overflow = 'auto';
     return () => {
       document.body.style.background = '';
@@ -52,7 +52,7 @@ function LoginPage() {
         password: password,
       }),
       withCredentials: true,
-      url: "http://localhost:4000/auth/login"
+      url: `${process.env.REACT_APP_API_URL}/auth/login`
     })
       .then((res) => {
         console.log('res data = ', res.data)
@@ -67,7 +67,7 @@ function LoginPage() {
 
   }//handlesubmit
   const googleSubmit = () => {
-    window.location.href = 'http://localhost:4000/auth/google'
+    window.location.href = `${process.env.REACT_APP_API_URL}/auth/google`
 
 
   }
