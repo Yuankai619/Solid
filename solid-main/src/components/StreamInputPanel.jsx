@@ -139,7 +139,7 @@ function StreamInputPanel({ classID }) {
                     }}
                     onChange={(e) => setContent(e.target.value)}
                     onKeyPress={(e) => {
-                        if (e.key === 'Enter' && !e.shiftKey) {
+                        if (e.key === 'Enter' && !e.shiftKey && content.length > 0) {
                             e.preventDefault(); // Prevents the default action of the enter key
                             handleSubmit(e);    // Calls your existing submit handler
                         }

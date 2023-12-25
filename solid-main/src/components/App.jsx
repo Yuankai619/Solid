@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import SignupPage from "../pages/Signup";
 import LoginPage from "../pages/Login";
 import HomePage from "../pages/Home";
@@ -13,6 +13,20 @@ import {
 import JoinedDisscussion from "../pages/JoinedDisscussion";
 
 function App() {
+  useEffect(() => {
+    let vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
+
+    // Optionally, add resize event listener if you need to update --vh on window resize
+    const handleResize = () => {
+      let vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty('--vh', `${vh}px`);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   return (
     <ClassDataProvider>
     <Routes>
