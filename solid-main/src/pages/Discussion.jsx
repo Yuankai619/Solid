@@ -42,12 +42,13 @@ function Discussion() {
             }
         };
         document.body.style.overflow = 'hidden';
-        document.body.style.background = "#444";
+        document.body.style.background = "#222222";
         checkLogin();
         return () => {
             console.log('return');
             // document.body.style.background = '';
             document.body.style.overflow = '';
+            document.body.style.background = "#444";
         };
     }, []);
     //test Data
