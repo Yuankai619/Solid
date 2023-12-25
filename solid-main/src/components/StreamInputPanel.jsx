@@ -4,25 +4,16 @@ import SendIcon from '@mui/icons-material/Send';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import axios from 'axios';
-import webSocket from 'socket.io-client'
+import io from 'socket.io-client';
+
+const socker = io.connect('http://localhost:8080');
+
 function StreamInputPanel({ classID }) {
-    const [ws, setWs] = useState(null);
+    const sendMessage = (message) => {  
+        socker.emit('give_message', message);
+    };
 
-    useEffect(() => {
-        const websocket = new WebSocket('ws://localhost:4000'); // 根据你的 WebSocket 服务器地址进行调整
-        setWs(websocket);
-        websocket.onopen = () => console.log("WebSocket connected");
-        websocket.onclose = () => console.log("WebSocket disconnected");
-        // 处理接收到的消息
-        websocket.onmessage = (event) => {
-            // 这里可以添加代码来处理接收到的消息
-            console.log("Received message:", event.data);
-        };
 
-        return () => {
-            websocket.close();
-        };
-    }, []);
     //stream data
     const [content, setContent] = useState('');
     const [isAnonymous, setIsAnonymous] = useState(false);
@@ -38,18 +29,7 @@ function StreamInputPanel({ classID }) {
         // console.log(isAnonymous);
         // console.log(classID);
         //add comment
-        if (ws && ws.readyState === WebSocket.OPEN) {
-            const messageData = {
-                classID: classID,
-                isAnonymous: isAnonymous,
-                message: content,
-                score: "null"
-            };
-            ws.send(JSON.stringify(messageData)); // 将消息数据转换为 JSON 字符串并发送
-            setContent(''); // 清除输入框
-        } else {
-            console.error("WebSocket is not connected.");
-        }
+        sendMessage(content);
         // axios({
         //     method: "POST",
         //     headers: { 'Content-Type': 'application/json', },  

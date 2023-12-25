@@ -7,16 +7,24 @@ import { useParams, useLocation } from 'react-router-dom';
 import LoginChecker from '../checker/LoginChecker';
 import { useNavigate } from 'react-router-dom';
 import StreamJoinedMessageCard from '../components/StreamJoinedMessageCard';
-
 import axios from 'axios';
+import io from 'socket.io-client';
+
+
 
 function JoinedDisscussion() {
+    // const [ws, setWs] = useState(null);
     const navigate = useNavigate();
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [isLoginCheckComplete, setIsLoginCheckComplete] = useState(false);
     const location = useLocation();
     const ClassID = location.pathname.split('/')[2];
     useEffect(() => {
+        // ws = new WebSocket('ws://localhost:8080');
+        // ws.onmessage = function(event) {
+        //     console.log(`Received: ${event.data}`);
+        //     console.log('ggggggg')
+        // };
         const checkLogin = async () => {
             const result = await LoginChecker();
             setIsLoggedIn(result.isLoggedIn);
