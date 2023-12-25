@@ -63,7 +63,7 @@ function JoinClassByIdDialog(props) {
                 classID : inputClassID
             }),
             withCredentials: true,
-            url: `http://localhost:4000/course/userAddJoinedClass`
+            url: `${process.env.REACT_APP_API_URL}/course/userAddJoinedClass`
         })
         .then((res) => {
             console.log('fgo',res.data);

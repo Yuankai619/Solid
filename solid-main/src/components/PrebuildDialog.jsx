@@ -41,7 +41,7 @@ function PrebuildDialog(props) {
             'Content-Type': 'application/json',
           },  
           withCredentials: true,
-          url: "http://localhost:4000/api/getUserInfo"
+          url: `${process.env.REACT_APP_API_URL}/api/getUserInfo`
         })  
         .then((res) =>{
             console.log(res.data.username);
@@ -74,7 +74,7 @@ function PrebuildDialog(props) {
               googleid : googleId
             }),
             withCredentials: true,
-            url: "http://localhost:4000/course/create"
+            url: `${process.env.REACT_APP_API_URL}/course/create`
           })  
           .then((res) =>{
             console.log('haha',res.data.classID);
@@ -85,7 +85,7 @@ function PrebuildDialog(props) {
                     classID : res.data.classID
                 }),
                 withCredentials: true,
-                url: "http://localhost:4000/course/addClassToUser"
+                url: `${process.env.REACT_APP_API_URL}/course/addClassToUser`
             })  
             .then((res) =>{ 
                 console.log('ahah',res.data);
