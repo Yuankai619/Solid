@@ -58,7 +58,7 @@ function SignupPage() {
         email: email
       }),
       withCredentials: true,
-      url: "http://localhost:4000/auth/register"
+      url: `${process.env.REACT_APP_API_URL}/auth/register`
     })
     .then((res) =>{
       console.log('res data = ',res.data)

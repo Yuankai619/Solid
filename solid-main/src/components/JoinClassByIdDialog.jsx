@@ -36,7 +36,7 @@ function JoinClassByIdDialog(props) {
     //             'Content-Type': 'application/json',
     //         },
     //         withCredentials: true,
-    //         url: "http://localhost:4000/course/getJoinedClass"
+    //         url: `${process.env.REACT_APP_API_URL}/course/getJoinedClass`
     //     })
     //     .then((res) => {
     //         console.log(res.data.username);
@@ -63,7 +63,7 @@ function JoinClassByIdDialog(props) {
                 classID : inputClassID
             }),
             withCredentials: true,
-            url: "http://localhost:4000/course/userAddJoinedClass"
+            url: `http://localhost:4000/course/userAddJoinedClass`
         })
         .then((res) => {
             console.log('fgo',res.data);

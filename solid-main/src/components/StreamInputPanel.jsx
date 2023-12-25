@@ -39,7 +39,7 @@ function StreamInputPanel({ classID }) {
                 score : "null"
             }),
             withCredentials: true,
-            url: "http://localhost:4000/course/sendMessage"
+            url: `${process.env.REACT_APP_API_URL}/course/sendMessage`
         })  
         .then((res) =>{
             // comment here

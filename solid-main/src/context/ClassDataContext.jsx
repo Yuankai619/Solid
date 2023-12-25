@@ -33,7 +33,7 @@ export const ClassDataProvider = ({ children }) => {
 
                 const response = await axios({
                     method: 'get',
-                    url: 'http://localhost:4000/course/getCreatedClass',
+                    url: `${process.env.REACT_APP_API_URL}/course/getCreatedClass`,
                     withCredentials: true
                 });
                 const modifiedData = response.data.map(item => ({//加入id
@@ -51,7 +51,7 @@ export const ClassDataProvider = ({ children }) => {
 
                 const response = await axios({
                     method: 'get',
-                    url: 'http://localhost:4000/course/getJoinedClass',
+                    url: `${process.env.REACT_APP_API_URL}/course/getJoinedClass`,
                     withCredentials: true
                 });
                 const modifiedData = response.data.map(item => ({//加入id
@@ -87,7 +87,7 @@ export const ClassDataProvider = ({ children }) => {
                 state: newState
             }),
             withCredentials: true,
-            url: "http://localhost:4000/course/changeState"
+            url: `${process.env.REACT_APP_API_URL}/course/changeState`
         })
             .then((res) => { })
             .catch((error) => { console.error(error); });
@@ -104,7 +104,7 @@ export const ClassDataProvider = ({ children }) => {
                 classID: id
             }),
             withCredentials: true,
-            url: "http://localhost:4000/course/deleteClass"
+            url: `${process.env.REACT_APP_API_URL}/course/deleteClass`
         })
             .then((res) => { })
             .catch((error) => { console.error(error); });
@@ -115,7 +115,7 @@ export const ClassDataProvider = ({ children }) => {
                 classID: id
             }),
             withCredentials: true,
-            url: "http://localhost:4000/course/deleteClassFromUser"
+            url: `${process.env.REACT_APP_API_URL}/course/deleteClassFromUser`
         })
             .then((res) => { })
             .catch((error) => { console.error(error); });

@@ -21,7 +21,7 @@ function UpdateGoogleUserInfo() {
       try {
         const response = await axios({
           method: 'get',
-          url: 'http://localhost:4000/auth/auth-state',
+          url: `${process.env.REACT_APP_API_URL}/auth/auth-state`,
           withCredentials: true
         });
         if (response.data.loginState == "LoginFailed") {  
@@ -88,7 +88,7 @@ function UpdateGoogleUserInfo() {
         studentID : studentID
       }),
       withCredentials: true,
-      url: "http://localhost:4000/api/updateinfo"
+      url: `${process.env.REACT_APP_API_URL}/api/updateinfo`
     })  
     .then((res) =>{
         navigate('/home');

@@ -70,7 +70,7 @@ function Discussion() {
                     classID : ClassID
                 }),
                 withCredentials: true,
-                url: "http://localhost:4000/course/loadClassAll"
+                url: `${process.env.REACT_APP_API_URL}/course/loadClassAll`
             });
             // console.log(response);
             setClassData(response.data.info);

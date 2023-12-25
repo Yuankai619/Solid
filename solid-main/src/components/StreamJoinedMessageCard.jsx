@@ -12,7 +12,7 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import io from 'socket.io-client'
 import StreamJoinedMessageCardTheme from '../themes/StreamJoinedMessageCardTheme';
-let socket = io.connect('http://localhost:5000')
+let socket = io.connect(`${process.env.REACT_APP_API_URL}`)
 
 function StreamJoinedMessageCard({ data, classID, setMessageData }) {
     useEffect(()=>{
@@ -40,7 +40,7 @@ function StreamJoinedMessageCard({ data, classID, setMessageData }) {
                     'Content-Type': 'application/json',
                 },
                 withCredentials: true,
-                url: "http://localhost:4000/api/getUserInfo"
+                url: `${process.env.REACT_APP_API_URL}/api/getUserInfo`
             });
             console.log('get', res.data._id);
             setCurrentUserId(res.data._id);
@@ -79,7 +79,7 @@ function StreamJoinedMessageCard({ data, classID, setMessageData }) {
                     messageID : data.messageid
                 }),
                 withCredentials: true,
-                url: "http://localhost:4000/course/deleteMessage"
+                url: `${process.env.REACT_APP_API_URL}/course/deleteMessage`
             });
             if(!response)console.log('error');
             else console.log(response);
@@ -103,7 +103,7 @@ function StreamJoinedMessageCard({ data, classID, setMessageData }) {
                     isAnonymous : data.isAnonymous
                 }),
                 withCredentials: true,
-                url: "http://localhost:4000/course/setAnonymous"
+                url: `${process.env.REACT_APP_API_URL}/course/setAnonymous`
             });
             if(!response)console.log('error');
             else console.log(response);

@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import StreamJoinedMessageCard from '../components/StreamJoinedMessageCard';
 import axios from 'axios';
 import io from 'socket.io-client'
-let socket = io.connect('http://localhost:5000')
+let socket = io.connect(`${process.env.REACT_APP_API_URL}`)
 
 function JoinedDisscussion() {
     const navigate = useNavigate();
@@ -79,7 +79,7 @@ function JoinedDisscussion() {
                     classID: ClassID
                 }),
                 withCredentials: true,
-                url: "http://localhost:4000/course/loadClassAll"
+                url: `${process.env.REACT_APP_API_URL}/course/loadClassAll`
             });
             // console.log('uu',response,'uu');
             setClassData(response.data.info);
