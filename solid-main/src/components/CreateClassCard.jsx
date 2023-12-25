@@ -102,7 +102,7 @@ function CreateClassCard({ data }) {
                 },
               }}
             >
-              <MenuItem onClick={handleChangeState}>{menuState == 'true' ? "Close" : "Open"}</MenuItem>
+              <MenuItem onClick={handleChangeState}>{menuState == true ? "Close" : "Open"}</MenuItem>
               <MenuItem onClick={handleDelete} sx={{ color: "#CC0000" }}>Delete</MenuItem>
             </Menu>
             <React.Fragment>

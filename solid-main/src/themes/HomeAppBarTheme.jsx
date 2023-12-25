@@ -15,7 +15,13 @@ const HomeAppBarTheme = createTheme({
                     backgroundColor: '#000000',
                 },
                 root: {
-                    position: 'relative',
+                    position: 'fixed',
+                    marginTop: '100dvh',
+                    marginTop:'calc(100dvh - 64px)',
+                    
+                    // bottom: 0,
+                    // left: 0,
+                    // right: 0,
                     // paddingBottom: 'env(safe-area-inset-bottom)',
                     paddingBottom: '15px',
                 }

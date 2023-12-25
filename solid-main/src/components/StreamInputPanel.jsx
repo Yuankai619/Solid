@@ -7,7 +7,7 @@ import axios from 'axios';
 import io from 'socket.io-client'
 let socket = io.connect(`${process.env.REACT_APP_API_URL}`)
 
-function StreamInputPanel({ classID }) {
+function StreamInputPanel({ classID ,classState}) {
     //stream data
     const [content, setContent] = useState('');
     const [isAnonymous, setIsAnonymous] = useState(false);
@@ -23,7 +23,7 @@ function StreamInputPanel({ classID }) {
     },[socket])
 
     const handleSubmit = (event) => {
-
+        event.stopPropagation();
         event.preventDefault();
         if (!content.trim().length) {
             return; // 如果是，則不執行後續操作
@@ -109,7 +109,7 @@ function StreamInputPanel({ classID }) {
             },
         }
     });
-
+    console.log("input class State:  ",classState);
     return (
         <ThemeProvider theme={PrebuildDialogTheme}>
             <Paper style={{
@@ -143,8 +143,8 @@ function StreamInputPanel({ classID }) {
                     }}
                     onChange={(e) => setContent(e.target.value)}
                     onKeyPress={(e) => {
-                        if (e.key === 'Enter' && !e.shiftKey && !content.trim().length > 0 ) {
-                            e.preventDefault(); // Prevents the default action of the enter key
+                        if (e.key === 'Enter' && !e.shiftKey) {
+                            // e.preventDefault(); // Prevents the default action of the enter key
                             if (content.trim().length) { // 只有當content不只是空白或換行時
                                 handleSubmit(e); // 觸發提交函數
                             }
@@ -162,7 +162,7 @@ function StreamInputPanel({ classID }) {
                         }
                         label="Anonymous"
                     />
-                    <IconButton aria-label="send" onClick={handleSubmit} disabled={!content.trim().length > 0}>
+                    <IconButton aria-label="send" onClick={handleSubmit} disabled={!content.trim().length > 0 }>
                         <SendIcon sx={{ color: sendIconColor }}/>
                     </IconButton>
                 </div>

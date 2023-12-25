@@ -57,7 +57,7 @@ function JoinedDisscussion() {
             }
         };
         document.body.style.overflow = 'hidden';
-        document.body.style.background = "#222222";
+        document.body.style.background = "#444";
         checkLogin();
         fetchClassData();
         return () => {
@@ -115,7 +115,9 @@ function JoinedDisscussion() {
                 </Container>
             </div>
 
-            <StreamInputPanel classID={ClassID} />
+            {(classData.state == 'true') &&
+                <StreamInputPanel classID={ClassID} />
+            }
         </div>
     );
 

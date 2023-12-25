@@ -19,16 +19,16 @@ function Discussion() {
     const ClassID = location.pathname.split('/')[2];
 
 
-    
+
     useEffect(() => {
-        socket.emit('join_room',ClassID);
-        socket.on('refresh',(data)=>{
-            setTimeout(function() {
+        socket.emit('join_room', ClassID);
+        socket.on('refresh', (data) => {
+            setTimeout(function () {
                 // 在這裡寫入您希望在等待後執行的程式碼
                 fetchClassData();
                 //console.log('0.1 秒已過');
             }, 150);
-        //    document.location.reload();
+            //    document.location.reload();
         })
     }, [socket]);
 
@@ -42,7 +42,7 @@ function Discussion() {
             }
         };
         document.body.style.overflow = 'hidden';
-        document.body.style.background = "#222222";
+        document.body.style.background = "#444";
         checkLogin();
         return () => {
             console.log('return');
@@ -58,16 +58,16 @@ function Discussion() {
         // { id: 2, isAnonymous: true, messageID: "002", username: "BOB", selected: "null", content: "少生不會寺許送房，風來可北几玉冰麼土個急枝貫戶掃童化，現根旁杯追樹見，星父父快雄次園氣面書壯民做麻怪河園？世連買她天怎紅和食邊植正、做節皮樹雨民我玩經！辛冒時平游。" },
         // { id: 3, isAnonymous: false, messageID: "003", username: "Python", selected: "null", content: "飯布羽飯久兆卜科二內打姐休姊斗造平、後方給肉新娘昔米片也即抓個世左放點做定沒：朱反空奶收斤草語？耳就半。更息已媽。" }
     ]);
-    
+
     //fetch class data
     const fetchClassData = async () => {
         try {
             console.log(ClassID);
             const response = await axios({
                 method: "POST",
-                headers: { 'Content-Type': 'application/json', },  
+                headers: { 'Content-Type': 'application/json', },
                 data: JSON.stringify({
-                    classID : ClassID
+                    classID: ClassID
                 }),
                 withCredentials: true,
                 url: `${process.env.REACT_APP_API_URL}/course/loadClassAll`
@@ -82,19 +82,20 @@ function Discussion() {
     useEffect(() => {
         fetchClassData();
     }, []);
-    
+
     // const scrollRef = useRef(null);//預設載入時滾動條在最下面
     // useEffect(() => {
     //     if (scrollRef.current) {
     //         scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     //     }
     // }, [messageData]);
+    // console.log("fetch ClassData.State: ", classData.state)
     return (
         <div style={{ padding: 0, margin: "0px" }}>
             <StreamAppBar data={classData} />
             <div style={{ paddingTop: '70px' }}>
-                <Container sx={{ position: 'fixed', height: 'calc(100vh - 252px)', overflow: "auto", px: "0px", paddingBottom:"32px"}} maxWidth="100%"> 
-                    {messageData.map((data,index) => (
+                <Container sx={{ position: 'fixed', height: 'calc(100vh - 252px)', overflow: "auto", px: "0px", paddingBottom: "32px" }} maxWidth="100%">
+                    {messageData.map((data, index) => (
                         <StreamEditorMessageCard
                             key={index}
                             data={data}
@@ -103,8 +104,9 @@ function Discussion() {
                     ))}
                 </Container>
             </div>
-
-            <StreamInputPanel classID={ClassID} />
+            {(classData.state=='true' )&&
+                <StreamInputPanel classID={ClassID}  />
+            }
         </div>
     );
 
