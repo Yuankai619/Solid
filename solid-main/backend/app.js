@@ -15,7 +15,10 @@ const courseRoutes = require('./routes/course-routes')
 const passportSetup = require('./config/passportConfig');
 const http = require('http')
 const {Server} = require('socket.io')
+const path = require('path');
 require('dotenv').config();
+
+
 
 // connect Database
 
@@ -28,30 +31,10 @@ mongoose.connect(process.env.mongoDB)
 
 // ws
 
-const server = http.createServer(app);
-const io = new Server(server,{
-    cors:{
-        origin: 'http://localhost:3000',
-        methods : ['GET','POST'],
-    }
-})
 
-io.on('connection',(socket)=>{
-    console.log(`User Connected: ${socket.id}`)
-    socket.on('join_room',(data)=>{
-        console.log(socket.id,'joined room',data);
-        socket.join(data);
-        //socket.emit('t','fuck');
-    })
-    socket.on('send_message',(data)=>{
-        console.log('sent refresh',data)
-        socket.to(data).emit('refresh',data);
-    })
-})
 
-server.listen(5000,()=>{
-    console.log('websocket is on port ',5000);
-})
+
+
 
 // cors
 const corsOptions = {
@@ -101,15 +84,46 @@ app.get("/user", (req, res) => {
 })
 
 app.get('/', (req, res) => {
-    console.log("res ", req.user)
-    res.send('welcome to  HOME page');
+  res.redirect('/home');
 })
 
 
 // ---------------------------  end of routes ------------------------------------
 
+
+
+
+app.use(express.static(path.join(__dirname, '../build'))); 
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, '../build', 'index.html'));
+});
+
 //startserver
 const port = process.env.PORT
-app.listen(port, () => {
+
+
+const server = http.createServer(app);
+
+const io = new Server(server,{
+    cors:{
+        origin: 'http://localhost:3000',
+        methods : ['GET','POST'],
+    }
+})
+
+io.on('connection',(socket)=>{
+    console.log(`User Connected: ${socket.id}`)
+    socket.on('join_room',(data)=>{
+        console.log(socket.id,'joined room',data);
+        socket.join(data);
+        //socket.emit('t','fuck');
+    })
+    socket.on('send_message',(data)=>{
+        console.log('sent refresh',data)
+        socket.to(data).emit('refresh',data);
+    })
+})
+
+server.listen(port, () => {
     console.log(`Server Has Started on port ${port} `);
 });

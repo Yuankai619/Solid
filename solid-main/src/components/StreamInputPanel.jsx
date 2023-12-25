@@ -5,7 +5,7 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import axios from 'axios';
 import io from 'socket.io-client'
-let socket = io.connect('http://localhost:5000')
+let socket = io.connect('http://localhost:4000')
 
 function StreamInputPanel({ classID }) {
     //stream data

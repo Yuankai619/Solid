@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import StreamJoinedMessageCard from '../components/StreamJoinedMessageCard';
 import axios from 'axios';
 import io from 'socket.io-client'
-let socket = io.connect('http://localhost:5000')
+let socket = io.connect('http://localhost:4000')
 
 function JoinedDisscussion() {
     const navigate = useNavigate();
