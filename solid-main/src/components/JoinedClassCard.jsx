@@ -155,14 +155,14 @@ function JoinedClassCard({data}) {
         <Link style={{ textDecoration: 'none', color: 'inherit' }} to={`/joinedroom/${data.classID}`}>
         <Card variant="outlined" sx={{ cursor: 'pointer' }} > 
             <CardHeader
-              action={
-                <IconButton
-                  aria-label="class setting menu"
-                  onClick={handleClickMenu}
-                >
-                  <MoreVertIcon />
-                </IconButton>
-              }
+              // action={
+              //   <IconButton
+              //     aria-label="class setting menu"
+              //     onClick={handleClickMenu}
+              //   >
+              //     <MoreVertIcon />
+              //   </IconButton>
+              // }
               title={data.title}
             />
             <Menu
