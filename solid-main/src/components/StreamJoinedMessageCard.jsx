@@ -12,7 +12,7 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import io from 'socket.io-client'
 import StreamJoinedMessageCardTheme from '../themes/StreamJoinedMessageCardTheme';
-let socket = io.connect('http://localhost:5000')
+let socket = io.connect('http://localhost:4000')
 
 function StreamJoinedMessageCard({ data, classID, setMessageData }) {
     useEffect(()=>{
