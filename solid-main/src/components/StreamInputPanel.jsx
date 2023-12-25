@@ -109,10 +109,6 @@ function StreamInputPanel({ classID }) {
             },
         }
     });
-    const isWhitespaceOrNewline=(str)=> {
-        // 使用正则表达式匹配字符串是否只包含换行或空白字符
-        return /^\s*$/.test(str);
-    }
 
     return (
         <ThemeProvider theme={PrebuildDialogTheme}>

@@ -46,8 +46,13 @@ function CreateClassCard({ data }) {
   
   const handleChangeState = (event) => {
     event.stopPropagation();
-    setMenuState(menuState == 'true' ? 'false' : 'true');
-    handleChangeCreatedClassState(data.id, menuState == 'true' ? 'false' : 'true');
+    setMenuState(menuState == true ? false : true);
+    setTimeout(function () {
+      // 在這裡寫入您希望在等待後執行的程式碼
+      handleChangeCreatedClassState(data.id, menuState == 'true' ? 'false' : 'true');
+      //console.log('0.1 秒已過');
+    }, 100);
+    
   };
   const handleDelete = (event) => {
     event.stopPropagation();
@@ -68,7 +73,9 @@ function CreateClassCard({ data }) {
               action={
                 <IconButton
                   aria-label="class setting menu"
-                  onClick={handleClickMenu}
+                  onClick={
+                    handleClickMenu
+                    }
                 >
                   <MoreVertIcon />
                 </IconButton>
