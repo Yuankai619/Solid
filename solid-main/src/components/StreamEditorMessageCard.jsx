@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -6,8 +6,11 @@ import Typography from '@mui/material/Typography';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import axios from 'axios';
+import io from 'socket.io-client'
+let socket = io.connect('http://localhost:5000')
 
 const StreamEditorMessageCardTheme = createTheme({
+    
     typography: {
         fontFamily: [
             'Poppins',
@@ -73,6 +76,12 @@ const StreamEditorMessageCardTheme = createTheme({
     },
 });
 function StreamEditorMessageCard({data,classID}) {
+    useEffect(()=>{
+        socket.emit('join_room',classID);
+        socket.on('refresh',(data)=>{
+            console.log(data);
+        })
+    },[socket])
     const [selected, setSelected] = useState(data.score); // Keep track of which button is selected    
     const correctEnable = "#3DECAD", correctDisable ="#00764B";
     const incorrectEnable = "#EE592A", incorrectDisable = "#76270E";
@@ -105,6 +114,7 @@ function StreamEditorMessageCard({data,classID}) {
             console.log(res.data)
         })
         .catch((error) => { console.error(error); });
+        socket.emit('send_message',classID);
     };
     return (
         <ThemeProvider theme={StreamEditorMessageCardTheme}>

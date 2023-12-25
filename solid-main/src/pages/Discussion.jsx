@@ -8,6 +8,8 @@ import LoginChecker from '../checker/LoginChecker';
 import { useNavigate } from 'react-router-dom';
 import StreamEditorMessageCard from '../components/StreamEditorMessageCard';
 import axios from 'axios';
+import io from 'socket.io-client'
+let socket = io.connect('http://localhost:5000')
 
 function Discussion() {
     const navigate = useNavigate();
@@ -15,6 +17,21 @@ function Discussion() {
     const [isLoginCheckComplete, setIsLoginCheckComplete] = useState(false);
     const location = useLocation();
     const ClassID = location.pathname.split('/')[2];
+
+
+    
+    useEffect(() => {
+        socket.emit('join_room',ClassID);
+        socket.on('refresh',(data)=>{
+            setTimeout(function() {
+                // 在這裡寫入您希望在等待後執行的程式碼
+                fetchClassData();
+                //console.log('0.1 秒已過');
+            }, 100);
+        //    document.location.reload();
+        })
+    }, [socket]);
+
     useEffect(() => {
         const checkLogin = async () => {
             const result = await LoginChecker();
@@ -43,26 +60,26 @@ function Discussion() {
     ]);
     
     //fetch class data
+    const fetchClassData = async () => {
+        try {
+            console.log(ClassID);
+            const response = await axios({
+                method: "POST",
+                headers: { 'Content-Type': 'application/json', },  
+                data: JSON.stringify({
+                    classID : ClassID
+                }),
+                withCredentials: true,
+                url: "http://localhost:4000/course/loadClassAll"
+            });
+            // console.log(response);
+            setClassData(response.data.info);
+            setMessageData(response.data.message);
+        } catch (error) {
+            console.error('Error fetching class data:', error);
+        }
+    };
     useEffect(() => {
-        const fetchClassData = async () => {
-            try {
-                console.log(ClassID);
-                const response = await axios({
-                    method: "POST",
-                    headers: { 'Content-Type': 'application/json', },  
-                    data: JSON.stringify({
-                        classID : ClassID
-                    }),
-                    withCredentials: true,
-                    url: "http://localhost:4000/course/loadClassAll"
-                });
-                // console.log(response);
-                setClassData(response.data.info);
-                setMessageData(response.data.message);
-            } catch (error) {
-                console.error('Error fetching class data:', error);
-            }
-        };
         fetchClassData();
     }, []);
     

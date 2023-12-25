@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Paper, TextField, IconButton, Switch, FormControlLabel } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import axios from 'axios';
+import io from 'socket.io-client'
+let socket = io.connect('http://localhost:5000')
 
 function StreamInputPanel({ classID }) {
     //stream data
@@ -12,6 +14,13 @@ function StreamInputPanel({ classID }) {
     //
     const [inputFocused, setInputFocused] = useState(false);
     const [sendIconColor, setSendIconColor] = useState('#EEEEEE');
+    
+    useEffect(()=>{
+        socket.emit('join_room',classID);
+        socket.on('refresh',(data)=>{
+            console.log(data);
+        })
+    },[socket])
 
     const handleSubmit = (event) => {
 
@@ -40,6 +49,7 @@ function StreamInputPanel({ classID }) {
             
         })
         .catch((error) => { console.error(error); });
+        socket.emit('send_message',classID);
     };
     
     const handleToggleChange = (event) => {

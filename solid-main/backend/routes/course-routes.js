@@ -181,6 +181,8 @@ router.post('/scoreUpdate', async (req, res) => {
     }
 
     message.score = _score;
+    if(!_score) message.score = 'null';
+    console.log('sss',message.score);
     await course.save();
     res.status(200).send('留言分數已成功更新');
 });

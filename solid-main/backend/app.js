@@ -13,6 +13,8 @@ const homeRoutes = require('./routes/home-routes')
 const apiRoutes = require('./routes/api-routes')
 const courseRoutes = require('./routes/course-routes')
 const passportSetup = require('./config/passportConfig');
+const http = require('http')
+const {Server} = require('socket.io')
 require('dotenv').config();
 
 // connect Database
@@ -23,6 +25,33 @@ mongoose.connect(process.env.mongoDB)
     .catch((err) => { console.log(err) });
 
 // ---------------------------   middleware -------------------------------
+
+// ws
+
+const server = http.createServer(app);
+const io = new Server(server,{
+    cors:{
+        origin: 'http://localhost:3000',
+        methods : ['GET','POST'],
+    }
+})
+
+io.on('connection',(socket)=>{
+    console.log(`User Connected: ${socket.id}`)
+    socket.on('join_room',(data)=>{
+        console.log(socket.id,'joined room',data);
+        socket.join(data);
+        //socket.emit('t','fuck');
+    })
+    socket.on('send_message',(data)=>{
+        console.log('sent refresh',data)
+        socket.to(data).emit('refresh',data);
+    })
+})
+
+server.listen(5000,()=>{
+    console.log('websocket is on port ',5000);
+})
 
 // cors
 const corsOptions = {
