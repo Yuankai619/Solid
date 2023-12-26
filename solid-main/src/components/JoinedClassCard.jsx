@@ -95,7 +95,7 @@ const JoinedClassCardTheme = createTheme({
 });
 
 
-function JoinedClassCard({data}) {
+function JoinedClassCard({ data }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
@@ -122,28 +122,28 @@ function JoinedClassCard({data}) {
     setAnchorEl(null);
     setAllowNavigate(true);
   };
-  const [authorName , setAuthorName] = useState('');
+  const [authorName, setAuthorName] = useState('');
   useEffect(() => {
     async function fetchData() {
-        await GetUserInfo();
+      await GetUserInfo();
     }
     fetchData();
   }, []); // 確保只在組件掛載時調用一次
   const GetUserInfo = async () => {
-    
-    try{
+
+    try {
       const response = await axios({
         method: "post",
         headers: {
           'Content-Type': 'application/json',
         }, data: JSON.stringify({
-          id : data.authorID
+          id: data.authorID
         }),
         withCredentials: true,
         url: `${process.env.REACT_APP_API_URL}/course/getOnesInfo`
       });
       setAuthorName(response.data.authorName);
-    }catch(err){
+    } catch (err) {
       console.log(err);
     }
   };
@@ -152,8 +152,9 @@ function JoinedClassCard({data}) {
   return (
     <ThemeProvider theme={JoinedClassCardTheme}>
       <Box sx={{ minWidth: 275 }} >
-        <Card variant="outlined" sx={{ cursor: 'pointer' }} > 
-        <Link style={{ textDecoration: 'none', color: 'inherit' }} to={`/joinedroom/${data.classID}`}>
+
+        <Card variant="outlined" sx={{ cursor: 'pointer' }} >
+          <Link style={{ textDecoration: 'none', color: 'inherit' }} to={`/joinedroom/${data.classID}`}>
             <CardHeader
               // action={
               //   <IconButton
@@ -185,23 +186,25 @@ function JoinedClassCard({data}) {
                 },
               }}
             >
-              
+
               <MenuItem onClick={undefined} sx={{ color: "#CC0000" }}>Delete</MenuItem>
             </Menu>
-          <CardContent >
-            {/* <Typography variant="h2" sx={{ fontSize: 20, fontWeight: 700 }} color="#000" >
+            <CardContent >
+              {/* <Typography variant="h2" sx={{ fontSize: 20, fontWeight: 700 }} color="#000" >
               {data.title}
             </Typography> */}
-            <Typography sx={{ fontSize: 15, fontWeight: 600, marginTop: '12px' }} color="#999" component="div">
-                  owner: {authorName}
-            </Typography>
-            <Typography sx={{ fontSize: 18, fontWeight: 600, }} color="#000" >
-              Class ID: {data.classID}
-            </Typography>
-          </CardContent>
-    
-        
-        </Link>
+
+              <Typography sx={{ fontSize: 15, fontWeight: 600, marginTop: '12px' }} color="#999" component="div">
+                owner: {authorName}
+              </Typography>
+              <Typography sx={{ fontSize: 18, fontWeight: 600, }} color="#000" >
+                Class ID: {data.classID}
+              </Typography>
+            </CardContent>
+
+
+          </Link>
+
         </Card>
       </Box>
     </ThemeProvider>

@@ -41,8 +41,10 @@ function CreateClassCard({ data }) {
   
   const handleChangeState = (event) => {
     event.stopPropagation();
-    handleChangeCreatedClassState(data.id, menuState == 'true' ? 'false' : 'true');
-    // setTimeout(function () {
+
+    setMenuState(menuState == 'true' ? 'false' : 'true');
+    setTimeout(function () {
+
       // 在這裡寫入您希望在等待後執行的程式碼
       // console.log('0.1 秒已過');
     // }, 300);
@@ -104,7 +106,9 @@ function CreateClassCard({ data }) {
 
               <CardContent onClick={(e) => { if (!allowNavigate) e.stopPropagation(); }}>
                 <Typography sx={{ fontSize: 15, fontWeight: 600, marginTop: '12px' }} color={menuState == 'true'? '#2D6CB6' : '#999999'} component="div">
-                  state: {data.state == 'true' ? 'open' : 'close'}
+
+                  state: {menuState == 'true' ? 'open' : 'close'}
+
                 </Typography>
                 <Typography sx={{ fontSize: 18, fontWeight: 600, }} color="#000" >
                   Class ID: {data.classID}
