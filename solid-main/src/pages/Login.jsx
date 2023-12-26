@@ -18,7 +18,7 @@ import axios from 'axios';
 
 function LoginPage() {
   useEffect(() => {
-    document.body.style.background = "linear-gradient(-45deg, #32854b, #243B55,#a4c44d)";
+    document.body.style.background = "linear-gradient(-45deg, #000000,#A13E97, #632A7E)";
     document.body.style.backgroundSize = "1000% 1000%";
     document.body.style.animation = "gradient 10s ease infinite";
     

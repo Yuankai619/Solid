@@ -27,7 +27,7 @@ function Discussion() {
                 // 在這裡寫入您希望在等待後執行的程式碼
                 fetchClassData();
                 //console.log('0.1 秒已過');
-            }, 150);
+            }, 120);
             //    document.location.reload();
         })
     }, [socket]);
@@ -95,7 +95,7 @@ function Discussion() {
         <div style={{ padding: 0, margin: "0px" }}>
             <StreamAppBar data={classData} />
             <div style={{ paddingTop: '70px' }}>
-                <Container sx={{ position: 'fixed', height: 'calc(100vh - 252px)', overflow: "auto", px: "0px", paddingBottom: "32px" }} maxWidth="100%">
+                <Container sx={{ position: 'fixed', height: 'calc(100dvh - 252px)', overflow: "auto", px: "0px", paddingBottom: "32px" }} maxWidth="100%">
                     {messageData.map((data, index) => (
                         <StreamEditorMessageCard
                             key={index}

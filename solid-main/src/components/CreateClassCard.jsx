@@ -46,7 +46,7 @@ function CreateClassCard({ data }) {
   
   const handleChangeState = (event) => {
     event.stopPropagation();
-    setMenuState(menuState == true ? false : true);
+    setMenuState(menuState == 'true' ? 'false' : 'true');
     setTimeout(function () {
       // 在這裡寫入您希望在等待後執行的程式碼
       handleChangeCreatedClassState(data.id, menuState == 'true' ? 'false' : 'true');
@@ -102,14 +102,14 @@ function CreateClassCard({ data }) {
                 },
               }}
             >
-              <MenuItem onClick={handleChangeState}>{menuState == true ? "Close" : "Open"}</MenuItem>
+              <MenuItem onClick={handleChangeState}>{menuState == 'true' ? "Close" : "Open"}</MenuItem>
               <MenuItem onClick={handleDelete} sx={{ color: "#CC0000" }}>Delete</MenuItem>
             </Menu>
             <React.Fragment>
 
               <CardContent onClick={(e) => { if (!allowNavigate) e.stopPropagation(); }}>
-                <Typography sx={{ fontSize: 15, fontWeight: 600, marginTop: '12px' }} color={menuState == true? '#2D6CB6' : '#999999'} component="div">
-                  state: {menuState == true ? 'open' : 'close'}
+                <Typography sx={{ fontSize: 15, fontWeight: 600, marginTop: '12px' }} color={menuState == 'true'? '#2D6CB6' : '#999999'} component="div">
+                  state: {menuState == 'true' ? 'open' : 'close'}
                 </Typography>
                 <Typography sx={{ fontSize: 18, fontWeight: 600, }} color="#000" >
                   Class ID: {data.classID}
