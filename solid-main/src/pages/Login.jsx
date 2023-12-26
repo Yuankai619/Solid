@@ -5,6 +5,7 @@ import SignupButton from "../components/SignupButton";
 import LoginButton from "../components/LoginButton";
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
+import Link from "@mui/material/Link";
 import Container from '@mui/material/Container';
 import LoginContainerTheme from "../themes/LoginPanelTheme";
 import { ThemeProvider } from '@mui/material/styles';
@@ -14,6 +15,7 @@ import BoxTextFieldTheme from "../themes/BoxTextFieldTheme";
 import GoogleLoginButton from "../components/GoogleLoginButton";
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
+import { Button, Typography } from "@mui/material";
 
 function AnimatedBackground() {
   return (
@@ -42,8 +44,9 @@ function LoginPage() {
     // document.body.style.animation = "gradient 10s ease infinite";
     
     document.body.style.overflow = 'auto';
+    // document.body.style.overflow = 'hidden';
     return () => {
-      document.body.style.background = '';
+      document.body.style.overflow = '';
       // document.body.style.backgroundSize = '';
       // document.body.style.animation = '';
     };
@@ -99,11 +102,11 @@ function LoginPage() {
     
     <ThemeProvider theme={LoginContainerTheme}>
       <AnimatedBackground />
-      <Box py={"80px"}>
+      <Box py={"5dvh"}>
         <h1 className="login-title">Solid</h1>
       </Box>
       <Container >
-        <Box my={"50px"}>
+        <Box my={"40px"}>
           <h2 className="login-panel-title">Login</h2>
         </Box>
         <Box my={0}>
@@ -147,6 +150,13 @@ function LoginPage() {
 
             innertext="Login with Google"
           />
+        </Box>
+        <Box >
+          <Link target="_blank" href="https://docs.google.com/presentation/d/e/2PACX-1vRXgz1DscDJOS8eBcKqrvovk-OpGnak85o9xU8weQQVB4bW983VNFTw51hNT5chvdvUVMxRmaBJb9fB/pub?start=false&loop=false&delayms=3000">
+            <Typography textAlign={"center"}>
+              報告ppt
+            </Typography>
+          </Link>
         </Box>
 
       </Container>
