@@ -15,18 +15,37 @@ import GoogleLoginButton from "../components/GoogleLoginButton";
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 
+function AnimatedBackground() {
+  return (
 
+      <div class="area" >
+        <ul class="circles">
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+        </ul>
+      </div >
+    
+  );
+}
 function LoginPage() {
   useEffect(() => {
-    document.body.style.background = "linear-gradient(-45deg, #000000,#A13E97, #632A7E)";
-    document.body.style.backgroundSize = "1000% 1000%";
-    document.body.style.animation = "gradient 10s ease infinite";
+    // document.body.style.background = "linear-gradient(-45deg, #000000,#A13E97, #632A7E)";
+    // document.body.style.backgroundSize = "1000% 1000%";
+    // document.body.style.animation = "gradient 10s ease infinite";
     
     document.body.style.overflow = 'auto';
     return () => {
       document.body.style.background = '';
-      document.body.style.backgroundSize = '';
-      document.body.style.animation = '';
+      // document.body.style.backgroundSize = '';
+      // document.body.style.animation = '';
     };
   }, []);
   const [username, setUsername] = useState('');
@@ -77,12 +96,14 @@ function LoginPage() {
 
   const boxGap = "45px";
   return (
+    
     <ThemeProvider theme={LoginContainerTheme}>
-      <Box my={boxGap}>
+      <AnimatedBackground />
+      <Box py={"80px"}>
         <h1 className="login-title">Solid</h1>
       </Box>
       <Container >
-        <Box my={0}>
+        <Box my={"50px"}>
           <h2 className="login-panel-title">Login</h2>
         </Box>
         <Box my={0}>

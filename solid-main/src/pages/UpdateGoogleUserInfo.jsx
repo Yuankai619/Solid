@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 
 
+
 function UpdateGoogleUserInfo() {
   const navigate = useNavigate();
   let isLogin = false, isCompleteCreate = false;
@@ -61,22 +62,31 @@ function UpdateGoogleUserInfo() {
   const handleConfirm =  (event) => {
     event.preventDefault();
     //console.log(isTermsAccepted);
-    if(!checkNameLength(username)){
-      alert('請確認您的username長度在 1 到 15 個字之間')
-      return;
-    }
-    if(!checkNameLength(realName)){
-      alert('請確認您的realName長度在 1 到 15 個字之間')
-      return;
-    }
-    if(!checkNameLength(studentID)){
-      alert('請確認您的studentID在 1 到 15 個字之間')
-      return;
-    }
-    if(!isTermsAccepted){
-        alert('請確認您已詳閱隱私政策')
+    // useEffect(() => {
+      // document.body.style.overflow = 'auto';
+      // document.body.style.background = "#222222";
+      
+      if (!checkNameLength(username)) {
+        setUsernameError(true);
         return;
-    }
+        // alert('請確認您的username長度在 1 到 15 個字之間')
+        
+      }
+      else if (!checkNameLength(realName)) {
+        setRealnameError(true);
+        // alert('請確認您的realName長度在 1 到 15 個字之間')
+        return;
+      }
+      else if (!checkNameLength(studentID)) {
+        setStudentIDError(true);
+        // alert('請確認您的studentID在 1 到 15 個字之間')
+        return;
+      }
+    //   return () => {
+    //     document.body.style.background = "";
+    //   };
+    // }, [username,realName,studentID,isTermsAccepted]);
+    
     axios({
       method: "POST",
       headers: {
@@ -111,21 +121,21 @@ function UpdateGoogleUserInfo() {
           <Box my={boxGap}>
             <InputText 
               id = "username"
-              iserror={usernameError} errorText={"error"} isrequired={true} label="username"
+            iserror={usernameError} errorText={'請確認您的username長度在 1 到 15 個字之間'} isrequired={true} label="username"
               onChange={(e) => setUsername(e.target.value)}
             ></InputText>
           </Box>
           <Box my={boxGap}>
             <InputText 
               id = "real name"
-              iserror={realnameError} errorText={"error"} isrequired={true} label="real name"
+            iserror={realnameError} errorText={'請確認您的realName長度在 1 到 15 個字之間'} isrequired={true} label="real name"
               onChange={(e) => setRealName(e.target.value)}
               ></InputText>
           </Box>
           <Box my={boxGap}>
             <InputText 
               id ="sutdent ID"
-              iserror={studentIDError} errorText={"error"} isrequired={true} label="student ID"
+            iserror={studentIDError} errorText={'請確認您的studentID在 1 到 15 個字之間'} isrequired={true} label="student ID"
               onChange={(e) => setStudentId(e.target.value)}
             ></InputText>
           </Box>
