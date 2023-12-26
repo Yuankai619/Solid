@@ -152,6 +152,7 @@ function JoinedClassCard({ data }) {
   return (
     <ThemeProvider theme={JoinedClassCardTheme}>
       <Box sx={{ minWidth: 275 }} >
+
         <Card variant="outlined" sx={{ cursor: 'pointer' }} >
           <Link style={{ textDecoration: 'none', color: 'inherit' }} to={`/joinedroom/${data.classID}`}>
             <CardHeader
@@ -192,6 +193,7 @@ function JoinedClassCard({ data }) {
               {/* <Typography variant="h2" sx={{ fontSize: 20, fontWeight: 700 }} color="#000" >
               {data.title}
             </Typography> */}
+
               <Typography sx={{ fontSize: 15, fontWeight: 600, marginTop: '12px' }} color="#999" component="div">
                 owner: {authorName}
               </Typography>
@@ -202,6 +204,7 @@ function JoinedClassCard({ data }) {
 
 
           </Link>
+
         </Card>
       </Box>
     </ThemeProvider>
