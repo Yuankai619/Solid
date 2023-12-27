@@ -22,7 +22,7 @@ function StreamJoinedMessageCard({ data, classID, setMessageData }) {
         })
     }, [socket])
     const [isMyMessage, setIsMyMessage] = useState(true); //比對message的userID是不是==自己的userID
-    const [isShowScore, setIsShowScore] = useState(true); //要不要顯示score
+    const [isShowScore, setIsShowScore] = useState(false); //要不要顯示score
     const [selected, setSelected] = useState(data.score); // Keep track of which button is selected    
     const [currentUserId, setCurrentUserId] = useState('');
     let a;
