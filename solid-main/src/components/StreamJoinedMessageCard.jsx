@@ -12,26 +12,31 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import io from 'socket.io-client'
 import StreamJoinedMessageCardTheme from '../themes/StreamJoinedMessageCardTheme';
+
 let socket = io.connect(`${process.env.REACT_APP_API_URL}`)
 
-function StreamJoinedMessageCard({ data, classID, setMessageData }) {
+function StreamJoinedMessageCard({ data, classID, onDelete ,triggerRefresh,handleTriggerRefresh}) {
     useEffect(() => {
         socket.emit('join_room', classID);
         socket.on('refresh', (data) => {
+            setTimeout(function () {
+                handleTriggerRefresh();
+            }, 120);
             console.log(data);
         })
     }, [socket])
-    const [isMyMessage, setIsMyMessage] = useState(true); //比對message的userID是不是==自己的userID
+    const [isMyMessage, setIsMyMessage] = useState(false); //比對message的userID是不是==自己的userID
     const [isShowScore, setIsShowScore] = useState(false); //要不要顯示score
     const [selected, setSelected] = useState(data.score); // Keep track of which button is selected    
     const [currentUserId, setCurrentUserId] = useState('');
-    let a;
+    let getid;
     useEffect(() => {
-        async function fetchData() {
-            await GetUserInfo();
-        }
-        fetchData();
+        GetUserInfo();
     }, []); // 確保只在組件掛載時調用一次
+    useEffect(() => {
+        GetUserInfo();
+    }, [triggerRefresh]);
+    
     const GetUserInfo = async () => {
         try {
             const res = await axios({
@@ -42,13 +47,15 @@ function StreamJoinedMessageCard({ data, classID, setMessageData }) {
                 withCredentials: true,
                 url: `${process.env.REACT_APP_API_URL}/api/getUserInfo`
             });
-            console.log('get', res.data._id);
-            setCurrentUserId(res.data._id);
-            setIsMyMessage(res.data._id === data.userID);
-
+            if (!res) console.log('error');
+            else getid = res.data._id;
+            console.log('get respose data id: ', res.data._id);
+            
         } catch (error) {
             console.error('Error in GetUserInfo:', error);
         }
+        setIsMyMessage(getid === data.userID);
+        
     };
 
     useEffect(() => {
@@ -58,7 +65,7 @@ function StreamJoinedMessageCard({ data, classID, setMessageData }) {
             setIsShowScore(true);
         }
         console.log(currentUserId);
-    }, [data.score, isMyMessage]);
+    }, [data.score]);
     console.log('pp', isShowScore);
 
     console.log('a', data.score)
@@ -70,23 +77,8 @@ function StreamJoinedMessageCard({ data, classID, setMessageData }) {
     const username = data.isAnonymous === 'true' ? 'Anonymous' : data.username;
 
     const handleDeleteMessage = async () => {//要記得寫setMessageData
-        try {
-            const response = await axios({
-                method: "POST",
-                headers: { 'Content-Type': 'application/json', },
-                data: JSON.stringify({
-                    classID: classID,
-                    messageID: data.messageid
-                }),
-                withCredentials: true,
-                url: `${process.env.REACT_APP_API_URL}/course/deleteMessage`
-            });
-            if (!response) console.log('error');
-            else console.log(response);
-        } catch (error) {
-            console.error('Error fetching class data:', error);
-        }
-        console.log("delete message");
+        onDelete(data.messageid);
+        setIsMyMessage(false);
         socket.emit('send_message', classID);
         setAnchorEl(null);
     };

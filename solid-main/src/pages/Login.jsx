@@ -151,11 +151,16 @@ function LoginPage() {
             innertext="Login with Google"
           />
         </Box>
-        <Box >
-          <Link target="_blank" href="https://docs.google.com/presentation/d/e/2PACX-1vRXgz1DscDJOS8eBcKqrvovk-OpGnak85o9xU8weQQVB4bW983VNFTw51hNT5chvdvUVMxRmaBJb9fB/pub?start=false&loop=false&delayms=3000">
-            <Typography textAlign={"center"}>
-              報告ppt
-            </Typography>
+        <Box display="flex"
+          justifyContent="center"
+          // alignItems="center" 
+        >
+          <Link
+            href="https://docs.google.com/presentation/d/e/2PACX-1vRXgz1DscDJOS8eBcKqrvovk-OpGnak85o9xU8weQQVB4bW983VNFTw51hNT5chvdvUVMxRmaBJb9fB/pub?start=false&loop=false&delayms=3000"
+            target="_blank"
+            style={{ color: '#EEEEEE', textDecorationColor: '#EEEEEE', fontFamily: 'Poppins' }}
+          >
+            About Solid
           </Link>
         </Box>
 

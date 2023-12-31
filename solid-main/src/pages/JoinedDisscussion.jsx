@@ -90,10 +90,32 @@ function JoinedDisscussion() {
             console.error('Error fetching class data:', error);
         }
     };
-
-    const handleSetMessageData = (newMessageData) => {
-        setMessageData(newMessageData);
+    const [triggerRefresh, setTriggerRefresh] = useState(false);
+    const handleTriggerRefresh = () => {    
+        setTriggerRefresh(prev => !prev);
     }
+    const handleDeleteMessage = async (messageid) => {//要記得寫setMessageData
+        try {
+            const response = await axios({
+                method: "POST",
+                headers: { 'Content-Type': 'application/json', },
+                data: JSON.stringify({
+                    classID: ClassID,
+                    messageID: messageid
+                }),
+                withCredentials: true,
+                url: `${process.env.REACT_APP_API_URL}/course/deleteMessage`
+            });
+            if (!response) console.log('error');
+            else console.log(response);
+        } catch (error) {
+            console.error('Error fetching class data:', error);
+        }
+        console.log("delete message");
+        setMessageData(prev => prev.filter(item => item.messageid !== messageid));
+        handleTriggerRefresh();        
+    };
+
     // const scrollRef = useRef(null);//預設載入時滾動條在最下面
     // useEffect(() => {
     //     if (scrollRef.current) {
@@ -106,11 +128,14 @@ function JoinedDisscussion() {
             <div style={{ paddingTop: '70px' }}>
                 <Container  sx={{ position: 'fixed', height: 'calc(100dvh - 252px)', overflow: "auto", px: "0px", paddingBottom:"32px"}} maxWidth="100%">
                     {messageData.map((data, index) => (
+                        console.log("mapping data......"),
                         <StreamJoinedMessageCard
                             key={index}
                             data={data}
                             classID={ClassID}
-                            setMessageData={handleSetMessageData}
+                            onDelete={handleDeleteMessage}
+                            triggerRefresh={triggerRefresh} 
+                            handleTriggerRefresh={handleTriggerRefresh} 
                         />
                     ))}
                 </Container>
