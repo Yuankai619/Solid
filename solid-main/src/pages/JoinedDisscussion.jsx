@@ -126,7 +126,7 @@ function JoinedDisscussion() {
         <div style={{ padding: 0, margin: "0px" }}>
             <StreamAppBar data={classData} />
             <div style={{ paddingTop: '70px' }}>
-                <Container  sx={{ position: 'fixed', height: 'calc(100dvh - 252px)', overflow: "auto", px: "0px", paddingBottom:"32px"}} maxWidth="100%">
+                <Container sx={{ position: 'fixed', height: (classData.state == 'true' ? 'calc(100dvh - 252px)' : '90dvh'), overflow: "auto", px: "0px", paddingBottom:"32px"}} maxWidth="100%">
                     {messageData.map((data, index) => (
                         console.log("mapping data......"),
                         <StreamJoinedMessageCard

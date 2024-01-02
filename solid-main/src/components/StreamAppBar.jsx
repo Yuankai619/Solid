@@ -148,13 +148,13 @@ function StreamAppBar({ data }) {
                                 <Typography>
                                     Create Date: 
                                 </Typography>
-                                <Typography>
+                                <Typography sx={{fontWeight:"500"}}>
                                     {formatDate(createDate)}
                                 </Typography>
                                 <Typography>
                                     Description:
                                 </Typography>
-                                <Typography>
+                                <Typography sx={{ fontWeight: "500" }}>
                                     {data.description}
                                 </Typography>
                             </Box>
