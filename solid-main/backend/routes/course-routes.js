@@ -41,7 +41,7 @@ router.post('/userAddJoinedClass',Auth,async(req,res)=>{
     const _classid = req.body.classID;
     const course = await Course.findOne({ 'info.classID': _classid });
     if(!course){
-        return res.send('CourseNotFound');
+        return res.send('ClassID not found');
     }
     User.findByIdAndUpdate(_userid, { $push: { joinedClass: { classID: _classid } } }).then(()=>{
         console.log('從使用者新增joinedClass成功')

@@ -11,11 +11,15 @@ export const ClassDataProvider = ({ children }) => {
         console.log("handleChangeIndex: ", index);
         setCurIndex(index);
     };
-    const [joinedCLassData, setJoinedClassData] = useState([
+    const [joinedClassData, setJoinedClassData] = useState([
         // { id: 1, title: "Card1", classID: "001", state: "close" },
         // { id: 2, title: "Card2", classID: "002", state: "open" },
         // { id: 3, title: "Card3", classID: "003", state: "close" },
     ]);
+    const checkJoinedClassIDExist = (classID) => {
+        return joinedClassData.some(classData => classData.classID === classID);
+    };
+
     const handleNewJoinedClass = newClass => {
         setJoinedClassData(prev => [...prev, newClass]);
     };
@@ -141,7 +145,7 @@ export const ClassDataProvider = ({ children }) => {
     return (
         <ClassDataContext.Provider value={{
             curIndex, setCurIndex, handleChangeIndex,
-            joinedCLassData, handleNewJoinedClass, handleDeleteJoinedClass,
+            joinedClassData, handleNewJoinedClass, handleDeleteJoinedClass, checkJoinedClassIDExist,
             createdClassData, handleNewCreatedClass, handleChangeCreatedClassState, handleDeleteCreatedClass,
         }}>
             {children}

@@ -1,11 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { Dialog, DialogActions, DialogContent, DialogTitle, Button, Slide } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
-import Button from '@mui/material/Button';
-import Slide from '@mui/material/Slide';
 import InputText from '../components/InputText';
 import JoinClassDialogTheme from '../themes/JoinClassDialogTheme';
 import { useClassDataContext } from '../context/ClassDataContext';
@@ -15,45 +10,32 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-
-
 function JoinClassByIdDialog(props) {
-    const { handleNewJoinedClass } = useClassDataContext();
+    const { handleNewJoinedClass, checkJoinedClassIDExist } = useClassDataContext();
     const [inputClassID, setInputClassID] = useState('');
-    const [username, setUsername] = useState('');
-    const [realName, setRealName] = useState('');
-    const [studentID, setStudentId] = useState('');
-    const [userID, setUserId] = useState('');
-    const [googleId, setgoogleId] = useState('');
+    const [classIdError, setClassIdError] = useState(false);
 
-    // useEffect(() => {
-    //     GetUserInfo();
-    // }, []);
-    // const GetUserInfo = async () => {
-    //     axios({
-    //         method: "GET",
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //         },
-    //         withCredentials: true,
-    //         url: `${process.env.REACT_APP_API_URL}/course/getJoinedClass`
-    //     })
-    //     .then((res) => {
-    //         console.log(res.data.username);
-    //         setUsername(res.data.username)
-    //         setRealName(res.data.realname);
-    //         setStudentId(res.data.studentID);
-    //         setUserId(res.data._id);
-    //         setgoogleId(res.data.googleid);
-    //     })
-    //     .catch((error) => {
-
-    //     });
-    // };
+    useEffect(() => {
+        if (inputClassID) {
+            setClassIdError(false);
+        }
+    }, [inputClassID]);
+    const [errorText, setErrorText] = useState('');
     const handleJoin = async() => {
-        props.setDialogOpen();
-        console.log(inputClassID);
-
+        if(!inputClassID ) {
+            setErrorText("ClassID can't be empty");
+            console.log(errorText);
+            setClassIdError(true);
+            return;
+        }
+        else if (checkJoinedClassIDExist(inputClassID)) {            
+            setErrorText("You have already joined this class");
+            console.log(errorText);
+            setClassIdError(true);
+            return;
+        }
+        
+        
         try {
             const response = await axios.post(
                 `${process.env.REACT_APP_API_URL}/course/userAddJoinedClass`,
@@ -63,13 +45,20 @@ function JoinClassByIdDialog(props) {
                     withCredentials: true
                 }
             );
-
+            if(response.data === "ClassID not found") {
+                setErrorText("ClassID not found");
+                console.log(errorText);
+                setClassIdError(true);
+                return;
+            }
             console.log('Joined class:', response.data);
             handleNewJoinedClass(response.data);
         } catch (error) {
             console.error("Error in handleJoin:", error);
         }
+        props.setDialogOpen();
     }
+
     
     return (
         <ThemeProvider theme={JoinClassDialogTheme}>
@@ -79,7 +68,7 @@ function JoinClassByIdDialog(props) {
                     <DialogContent>
                         <InputText
                             id={props.id} label={props.label}
-                            iserror={props.classIdError} errorText={props.errorText} isrequired={props.isrequired} error={props.iserror}
+                            iserror={classIdError} errorText={errorText} isrequired={true} 
                             onChange={(e) => { setInputClassID(e.target.value); }} value={inputClassID} 
                         ></InputText>
                     </DialogContent>

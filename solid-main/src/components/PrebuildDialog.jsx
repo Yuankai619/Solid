@@ -57,8 +57,11 @@ function PrebuildDialog(props) {
     };
 
     const handleCreate = async() => {
+        if(!roomTitle ) {
+            setRoomTitleError(true );
+            return;
+        }
         props.setDialogOpen();
-
         try {
             const courseCreationResponse = await axios.post(
                 `${process.env.REACT_APP_API_URL}/course/create`,
@@ -110,11 +113,16 @@ function PrebuildDialog(props) {
         });
     };
     //switch setting
-
     const [roomTitle, setRoomTitle] = useState("");
+    const [roomTitleError, setRoomTitleError] = useState(false);
     const [description, setDescription] = useState("");
     // const [open, setOpen] = useState(true);
     const [inputFocused, setInputFocused] = useState(false);
+    useEffect(() => {
+        if(roomTitle) {
+            setRoomTitleError(false);
+        }
+    } , [roomTitle]);
     const handleInputFocus = () => {
         setInputFocused(true);
     };
@@ -134,8 +142,9 @@ function PrebuildDialog(props) {
                             </Typography>
                             <InputText
                                 id={"room title"}
+                                value={roomTitle}
                                 placeholder="your title ?"
-                                iserror={false} errorText={"error title name"} isrequired={true}
+                                iserror={roomTitleError} errorText={"Title cant't be empty"} isrequired={true}
                                 onChange={(e) => setRoomTitle(e.target.value)}
                             ></InputText>
                         </Box>
@@ -146,6 +155,7 @@ function PrebuildDialog(props) {
                             <TextField
                                 multiline
                                 rows={inputFocused ? 4 : 2}
+                                value={description}
                                 placeholder="your description ?"
                                 variant="outlined"
                                 fullWidth
@@ -171,7 +181,7 @@ function PrebuildDialog(props) {
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={props.setDialogOpen} sx={{ color: '#EEEEEE', marginRight: '30px', fontSize: '1rem' }}>Cancel</Button>
-                        <Button onClick={handleCreate} sx={{ fontWeight: 'bold', marginRight: '30px', fontSize: '1.2rem' }}>Create</Button>
+                        <Button onClick={ handleCreate} sx={{ fontWeight: 'bold', marginRight: '30px', fontSize: '1.2rem' }}>Create</Button>
                     </DialogActions>
                 </Dialog>
             </React.Fragment>

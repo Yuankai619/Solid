@@ -68,9 +68,7 @@ function CreateClassCard({ data }) {
               action={
                 <IconButton
                   aria-label="class setting menu"
-                  onClick={
-                    handleClickMenu
-                    }
+                  onClick={handleClickMenu}
                 >
                   <MoreVertIcon />
                 </IconButton>
