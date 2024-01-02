@@ -1,19 +1,14 @@
 import React, { useState } from 'react';
-import AppBar from '@mui/material/AppBar';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import Box from '@mui/material/Box';
-import MenuIcon from '@mui/icons-material/Menu';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
-import HomeAppBarTheme from '../themes/HomeAppBarTheme';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import InfoIcon from '@mui/icons-material/Info';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem'
-import { Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import {
+    AppBar, Tabs, Tab, Box, Toolbar, IconButton, Menu, MenuItem, Typography
+} from '@mui/material';
+import InfoIcon from '@mui/icons-material/Info';
+import MenuIcon from '@mui/icons-material/Menu';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+
 const StreamAppBarTheme = createTheme({
     typography: {
         fontFamily: [
@@ -62,9 +57,6 @@ function formatDate(date) {
 }
 function StreamAppBar({ data }) {
     const navigate = useNavigate();
-    // const handleTabChange = (event, newValue) => {
-    //     props._setValue(newValue);
-    // };
     const [anchorEl, setAnchorEl] = useState(null); // 用于定位 Menu
 
     // 打开 Menu 的处理函数
@@ -82,8 +74,6 @@ function StreamAppBar({ data }) {
             <AppBar style={{
                 position: 'fixed',
                 height: '69px',
-                // paddingTop: '6px',
-                // marginButtom: '80px',
                 left: 0,
                 right: 0,
             }}>
@@ -126,7 +116,6 @@ function StreamAppBar({ data }) {
                             },
                         }}
                     >
-                        {/* 在此处添加菜单项来显示数据详情 */}
                         <MenuItem 
                             sx={
                                 {
@@ -159,7 +148,7 @@ function StreamAppBar({ data }) {
                                 </Typography>
                             </Box>
                         </MenuItem>
-                        {/* 根据需要添加更多的 MenuItem */}
+
                     </Menu>
                 </Toolbar>
             </AppBar>

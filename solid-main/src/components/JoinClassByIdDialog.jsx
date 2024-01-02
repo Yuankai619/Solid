@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Dialog, DialogActions, DialogContent, DialogTitle, Button, Slide } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
-import InputText from '../components/InputText';
 import JoinClassDialogTheme from '../themes/JoinClassDialogTheme';
 import { useClassDataContext } from '../context/ClassDataContext';
+import InputText from '../components/InputText';
 import axios from 'axios';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -24,13 +24,11 @@ function JoinClassByIdDialog(props) {
     const handleJoin = async() => {
         if(!inputClassID ) {
             setErrorText("ClassID can't be empty");
-            console.log(errorText);
             setClassIdError(true);
             return;
         }
         else if (checkJoinedClassIDExist(inputClassID)) {            
             setErrorText("You have already joined this class");
-            console.log(errorText);
             setClassIdError(true);
             return;
         }
@@ -47,11 +45,10 @@ function JoinClassByIdDialog(props) {
             );
             if(response.data === "ClassID not found") {
                 setErrorText("ClassID not found");
-                console.log(errorText);
                 setClassIdError(true);
                 return;
             }
-            console.log('Joined class:', response.data);
+            // console.log('Joined class:', response.data);
             handleNewJoinedClass(response.data);
         } catch (error) {
             console.error("Error in handleJoin:", error);
@@ -62,7 +59,6 @@ function JoinClassByIdDialog(props) {
     
     return (
         <ThemeProvider theme={JoinClassDialogTheme}>
-            
                 <Dialog open={props.dialogOpen} onClose={props.setDialogOpen} TransitionComponent={Transition} >
                     <DialogTitle>Input Class ID to Join</DialogTitle>
                     <DialogContent>
@@ -77,7 +73,6 @@ function JoinClassByIdDialog(props) {
                         <Button onClick={handleJoin} sx={{ fontWeight: 'bold', marginRight: '30px', fontSize: '1.2rem' }}>Join</Button>
                     </DialogActions>
                 </Dialog>
-            
         </ThemeProvider>
     );
 }

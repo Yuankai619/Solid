@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import Typography from '@mui/material/Typography';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
 import axios from 'axios';
-import io from 'socket.io-client'
+import io from 'socket.io-client';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { Card, CardContent, Typography, Avatar, Button } from '@mui/material';
+
 let socket = io.connect(`${process.env.REACT_APP_API_URL}`)
 
 const StreamEditorMessageCardTheme = createTheme({
@@ -88,7 +85,6 @@ function StreamEditorMessageCard({data,classID}) {
     const handleButtonClick = (button) => {
         // If the button is already selected, deselect it, otherwise select it
         const newSelected = selected === button ? null : button;
-        
         setSelected(newSelected);
         handleScoreUpdate(newSelected);
         // console.log("selected: ",newSelected);
@@ -96,7 +92,6 @@ function StreamEditorMessageCard({data,classID}) {
     const avatarSrc = data.isAnonymous === 'true' ? undefined : data.userimg ;
     const username = data.isAnonymous === 'true' ? 'Anonymous' : data.username;
     const handleScoreUpdate = (selected) => {
-        console.log(selected);
         axios({
             method: "POST",
             headers: { 'Content-Type': 'application/json', },  

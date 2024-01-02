@@ -1,100 +1,14 @@
 import React, { useState, useEffect } from "react";
-import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom';
-import { CardHeader } from "@mui/material";
-import { useClassDataContext } from '../context/ClassDataContext';
+import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
-const JoinedClassCardTheme = createTheme({
-  typography: {
-      fontFamily: [
-        'Poppins', // 您選擇的 Google 字體
-        'sans-serif', // 作為後備的系統字體
-      ].join(','),
-  },
-  components: {
-    MuiTypography: {
-      styleOverrides: {
-        root: {
-          fontFamily: [
-            'Poppins', // 您選擇的 Google 字體
-            'sans-serif', // 作為後備的系統字體
-          ].join(','),
-          // fontWeight: '700',
-        },
-      },
-    },
-    MuiCard: {
-      styleOverrides: {
-        root: {
-          paddingBottom: '10px',
-          paddingTop: '10px',
-          paddingRight: '20px',
-          paddingLeft: '10px',
-          marginBottom: '23px',
-          marginTop: '13px',
-          marginRight: '27px',
-          marginLeft: '27px',
-          borderRadius: '24px',
-          backgroundColor: '#EEEEEE',
-        },
-      },
-    },
-    MuiMenu: {
-      styleOverrides: {
-        paper: {
-          backgroundColor: 'black', // 菜单背景色
-          color: 'white',           // 菜单文字颜色
-        },
-      },
-    },
-    MuiIconButton: {
-      styleOverrides: {
-        root: {
-          color: '#000',  // IconButton颜色
-          '&:hover': {
-            backgroundColor: 'lightblue', // 鼠标悬停时的背景色
-          },
-        },
-      },
-    },
-    MuiCardHeader: {
-      styleOverrides: {
-        default: { variant: 'h2' },
-        title: {
-          fontSize: '20px',
-          fontWeight: '700',
-          color: '#000',
-
-        },
-        root: {
-          marginBottom: '0px',
-          paddingBottom: '0px',
-          paddingRight: '0px',
-        },
-      },
-    },
-    MuiMenuItem: {
-      styleOverrides: {
-        root: {
-          fontWeight: '520',
-          color: '#EEEEEE',
-        },
-      },
-    },
-  },
-});
-
+import {
+  Box, Card, CardActions, CardContent, Button, IconButton, Typography,
+  Menu, MenuItem, CardHeader
+} from '@mui/material';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { ThemeProvider } from '@mui/material/styles';
+import { useClassDataContext } from '../context/ClassDataContext';
+import JoinedClassCardTheme from "../themes/JoinedClassCardTheme";
 
 function JoinedClassCard({ data }) {
   const { handleDeleteJoinedClass } = useClassDataContext();
@@ -105,27 +19,20 @@ function JoinedClassCard({ data }) {
     event.preventDefault();
     event.stopPropagation();
     setAnchorEl(event.currentTarget);
-    setAllowNavigate(false); // 打开 Menu 时禁止跳转F
+    setAllowNavigate(false); 
   };
-  const handleChangeState = (event) => {
-    event.stopPropagation();
-    setMenuState(menuState == 'true' ? 'false' : 'true');
-    // handleChangeCreatedClassState(data.id, menuState == 'true' ? 'false' : 'true');
-  };
-  const [menuState, setMenuState] = useState(data.state);
+
   const handleDelete = (event) => {
-    event.stopPropagation();
-    console.log(data.id)
+    event.stopPropagation();    
     handleClose();
     handleDeleteJoinedClass(data.id);
-    // handleDeleteCreatedClass(data.id);
   };
   const [allowNavigate, setAllowNavigate] = useState(true);
+  const [authorName, setAuthorName] = useState('');
   const handleClose = () => {
     setAnchorEl(null);
     setAllowNavigate(true);
   };
-  const [authorName, setAuthorName] = useState('');
   useEffect(() => {
     async function fetchData() {
       await GetUserInfo();
@@ -133,7 +40,6 @@ function JoinedClassCard({ data }) {
     fetchData();
   }, []); // 確保只在組件掛載時調用一次
   const GetUserInfo = async () => {
-
     try {
       const response = await axios({
         method: "post",
@@ -154,11 +60,10 @@ function JoinedClassCard({ data }) {
   return (
     <ThemeProvider theme={JoinedClassCardTheme}>
       <Box sx={{ minWidth: 275 }} >
-
         <Card variant="outlined" sx={{ cursor: 'pointer' }} >
           <Link style={{ textDecoration: 'none', color: 'inherit' }} to={`/joinedroom/${data.classID}`} onClick={(e) => {
             if (!allowNavigate) {
-              e.preventDefault(); // 如果不允许跳转，则阻止 Link 的默认行为
+              e.preventDefault(); 
             }}}>
             <CardHeader
               action={
@@ -173,8 +78,8 @@ function JoinedClassCard({ data }) {
             />
             <Menu
               id="long-menu"
-              anchorEl={anchorEl}
               open={open}
+              anchorEl={anchorEl}
               onClose={handleClose}
               anchorOrigin={{
                 vertical: 'top',
@@ -195,10 +100,6 @@ function JoinedClassCard({ data }) {
               <MenuItem onClick={handleDelete} sx={{ color: "#CC0000" }}>Delete</MenuItem>
             </Menu>
             <CardContent >
-              {/* <Typography variant="h2" sx={{ fontSize: 20, fontWeight: 700 }} color="#000" >
-              {data.title}
-            </Typography> */}
-
               <Typography sx={{ fontSize: 15, fontWeight: 600, marginTop: '12px' }} color="#999" component="div">
                 owner: {authorName}
               </Typography>
@@ -206,10 +107,7 @@ function JoinedClassCard({ data }) {
                 Class ID: {data.classID}
               </Typography>
             </CardContent>
-
-
           </Link>
-
         </Card>
       </Box>
     </ThemeProvider>

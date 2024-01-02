@@ -1,24 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { Paper, TextField, IconButton, Switch, FormControlLabel } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
-import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import axios from 'axios';
 import io from 'socket.io-client'
 let socket = io.connect(`${process.env.REACT_APP_API_URL}`)
 
 function StreamInputPanel({ classID ,classState}) {
-    //stream data
     const [content, setContent] = useState('');
     const [isAnonymous, setIsAnonymous] = useState(false);
-    //
     const [inputFocused, setInputFocused] = useState(false);
     const [sendIconColor, setSendIconColor] = useState('#EEEEEE');
     
     useEffect(()=>{
         socket.emit('join_room',classID);
         socket.on('refresh',(data)=>{
-            console.log(data);
+            // console.log(data);
         })
     },[socket])
 
@@ -28,9 +25,9 @@ function StreamInputPanel({ classID ,classState}) {
         if (!content.trim().length) {
             return; // 如果是，則不執行後續操作
         }   
-        console.log(content);
-        console.log(isAnonymous);
-        console.log(classID);
+        // console.log(content);
+        // console.log(isAnonymous);
+        // console.log(classID);
         //add comment
         axios({
             method: "POST",
@@ -48,8 +45,7 @@ function StreamInputPanel({ classID ,classState}) {
             // comment here
             setContent('');//clear inputext
             // .json({  message: '訊息已成功加入',messageId: _uuid })
-            console.log(res.data)
-            
+            // console.log(res.data)
         })
         .catch((error) => { console.error(error); });
         socket.emit('send_message',classID);
@@ -125,13 +121,13 @@ function StreamInputPanel({ classID ,classState}) {
 
                 <TextField
                     multiline
-                    rows={inputFocused ? 4 : 2}
-                    placeholder="type...?"
-                    variant="outlined"
                     fullWidth
+                    variant="outlined"
+                    placeholder="type...?"
                     value={content}
-                    onFocus={handleInputFocus}
                     onBlur={handleInputBlur}
+                    onFocus={handleInputFocus}
+                    rows={inputFocused ? 4 : 2}
                     style={{
                         margin: '10px 0',
                     }}

@@ -1,29 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import Slide from '@mui/material/Slide';
-import Box from '@mui/material/Box';
-import FormControlLabel from '@mui/material/FormControlLabel';
-
-import InputText from './InputText';
-import JoinClassDialogTheme from '../themes/JoinClassDialogTheme';
-import { Typography } from '@mui/material';
-import Switch from '@mui/material/Switch';
-import PrebuildDialogTheme from '../themes/PrebuildDialogTheme';
 import axios from 'axios';
+import {
+    ThemeProvider, createTheme, Dialog, DialogActions, DialogContent,
+    DialogTitle, TextField, Button, Slide, Box, FormControlLabel, Typography,
+    Switch
+} from '@mui/material';
+import InputText from './InputText';
+import PrebuildDialogTheme from '../themes/PrebuildDialogTheme';
 import { useClassDataContext } from '../context/ClassDataContext';
+
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
 function PrebuildDialog(props) {
     const { handleNewCreatedClass } = useClassDataContext();
-
     const [username, setUsername] = useState('');
     const [realName, setRealName] = useState('');
     const [studentID, setStudentId] = useState('');
@@ -79,7 +70,7 @@ function PrebuildDialog(props) {
                 }
             );
 
-            console.log('Course created:', courseCreationResponse.data.classID);
+            // console.log('Course created:', courseCreationResponse.data.classID);
 
             const addUserClassResponse = await axios.post(
                 `${process.env.REACT_APP_API_URL}/course/addClassToUser`,
@@ -90,8 +81,7 @@ function PrebuildDialog(props) {
                 }
             );
 
-            console.log('Class added to user:', addUserClassResponse.data);
-
+            // console.log('Class added to user:', addUserClassResponse.data);
             handleNewCreatedClass(courseCreationResponse.data);
         } catch (error) {
             console.error("Error in handleCreate:", error);
@@ -144,8 +134,8 @@ function PrebuildDialog(props) {
                                 id={"room title"}
                                 value={roomTitle}
                                 placeholder="your title ?"
-                                iserror={roomTitleError} errorText={"Title cant't be empty"} isrequired={true}
                                 onChange={(e) => setRoomTitle(e.target.value)}
+                                iserror={roomTitleError} errorText={"Title cant't be empty"} isrequired={true}
                             ></InputText>
                         </Box>
                         <Box sx={{ margin: '20px 0px 20px' }}>
@@ -154,13 +144,13 @@ function PrebuildDialog(props) {
                             </Typography>
                             <TextField
                                 multiline
-                                rows={inputFocused ? 4 : 2}
-                                value={description}
-                                placeholder="your description ?"
-                                variant="outlined"
                                 fullWidth
-                                onFocus={handleInputFocus}
+                                variant="outlined"
+                                placeholder="your description ?"
+                                value={description}
                                 onBlur={handleInputBlur}
+                                onFocus={handleInputFocus}
+                                rows={inputFocused ? 4 : 2}
                                 style={{ margin: '10px 0', borderColor: '#EEEEEE' }}
                                 InputProps={{
                                     style: {
