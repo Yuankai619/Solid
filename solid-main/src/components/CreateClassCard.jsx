@@ -1,29 +1,25 @@
 import React, { useState, useEffect } from "react";
-import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { useNavigate } from 'react-router-dom';
-import IconButton from '@mui/material/IconButton';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
+import { useNavigate, Link } from 'react-router-dom';
+import {
+  Box,
+  Card,
+  CardContent,
+  Typography,
+  IconButton,
+  Menu,
+  MenuItem,
+  CardHeader
+} from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { CardHeader } from "@mui/material";
+import {  ThemeProvider } from '@mui/material/styles';
 import CreateClassCardTheme from '../themes/CreateClassCardTheme';
-import { Link } from 'react-router-dom';
 import { useClassDataContext } from '../context/ClassDataContext';
+
 
 function CreateClassCard({ data }) {
   const { handleChangeCreatedClassState, handleDeleteCreatedClass } = useClassDataContext();
-  const navigate = useNavigate();
-
-  const [stateColor, setStatecolor] = useState('#000');
   const [menuState, setMenuState] = useState(data.state.toString());
-  const [allowNavigate, setAllowNavigate] = useState(true); // 新增状态来控制是否允许跳转
-  console.log("data.state: ",data.state);
+  const [allowNavigate, setAllowNavigate] = useState(true); // 控制在 Menu 打開時是否允許跳轉
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
@@ -42,16 +38,11 @@ function CreateClassCard({ data }) {
   const handleChangeState = (event) => {
     event.stopPropagation();
     handleChangeCreatedClassState(data.id, menuState == 'true' ? 'false' : 'true');
-    // setTimeout(function () {
-      // 在這裡寫入您希望在等待後執行的程式碼
-      // console.log('0.1 秒已過');
-    // }, 300);
     setMenuState(menuState == 'true' ? 'false' : 'true');
-    
   };
   const handleDelete = (event) => {
     event.stopPropagation();
-    console.log(data.id)
+    // console.log(data.id)
     handleClose();
     handleDeleteCreatedClass(data.id);
   };

@@ -1,11 +1,9 @@
 import React, { useState } from "react";
-import TextField from "@mui/material/TextField";
+import { TextField, InputAdornment, IconButton } from "@mui/material";
+import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { ThemeProvider } from '@mui/material/styles';
 import TextFieldTheme from "../themes/TextFieldTheme";
-import InputAdornment from '@mui/material/InputAdornment';
-import IconButton from '@mui/material/IconButton';
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import {ThemeProvider} from '@mui/material/styles';
+
 
 function InputPassword(props) {
     const [showPassword, setShowPassword] = useState(false);

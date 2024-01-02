@@ -12,32 +12,17 @@ import {
 } from "react-router-dom";
 
 function App() {
-
-  // useEffect(() => {//
-  //   let vh = window.innerHeight * 0.01;
-  //   document.documentElement.style.setProperty('--vh', `${vh}px`);
-
-  //   // Optionally, add resize event listener if you need to update --vh on window resize
-  //   const handleResize = () => {
-  //     let vh = window.innerHeight * 0.01;
-  //     document.documentElement.style.setProperty('--vh', `${vh}px`);
-  //   };
-
-  //   window.addEventListener('resize', handleResize);
-  //   return () => window.removeEventListener('resize', handleResize);
-  // }, []);
-
   return (
     <ClassDataProvider>
     <Routes>
-        <Route path="/" element={<HomePage />} />
+      <Route path="/" element={<HomePage />} />
+      <Route path="/home" element={<HomePage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/signup" element={<SignupPage />} />
-      <Route path="/home" element={<HomePage />} />
-      <Route path="/updateinfo" element={<UpdateGoogleUserInfoPage />} />
       <Route path="/profile" element={<ProfilePage />} />
+      <Route path="/updateinfo" element={<UpdateGoogleUserInfoPage />} />
       <Route path="/room/:id" element={<Discussion />} />
-        <Route path="/joinedroom/:id/" element={<JoinedDisscussion />} />
+      <Route path="/joinedroom/:id/" element={<JoinedDisscussion />} />
     </Routes>
     </ClassDataProvider>
   );

@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import SpeedDial from '@mui/material/SpeedDial';
 import SpeedDialIcon from '@mui/material/SpeedDialIcon';
 import SpeedDialAction from '@mui/material/SpeedDialAction';
-import { ThemeProvider } from '@mui/material/styles';
 import HomeSpeedDialTheme from '../themes/HomeSpeedDialTheme';
+import { ThemeProvider } from '@mui/material/styles';
 import { useClassDataContext } from '../context/ClassDataContext';
 function HomeSpeedDial(props) {
     const [open, setOpen] = useState(false);

@@ -1,23 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
-import Drawer from '@mui/material/Drawer';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import Avatar from '@mui/material/Avatar';
+import { useNavigate } from "react-router-dom";
+import { ThemeProvider } from '@mui/material/styles';
+import axios from 'axios';
+import {
+    Typography, Box, Drawer, List, ListItem, ListItemButton,
+    ListItemIcon, ListItemText, Avatar
+} from '@mui/material';
 import HomeIcon from '@mui/icons-material/Home';
 import SettingsIcon from '@mui/icons-material/Settings';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
-import { ThemeProvider } from '@mui/material/styles';
-import HomePageDrawerTheme from '../themes/HomePageDrawerTheme';
-import { useNavigate } from "react-router-dom";
-import LoginChecker from "../checker/LoginChecker"
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
-import axios from 'axios';
+import LoginChecker from "../checker/LoginChecker";
+import HomePageDrawerTheme from '../themes/HomePageDrawerTheme';
+
 function HomePageDrawer({ clickLogout ,...props}) {
     const [imgUrl, setImgUrl] = useState('');
     const [usernameUrl, setusernameUrl] = useState('');
@@ -36,9 +32,7 @@ function HomePageDrawer({ clickLogout ,...props}) {
           url: `${process.env.REACT_APP_API_URL}/api/getUserInfo`
         })  
         .then((res) =>{
-            
             //console.log(res.data);
-            
             setImgUrl(res.data.thumbnail);
             setusernameUrl(res.data.username);
             setstudentIdUrl(res.data.studentID);

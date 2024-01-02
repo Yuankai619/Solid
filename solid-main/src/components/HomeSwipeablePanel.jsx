@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import Box from '@mui/material/Box';
-import SwipeableViews from 'react-swipeable-views';
-import { useTheme } from '@mui/material/styles';
-import JoinedClassCardContainer from '../components/JoinedClassContainer';
-import CreateClassContainer from './CreateClassContainer';
+import { Box, Typography } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
+import SwipeableViews from 'react-swipeable-views';
+import CreateClassContainer from './CreateClassContainer';
 import HomeSwipeablePanelTheme from '../themes/HomeSwipeablePanelTheme';
+import JoinedClassCardContainer from '../components/JoinedClassContainer';
 import { useClassDataContext } from '../context/ClassDataContext';
+
 function TabPanel(props) {
     const { children, tabIndex, index, ...other } = props;
     return (
@@ -28,7 +28,7 @@ function TabPanel(props) {
 }
 
 function HomeSwipeablePanel(props) {
-    const { curIndex, handleChangeIndex } = useClassDataContext();
+    const { curIndex, handleChangeIndex, joinedClassData, createdClassData } = useClassDataContext();
 
     return (
         <ThemeProvider theme={HomeSwipeablePanelTheme}>
@@ -39,9 +39,17 @@ function HomeSwipeablePanel(props) {
                 style={{ height: 'calc(100dvh - 64px)' }}//讓空白處也可以滑動
             >
                 <TabPanel tabIndex={curIndex} index={0} dir={props._theme.direction}>
-                    <JoinedClassCardContainer></JoinedClassCardContainer>
+                    {!joinedClassData.length &&
+                    <Typography variant="h5" component="div" sx={{ flexGrow: 1, textAlign: 'center', color: '#CCCCCC',marginTop:"160px",fontWeight:"600" }}>
+                        You haven't joined any class yet.
+                    </Typography>}
+                    <JoinedClassCardContainer/>
                 </TabPanel>
                 <TabPanel tabIndex={curIndex} index={1} dir={props._theme.direction}>
+                    {!createdClassData.length &&
+                        <Typography variant="h5" component="div" sx={{ flexGrow: 1, textAlign: 'center', color: '#CCCCCC', marginTop: "160px", fontWeight: "600" }}>
+                            You haven't created any class yet.
+                        </Typography>}
                     <CreateClassContainer />
                 </TabPanel>
             </SwipeableViews>

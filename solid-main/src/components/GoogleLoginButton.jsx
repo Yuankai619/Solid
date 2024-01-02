@@ -1,8 +1,8 @@
 import React from "react";
 import Button from '@mui/material/Button';
-import GoogleLoginButtonTheme from "../themes/GoogleLoginButtonTheme";
 import GoogleIcon from '@mui/icons-material/Google';
-import {ThemeProvider}  from '@mui/material/styles';
+import { ThemeProvider }  from '@mui/material/styles';
+import GoogleLoginButtonTheme from "../themes/GoogleLoginButtonTheme";
 function GoogleLoginButton(props){
     return(
         <ThemeProvider theme={GoogleLoginButtonTheme}>
