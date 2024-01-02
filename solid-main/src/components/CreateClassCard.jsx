@@ -21,9 +21,9 @@ function CreateClassCard({ data }) {
   const navigate = useNavigate();
 
   const [stateColor, setStatecolor] = useState('#000');
-  const [menuState, setMenuState] = useState(data.state);
+  const [menuState, setMenuState] = useState(data.state.toString());
   const [allowNavigate, setAllowNavigate] = useState(true); // 新增状态来控制是否允许跳转
-
+  console.log("data.state: ",data.state);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
@@ -104,7 +104,7 @@ function CreateClassCard({ data }) {
 
               <CardContent onClick={(e) => { if (!allowNavigate) e.stopPropagation(); }}>
                 <Typography sx={{ fontSize: 15, fontWeight: 600, marginTop: '12px' }} color={menuState == 'true'? '#2D6CB6' : '#999999'} component="div">
-                  state: {data.state == 'true' ? 'open' : 'close'}
+                  state: {menuState == 'true' ? 'open' : 'close'}
                 </Typography>
                 <Typography sx={{ fontSize: 18, fontWeight: 600, }} color="#000" >
                   Class ID: {data.classID}

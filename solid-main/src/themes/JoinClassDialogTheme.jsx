@@ -10,7 +10,9 @@ const JoinClassDialogTheme = createTheme({
         MuiDialog: {
             styleOverrides: {
                 paper: {
-
+                    // position: 'absolute',
+                    // margin:'0px',
+                    // padding:'0px',
                     backgroundColor: '#222222', // 自定义背景颜色
                     width: '450px', // 自定义宽度
                     // 其他样式...

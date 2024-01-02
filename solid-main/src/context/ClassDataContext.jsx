@@ -25,6 +25,22 @@ export const ClassDataProvider = ({ children }) => {
         // { id: 2, title: "Card2", classID: "002", state: "open" },
         // { id: 3, title: "Card3", classID: "003", state: "close" },
     ]);
+    const handleDeleteJoinedClass = id => {
+        setJoinedClassData(prevClassData =>
+            prevClassData.filter(data => data.id !== id)
+        );
+        axios({
+            method: "POST",
+            headers: { 'Content-Type': 'application/json', },
+            data: JSON.stringify({
+                classID: id
+            }),
+            withCredentials: true,
+            url: `${process.env.REACT_APP_API_URL}/course/userPullJoinedClass`
+        })
+            .then((res) => { })
+            .catch((error) => { console.error(error); });
+    };
     //fetch class data
     useEffect(() => {
         console.log('test');
@@ -125,7 +141,7 @@ export const ClassDataProvider = ({ children }) => {
     return (
         <ClassDataContext.Provider value={{
             curIndex, setCurIndex, handleChangeIndex,
-            joinedCLassData, handleNewJoinedClass,
+            joinedCLassData, handleNewJoinedClass, handleDeleteJoinedClass,
             createdClassData, handleNewCreatedClass, handleChangeCreatedClassState, handleDeleteCreatedClass,
         }}>
             {children}

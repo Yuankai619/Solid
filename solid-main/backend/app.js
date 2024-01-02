@@ -112,7 +112,7 @@ const io = new Server(server,{
 })
 
 io.on('connection',(socket)=>{
-    console.log(`User Connected: ${socket.id}`)
+    // console.log(`User Connected: ${socket.id}`)
     socket.on('join_room',(data)=>{
         console.log(socket.id,'joined room',data);
         socket.join(data);

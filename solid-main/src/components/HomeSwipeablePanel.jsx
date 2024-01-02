@@ -36,7 +36,7 @@ function HomeSwipeablePanel(props) {
                 axis={props._theme.direction === 'rtl' ? 'x-reverse' : 'x'}
                 index={curIndex}
                 onChangeIndex={handleChangeIndex}
-                style={{ height: 'calc(100vh - 64px)' }}//讓空白處也可以滑動
+                style={{ height: 'calc(100dvh - 64px)' }}//讓空白處也可以滑動
             >
                 <TabPanel tabIndex={curIndex} index={0} dir={props._theme.direction}>
                     <JoinedClassCardContainer></JoinedClassCardContainer>

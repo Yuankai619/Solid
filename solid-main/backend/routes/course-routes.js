@@ -19,9 +19,9 @@ router.post('/getOnesInfo',Auth,async (req,res)=>{
     try{
         const _user = await  User.findById(req.body.id);
         if (!_user) {
+            res.send("User not found")
             console.log('User not found');
         }
-        console.log('ha',_user.username)
         res.json({
             authorName : _user.username
         })

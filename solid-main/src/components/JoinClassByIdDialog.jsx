@@ -73,8 +73,8 @@ function JoinClassByIdDialog(props) {
     
     return (
         <ThemeProvider theme={JoinClassDialogTheme}>
-            <React.Fragment>
-                <Dialog open={props.dialogOpen} onClose={props.setDialogOpen} TransitionComponent={Transition}>
+            
+                <Dialog open={props.dialogOpen} onClose={props.setDialogOpen} TransitionComponent={Transition} >
                     <DialogTitle>Input Class ID to Join</DialogTitle>
                     <DialogContent>
                         <InputText
@@ -88,7 +88,7 @@ function JoinClassByIdDialog(props) {
                         <Button onClick={handleJoin} sx={{ fontWeight: 'bold', marginRight: '30px', fontSize: '1.2rem' }}>Join</Button>
                     </DialogActions>
                 </Dialog>
-            </React.Fragment>
+            
         </ThemeProvider>
     );
 }

@@ -13,14 +13,15 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { CardHeader } from "@mui/material";
+import { useClassDataContext } from '../context/ClassDataContext';
 import axios from 'axios';
 const JoinedClassCardTheme = createTheme({
-  // typography: {
-  //     fontFamily: [
-  //       'Poppins', // 您選擇的 Google 字體
-  //       'sans-serif', // 作為後備的系統字體
-  //     ].join(','),
-  // },
+  typography: {
+      fontFamily: [
+        'Poppins', // 您選擇的 Google 字體
+        'sans-serif', // 作為後備的系統字體
+      ].join(','),
+  },
   components: {
     MuiTypography: {
       styleOverrides: {
@@ -96,6 +97,7 @@ const JoinedClassCardTheme = createTheme({
 
 
 function JoinedClassCard({ data }) {
+  const { handleDeleteJoinedClass } = useClassDataContext();
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
@@ -115,6 +117,7 @@ function JoinedClassCard({ data }) {
     event.stopPropagation();
     console.log(data.id)
     handleClose();
+    handleDeleteJoinedClass(data.id);
     // handleDeleteCreatedClass(data.id);
   };
   const [allowNavigate, setAllowNavigate] = useState(true);
@@ -147,23 +150,25 @@ function JoinedClassCard({ data }) {
       console.log(err);
     }
   };
-  const navigate = useNavigate();
 
   return (
     <ThemeProvider theme={JoinedClassCardTheme}>
       <Box sx={{ minWidth: 275 }} >
 
         <Card variant="outlined" sx={{ cursor: 'pointer' }} >
-          <Link style={{ textDecoration: 'none', color: 'inherit' }} to={`/joinedroom/${data.classID}`}>
+          <Link style={{ textDecoration: 'none', color: 'inherit' }} to={`/joinedroom/${data.classID}`} onClick={(e) => {
+            if (!allowNavigate) {
+              e.preventDefault(); // 如果不允许跳转，则阻止 Link 的默认行为
+            }}}>
             <CardHeader
-              // action={
-              //   <IconButton
-              //     aria-label="class setting menu"
-              //     onClick={handleClickMenu}
-              //   >
-              //     <MoreVertIcon />
-              //   </IconButton>
-              // }
+              action={
+                <IconButton
+                  aria-label="class setting menu"
+                  onClick={handleClickMenu}
+                >
+                  <MoreVertIcon />
+                </IconButton>
+              }
               title={data.title}
             />
             <Menu
@@ -187,7 +192,7 @@ function JoinedClassCard({ data }) {
               }}
             >
 
-              <MenuItem onClick={undefined} sx={{ color: "#CC0000" }}>Delete</MenuItem>
+              <MenuItem onClick={handleDelete} sx={{ color: "#CC0000" }}>Delete</MenuItem>
             </Menu>
             <CardContent >
               {/* <Typography variant="h2" sx={{ fontSize: 20, fontWeight: 700 }} color="#000" >
