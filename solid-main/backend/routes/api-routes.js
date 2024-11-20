@@ -1,6 +1,6 @@
 const router = require('express').Router()
 const User = require('../models/user')
-//const Course = require('../models/course');
+const Course = require('../models/course');
 
 
 function Auth(req, res, next) {

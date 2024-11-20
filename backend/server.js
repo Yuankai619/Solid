@@ -5,6 +5,7 @@ import connectToMongoDB from "./repository/connectToMongoDB.js";
 const app = express();
 dotenv.config();
 const PORT = process.env.PORT || 5000;
+app.use(express.json());
 
 app.get("/", (req, res) => {
     res.send("Hello Worlffd");
