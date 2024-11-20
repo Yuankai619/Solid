@@ -1,5 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Rubik+Mono+One&display=swap");
-@import url("https://fonts.googleapis.com/css?family=Exo:400,700");
+
 html,
 body {
     margin: 0;
@@ -80,6 +80,8 @@ body {
     /* Fallback for browsers that do not support Custom Properties */
     height: calc(var(--vh, 1vh) * 100);
 }
+
+@import url("https://fonts.googleapis.com/css?family=Exo:400,700");
 
 * {
     margin: 0px;
