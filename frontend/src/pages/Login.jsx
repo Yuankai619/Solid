@@ -20,21 +20,21 @@ import { Button, Typography } from "@mui/material";
 function AnimatedBackground() {
   return (
 
-      <div class="area" >
-        <ul class="circles">
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-        </ul>
-      </div >
-    
+    <div className="area" >
+      <ul className="circles">
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+      </ul>
+    </div >
+
   );
 }
 function LoginPage() {
@@ -42,7 +42,7 @@ function LoginPage() {
     // document.body.style.background = "linear-gradient(-45deg, #000000,#A13E97, #632A7E)";
     // document.body.style.backgroundSize = "1000% 1000%";
     // document.body.style.animation = "gradient 10s ease infinite";
-    
+
     document.body.style.overflow = 'auto';
     // document.body.style.overflow = 'hidden';
     return () => {
@@ -87,19 +87,16 @@ function LoginPage() {
         }
       });
 
-  }//handlesubmit
+  }
+
   const googleSubmit = () => {
     window.location.href = `${process.env.REACT_APP_API_URL}/auth/google`
 
-
   }
-
-  //deerufin
-
 
   const boxGap = "45px";
   return (
-    
+
     <ThemeProvider theme={LoginContainerTheme}>
       <AnimatedBackground />
       <Box py={"5dvh"}>
@@ -153,7 +150,7 @@ function LoginPage() {
         </Box>
         <Box display="flex"
           justifyContent="center"
-          // alignItems="center" 
+        // alignItems="center" 
         >
           <Link
             href="https://docs.google.com/presentation/d/e/2PACX-1vRXgz1DscDJOS8eBcKqrvovk-OpGnak85o9xU8weQQVB4bW983VNFTw51hNT5chvdvUVMxRmaBJb9fB/pub?start=false&loop=false&delayms=3000"
