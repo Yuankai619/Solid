@@ -4,7 +4,7 @@ import io from 'socket.io-client';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Card, CardContent, Typography, Avatar, Button } from '@mui/material';
 
-let socket = io.connect(`${import.meta.env.REACT_APP_API_URL}`)
+// let socket = io.connect(`${import.meta.env.REACT_APP_API_URL}`)
 
 const StreamEditorMessageCardTheme = createTheme({
 
