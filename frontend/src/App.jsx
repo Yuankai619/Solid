@@ -3,7 +3,7 @@ import {
   RouterProvider
 } from "react-router-dom";
 import { routesConfig } from "./routes/routesConfig";
-import { AuthProvider } from "./context/AuthProvider";
+import { AuthProvider } from "./context/AuthContext.jsx";
 import ProcessedRoutes from "./routes/ProcessedRoutes";
 function App() {
 

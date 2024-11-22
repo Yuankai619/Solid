@@ -1,13 +1,12 @@
-import { useContext } from 'react';
-import AuthContext from '../context/AuthContext';
 import { Navigate, useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { useAuth } from '../context/AuthContext';
 const ProtectedRoute = ({ children }) => {
-    const { isAuthenticated } = useContext(AuthContext);
+    const { currentUser } = useAuth();
     const location = useLocation();
-
-    if (!isAuthenticated) {
-        return <Navigate to="/login" state={{ from: location }} replace />
+    console.log('currentUser = ', currentUser);
+    if (!currentUser) {
+        return <Navigate to="/login" />
     }
 
     return children;

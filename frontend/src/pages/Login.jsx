@@ -16,7 +16,7 @@ import GoogleLoginButton from "../components/GoogleLoginButton";
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import { Button, Typography } from "@mui/material";
-
+import { useAuth } from "../context/AuthContext";
 function AnimatedBackground() {
   return (
 
@@ -95,6 +95,8 @@ function LoginPage() {
   }
 
   const boxGap = "45px";
+
+  const { loginWithGoogle } = useAuth();
   return (
 
     <ThemeProvider theme={LoginContainerTheme}>
@@ -143,7 +145,7 @@ function LoginPage() {
         <Box sx={BoxButtonTheme} >
           <GoogleLoginButton
             id="loginwithgoogle"
-            onClick={googleSubmit}
+            onClick={loginWithGoogle}
 
             innertext="Login with Google"
           />
