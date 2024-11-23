@@ -17,24 +17,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Button, Typography } from "@mui/material";
 import { useAuth } from "../context/AuthContext";
-function AnimatedBackground() {
-    return (
-        <div className="area">
-            <ul className="circles">
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-            </ul>
-        </div>
-    );
-}
+import AnimatedBackground from "../components/AnimatedBackground";
 function LoginPage() {
     const { loginWithGoogle, currentUser, isLoading } = useAuth();
     const navigate = useNavigate();
@@ -43,6 +26,7 @@ function LoginPage() {
     } else if (currentUser) {
         navigate("/home");
     }
+
     useEffect(() => {
         // document.body.style.background = "linear-gradient(-45deg, #000000,#A13E97, #632A7E)";
         // document.body.style.backgroundSize = "1000% 1000%";
