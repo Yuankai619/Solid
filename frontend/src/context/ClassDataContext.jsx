@@ -37,61 +37,61 @@ export const ClassDataProvider = ({ children }) => {
         setJoinedClassData((prevClassData) =>
             prevClassData.filter((data) => data.id !== id)
         );
-        axios({
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            data: JSON.stringify({
-                classID: id,
-            }),
-            withCredentials: true,
-            url: `${process.env.REACT_APP_API_URL}/course/userPullJoinedClass`,
-        })
-            .then((res) => {})
-            .catch((error) => {
-                console.error(error);
-            });
+        // axios({
+        //     method: "POST",
+        //     headers: { "Content-Type": "application/json" },
+        //     data: JSON.stringify({
+        //         classID: id,
+        //     }),
+        //     withCredentials: true,
+        //     url: `${process.env.REACT_APP_API_URL}/course/userPullJoinedClass`,
+        // })
+        //     .then((res) => {})
+        //     .catch((error) => {
+        //         console.error(error);
+        //     });
     };
     //fetch class data
     useEffect(() => {
         console.log("test");
-        const fetchClassData = async () => {
-            try {
-                const response = await axios({
-                    method: "get",
-                    url: `${process.env.REACT_APP_API_URL}/course/getCreatedClass`,
-                    withCredentials: true,
-                });
-                const modifiedData = response.data.map((item) => ({
-                    //加入id
-                    ...item,
-                    id: parseInt(item.classID),
-                }));
-                console.log("sd;", modifiedData);
-                setCreatedClassData(modifiedData);
-            } catch (error) {
-                console.error("Error fetching class data:", error);
-            }
-        };
-        const fetchJoinedClassData = async () => {
-            try {
-                const response = await axios({
-                    method: "get",
-                    url: `${process.env.REACT_APP_API_URL}/course/getJoinedClass`,
-                    withCredentials: true,
-                });
-                const modifiedData = response.data.map((item) => ({
-                    //加入id
-                    ...item,
-                    id: parseInt(item.classID),
-                }));
-                console.log("sd;", modifiedData);
-                setJoinedClassData(modifiedData);
-            } catch (error) {
-                console.error("Error fetching class data:", error);
-            }
-        };
-        fetchJoinedClassData();
-        fetchClassData();
+        // const fetchClassData = async () => {
+        //     try {
+        //         const response = await axios({
+        //             method: "get",
+        //             url: `${process.env.REACT_APP_API_URL}/course/getCreatedClass`,
+        //             withCredentials: true,
+        //         });
+        //         const modifiedData = response.data.map((item) => ({
+        //             //加入id
+        //             ...item,
+        //             id: parseInt(item.classID),
+        //         }));
+        //         console.log("sd;", modifiedData);
+        //         setCreatedClassData(modifiedData);
+        //     } catch (error) {
+        //         console.error("Error fetching class data:", error);
+        //     }
+        // };
+        // const fetchJoinedClassData = async () => {
+        //     try {
+        //         const response = await axios({
+        //             method: "get",
+        //             url: `${process.env.REACT_APP_API_URL}/course/getJoinedClass`,
+        //             withCredentials: true,
+        //         });
+        //         const modifiedData = response.data.map((item) => ({
+        //             //加入id
+        //             ...item,
+        //             id: parseInt(item.classID),
+        //         }));
+        //         console.log("sd;", modifiedData);
+        //         setJoinedClassData(modifiedData);
+        //     } catch (error) {
+        //         console.error("Error fetching class data:", error);
+        //     }
+        // };
+        // fetchJoinedClassData();
+        // fetchClassData();
     }, []);
     // //
     const handleNewCreatedClass = (newClass) => {
@@ -105,52 +105,52 @@ export const ClassDataProvider = ({ children }) => {
             )
         );
         //alert(newState);
-        axios({
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            data: JSON.stringify({
-                classID: id,
-                state: newState,
-            }),
-            withCredentials: true,
-            url: `${process.env.REACT_APP_API_URL}/course/changeState`,
-        })
-            .then((res) => {})
-            .catch((error) => {
-                console.error(error);
-            });
+        // axios({
+        //     method: "POST",
+        //     headers: { "Content-Type": "application/json" },
+        //     data: JSON.stringify({
+        //         classID: id,
+        //         state: newState,
+        //     }),
+        //     withCredentials: true,
+        //     url: `${process.env.REACT_APP_API_URL}/course/changeState`,
+        // })
+        //     .then((res) => {})
+        //     .catch((error) => {
+        //         console.error(error);
+        //     });
     };
 
     const handleDeleteCreatedClass = (id) => {
         setCreatedClassData((prevClassData) =>
             prevClassData.filter((data) => data.id !== id)
         );
-        axios({
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            data: JSON.stringify({
-                classID: id,
-            }),
-            withCredentials: true,
-            url: `${process.env.REACT_APP_API_URL}/course/deleteClass`,
-        })
-            .then((res) => {})
-            .catch((error) => {
-                console.error(error);
-            });
-        axios({
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            data: JSON.stringify({
-                classID: id,
-            }),
-            withCredentials: true,
-            url: `${process.env.REACT_APP_API_URL}/course/deleteClassFromUser`,
-        })
-            .then((res) => {})
-            .catch((error) => {
-                console.error(error);
-            });
+        // axios({
+        //     method: "POST",
+        //     headers: { "Content-Type": "application/json" },
+        //     data: JSON.stringify({
+        //         classID: id,
+        //     }),
+        //     withCredentials: true,
+        //     url: `${process.env.REACT_APP_API_URL}/course/deleteClass`,
+        // })
+        //     .then((res) => {})
+        //     .catch((error) => {
+        //         console.error(error);
+        //     });
+        // axios({
+        //     method: "POST",
+        //     headers: { "Content-Type": "application/json" },
+        //     data: JSON.stringify({
+        //         classID: id,
+        //     }),
+        //     withCredentials: true,
+        //     url: `${process.env.REACT_APP_API_URL}/course/deleteClassFromUser`,
+        // })
+        //     .then((res) => {})
+        //     .catch((error) => {
+        //         console.error(error);
+        //     });
     };
 
     const value = {

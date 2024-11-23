@@ -26,32 +26,30 @@ function LoginPage() {
     } else if (currentUser) {
         navigate("/home");
     }
+    // useEffect(() => {
+    //     // document.body.style.background = "linear-gradient(-45deg, #000000,#A13E97, #632A7E)";
+    //     // document.body.style.backgroundSize = "1000% 1000%";
+    //     // document.body.style.animation = "gradient 10s ease infinite";
 
-    useEffect(() => {
-        // document.body.style.background = "linear-gradient(-45deg, #000000,#A13E97, #632A7E)";
-        // document.body.style.backgroundSize = "1000% 1000%";
-        // document.body.style.animation = "gradient 10s ease infinite";
+    //     document.body.style.overflow = "auto";
+    //     // document.body.style.overflow = 'hidden';
+    //     return () => {
+    //         document.body.style.overflow = "";
+    //         // document.body.style.backgroundSize = '';
+    //         // document.body.style.animation = '';
+    //     };
+    // // }, []);
+    // const [username, setUsername] = useState("");
+    // const [password, setPassword] = useState("");
+    // const [usernameError, setUsernameError] = useState(false);
+    // const [passwordError, setPasswordError] = useState(false);
 
-        document.body.style.overflow = "auto";
-        // document.body.style.overflow = 'hidden';
-        return () => {
-            document.body.style.overflow = "";
-            // document.body.style.backgroundSize = '';
-            // document.body.style.animation = '';
-        };
-    }, []);
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
-    const [usernameError, setUsernameError] = useState(false);
-    const [passwordError, setPasswordError] = useState(false);
+    // const [data, setData] = useState(null);
 
-    //deerufin
-    const [data, setData] = useState(null);
-
-    const handleSignup = () => {
-        document.body.style.backgroundColor = "#222222";
-        navigate("/signup");
-    };
+    // const handleSignup = () => {
+    //     document.body.style.backgroundColor = "#222222";
+    //     navigate("/signup");
+    // };
     // const handleSubmit = () => {
     //   axios({
     //     method: "POST",
@@ -78,15 +76,15 @@ function LoginPage() {
 
     // }
     const handleSubmit = async () => {
-        if (!isLoading && !currentUser) {
+        if (!currentUser) {
             await loginWithGoogle();
-        } else if (currentUser) {
+        } else {
             navigate("/home");
         }
     };
-    const googleSubmit = () => {
-        window.location.href = `${process.env.REACT_APP_API_URL}/auth/google`;
-    };
+    // const googleSubmit = () => {
+    //     window.location.href = `${process.env.REACT_APP_API_URL}/auth/google`;
+    // };
 
     const boxGap = "45px";
 
