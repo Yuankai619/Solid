@@ -82,9 +82,6 @@ function LoginPage() {
             navigate("/home");
         }
     };
-    // const googleSubmit = () => {
-    //     window.location.href = `${process.env.REACT_APP_API_URL}/auth/google`;
-    // };
 
     const boxGap = "45px";
 
