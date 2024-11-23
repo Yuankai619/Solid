@@ -22,7 +22,7 @@ const userSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
-        thumbnail: {
+        avatarUrl: {
             type: String,
             required: false,
         },
