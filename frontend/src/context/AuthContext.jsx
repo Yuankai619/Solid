@@ -1,7 +1,8 @@
 import { useState, createContext, useContext, useEffect } from "react";
-import PropTypes from 'prop-types';
-import { GoogleAuthProvider, signInWithPopup, signInWithRedirect, signOut } from "firebase/auth";
+import PropTypes from "prop-types";
+import { GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth";
 import { auth } from "../config/firebase";
+import { onAuthStateChanged } from "firebase/auth";
 const AuthContext = createContext();
 
 // eslint-disable-next-line react-refresh/only-export-components
@@ -15,7 +16,8 @@ export function AuthProvider({ children }) {
     const loginWithGoogle = async () => {
         const provider = new GoogleAuthProvider();
         try {
-            await signInWithPopup(auth, provider);
+            const result = await signInWithPopup(auth, provider);
+            setCurrentUser(result.user);
         } catch (error) {
             console.error("Google login error: ", error);
         }
@@ -27,14 +29,10 @@ export function AuthProvider({ children }) {
         } catch (error) {
             console.error("Logout error: ", error);
         }
-    }
+    };
 
     useEffect(() => {
-        const unsubscribe = auth.onAuthStateChanged(user => {
-            setCurrentUser(user);
-            console.log('user = ', user);
-            setIsLoading(false);
-        });
+        const unsubscribe = onAuthStateChanged(auth, initializeUser);
         return unsubscribe;
     }, []);
     const value = {
@@ -42,13 +40,20 @@ export function AuthProvider({ children }) {
         loginWithGoogle,
         logout,
     };
+
+    async function initializeUser(user) {
+        if (user) {
+            setCurrentUser({ ...user });
+        } else {
+            setCurrentUser(null);
+        }
+    }
+
     return (
-        <AuthContext.Provider value={value}>
-            {children}
-        </AuthContext.Provider>
+        <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
     );
 }
 
 AuthProvider.propTypes = {
-    children: PropTypes.node.isRequired
+    children: PropTypes.node.isRequired,
 };
