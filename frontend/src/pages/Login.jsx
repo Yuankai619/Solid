@@ -36,6 +36,13 @@ function AnimatedBackground() {
     );
 }
 function LoginPage() {
+    const { loginWithGoogle, currentUser, isLoading } = useAuth();
+    const navigate = useNavigate();
+    if (isLoading) {
+        return <div>loadiing....</div>;
+    } else if (currentUser) {
+        navigate("/home");
+    }
     useEffect(() => {
         // document.body.style.background = "linear-gradient(-45deg, #000000,#A13E97, #632A7E)";
         // document.body.style.backgroundSize = "1000% 1000%";
@@ -56,7 +63,7 @@ function LoginPage() {
 
     //deerufin
     const [data, setData] = useState(null);
-    const navigate = useNavigate();
+
     const handleSignup = () => {
         document.body.style.backgroundColor = "#222222";
         navigate("/signup");
@@ -86,10 +93,12 @@ function LoginPage() {
     //     });
 
     // }
-    const { loginWithGoogle } = useAuth();
     const handleSubmit = async () => {
-        await loginWithGoogle();
-        navigate("/home");
+        if (!isLoading && !currentUser) {
+            await loginWithGoogle();
+        } else if (currentUser) {
+            navigate("/home");
+        }
     };
     const googleSubmit = () => {
         window.location.href = `${process.env.REACT_APP_API_URL}/auth/google`;
