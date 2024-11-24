@@ -17,6 +17,7 @@ export const useAuth = () => useContext(AuthContext);
 export function AuthProvider({ children }) {
     const [currentUser, setCurrentUser] = useState(null);
     const [isLoading, setisLoading] = useState(true);
+    const [token, setToken] = useState(null);
 
     // login by google
     const loginWithGoogle = async () => {
@@ -24,7 +25,9 @@ export function AuthProvider({ children }) {
         const provider = new GoogleAuthProvider();
         try {
             const result = await signInWithPopup(auth, provider);
+            const userToken = await auth.currentUser.getIdToken();
             setCurrentUser(result.user);
+            setToken(userToken);
             console.log("Google login success: ", result);
         } catch (error) {
             console.error("Google login error: ", error);
@@ -52,6 +55,7 @@ export function AuthProvider({ children }) {
     const value = {
         currentUser,
         isLoading,
+        token,
         loginWithGoogle,
         logout,
     };
