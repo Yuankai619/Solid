@@ -1,20 +1,20 @@
-import { useContext } from 'react';
-import AuthContext from '../context/AuthContext';
-import { Navigate, useLocation } from 'react-router-dom';
-import PropTypes from 'prop-types';
+import { Navigate } from "react-router-dom";
+import PropTypes from "prop-types";
+import { useAuth } from "../context/AuthContext";
+
 const ProtectedRoute = ({ children }) => {
-    const { isAuthenticated } = useContext(AuthContext);
-    const location = useLocation();
+    const { currentUser, isLoading } = useAuth();
 
-    if (!isAuthenticated) {
-        return <Navigate to="/login" state={{ from: location }} replace />
+    if (isLoading) {
+        return <div>loadiing....</div>;
+    } else if (!currentUser) {
+        return <Navigate to="/login" replace />;
     }
-
     return children;
-}
+};
 
 ProtectedRoute.propTypes = {
-    children: PropTypes.node.isRequired
+    children: PropTypes.node.isRequired,
 };
 
 export default ProtectedRoute;
