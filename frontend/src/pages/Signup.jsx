@@ -1,4 +1,4 @@
-import React,{useState,useEffect}from "react";
+import React, { useState, useEffect } from "react";
 import InputText from "../components/InputText";
 import InputPassword from "../components/InputPassword";
 import SignupButton from "../components/SignupButton";
@@ -6,15 +6,12 @@ import CheckboxStatement from "../components/CheckboxStatement";
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { useTheme} from '@mui/material/styles';
+import { useTheme } from '@mui/material/styles';
 import { useNavigate } from "react-router-dom";
-// deerufin
 import axios from 'axios';
-// deerufin
 
 
 function SignupPage() {
-  console.log("turn");
   useEffect(() => {
     document.body.style.background = "#222222";
     return () => {
@@ -34,15 +31,13 @@ function SignupPage() {
   const [realnameError, setRealnameError] = useState(false);
   const [studentIdError, setStudentIdError] = useState(false);
   const [emailError, setEmailError] = useState(false);
-  const navigate=useNavigate();
+  const navigate = useNavigate();
   const handleSubmit = async (event) => {
     event.preventDefault();
-    //console.log(`haha`)
-    // 確保密碼和確認密碼相同
     if (String(password) !== String(confirmPassword)) {
       setConfirmpasswordError(true);
       return;
-    }else{
+    } else {
       setConfirmpasswordError(false);
     }
     axios({
@@ -60,86 +55,86 @@ function SignupPage() {
       withCredentials: true,
       url: `${process.env.REACT_APP_API_URL}/auth/register`
     })
-    .then((res) =>{
-      console.log('res data = ',res.data)
-      
-        navigate('/home');
-      
-    });
-  };
-  
+      .then((res) => {
+        console.log('res data = ', res.data)
 
+        navigate('/home');
+
+      });
+  };
+
+  //UI setting
   const curtheme = useTheme();
   const isMobile = useMediaQuery(curtheme.breakpoints.down('sm'));
   const isPad = useMediaQuery(curtheme.breakpoints.down('md'));
   const boxGap = "45px";
   return (
     <Box backgroundColor="#222222" height={"100%"}>
-      <Container  maxWidth="sm" sx={{py:"75px", px: isMobile ? "45px":(isPad ? "144px":"360px") } }>
-          <Box my={boxGap}>
+      <Container maxWidth="sm" sx={{ py: "75px", px: isMobile ? "45px" : (isPad ? "144px" : "360px") }}>
+        <Box my={boxGap}>
           <h1 className="signup-panel-title">Create account</h1>
-          </Box>
-          <Box my={boxGap}>
-            <InputText 
-              id = "username"
-              iserror={usernameError} errorText={"error"} isrequired={true} label="username"
-              onChange={(e) => setUsername(e.target.value)}
-            ></InputText>
-          </Box>
-          <Box my={boxGap}>
-            <InputPassword 
-              id = "password"
-              iserror={passwordError} errorText={"error"} isrequired={true} label="password"
-              onChange={(e) => setPassword(e.target.value)}
-            ></InputPassword>
-          </Box>
-          <Box my={boxGap}>
-            <InputPassword 
-              id = "confirm password"
-              iserror={confirmpasswordError} errorText={"password is different"} isrequired={true} label="confirm password"
-              onChange={(e) => {
-                setConfirmPassword( e.target.value);
-                if (!confirmpasswordError && String(password)===String(confirmPassword)) {
-                  setConfirmpasswordError(true); 
-                } 
-              }}
-            ></InputPassword>
-          </Box>
-          <Box my={boxGap}>
-            <InputText 
-              id = "real name"
-              iserror={realnameError} errorText={"error"} isrequired={true} label="real name"
-              onChange={(e) => setRealName(e.target.value)}
-              ></InputText>
-          </Box>
-          <Box my={boxGap}>
-            <InputText 
-              id ="sutdent ID"
-              iserror={studentIdError} errorText={"error"} isrequired={true} label="student ID"
-              onChange={(e) => setStudentId(e.target.value)}
-            ></InputText>
-          </Box>
-          <Box my={boxGap}>
-            <InputText 
-              id = "email"
-              iserror={emailError} errorText={"error"} isrequired={false} label="email"
-              onChange={(e) => setEmail(e.target.value)}  
-            ></InputText>
-          </Box>
-          <Box my={boxGap}>
-            <CheckboxStatement 
-              id = "accept Term"
-              statement="I accept the terms and privacy policy"
-              onChange={(e) => setIsTermsAccepted(e.target.value)}
-            ></CheckboxStatement>
-          </Box>
-          <Box sx={{my:boxGap,px:"40px"}}>
-            <SignupButton 
-              id = "sing up"
-              innertext="SignUp"
-              onClick={handleSubmit}
-            ></SignupButton>
-          </Box>
+        </Box>
+        <Box my={boxGap}>
+          <InputText
+            id="username"
+            iserror={usernameError} errorText={"error"} isrequired={true} label="username"
+            onChange={(e) => setUsername(e.target.value)}
+          ></InputText>
+        </Box>
+        <Box my={boxGap}>
+          <InputPassword
+            id="password"
+            iserror={passwordError} errorText={"error"} isrequired={true} label="password"
+            onChange={(e) => setPassword(e.target.value)}
+          ></InputPassword>
+        </Box>
+        <Box my={boxGap}>
+          <InputPassword
+            id="confirm password"
+            iserror={confirmpasswordError} errorText={"password is different"} isrequired={true} label="confirm password"
+            onChange={(e) => {
+              setConfirmPassword(e.target.value);
+              if (!confirmpasswordError && String(password) === String(confirmPassword)) {
+                setConfirmpasswordError(true);
+              }
+            }}
+          ></InputPassword>
+        </Box>
+        <Box my={boxGap}>
+          <InputText
+            id="real name"
+            iserror={realnameError} errorText={"error"} isrequired={true} label="real name"
+            onChange={(e) => setRealName(e.target.value)}
+          ></InputText>
+        </Box>
+        <Box my={boxGap}>
+          <InputText
+            id="sutdent ID"
+            iserror={studentIdError} errorText={"error"} isrequired={true} label="student ID"
+            onChange={(e) => setStudentId(e.target.value)}
+          ></InputText>
+        </Box>
+        <Box my={boxGap}>
+          <InputText
+            id="email"
+            iserror={emailError} errorText={"error"} isrequired={false} label="email"
+            onChange={(e) => setEmail(e.target.value)}
+          ></InputText>
+        </Box>
+        <Box my={boxGap}>
+          <CheckboxStatement
+            id="accept Term"
+            statement="I accept the terms and privacy policy"
+            onChange={(e) => setIsTermsAccepted(e.target.value)}
+          ></CheckboxStatement>
+        </Box>
+        <Box sx={{ my: boxGap, px: "40px" }}>
+          <SignupButton
+            id="sing up"
+            innertext="SignUp"
+            onClick={handleSubmit}
+          ></SignupButton>
+        </Box>
       </Container>
     </Box>
   );
