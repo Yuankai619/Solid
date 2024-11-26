@@ -3,7 +3,6 @@ import {
     createContext,
     useContext,
     useEffect,
-    useCallback,
 } from "react";
 import PropTypes from "prop-types";
 import { GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth";
