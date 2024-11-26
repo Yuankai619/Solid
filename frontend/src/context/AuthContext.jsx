@@ -44,9 +44,10 @@ export function AuthProvider({ children }) {
             setCurrentUser(user);
             setGoogleId(user.uid);
             setCurrentUser(user);
-            setToken(user.getIdToken());
+            user.getIdToken().then((token) => {
+                setToken(token);
+            });
             setisLoading(false);
-            console.log("Auth isLoading changed: ", isLoading);
         });
         return unsubscribe;
     }, []);
