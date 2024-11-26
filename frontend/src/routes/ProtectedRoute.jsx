@@ -19,13 +19,13 @@ const ProtectedRoute = ({ children }) => {
         staleTime: Infinity,
 
     })
-
+    const res = findResult?.message.res
 
     if (isLoading || isFetching) {
         return <div>loadiing....</div>;
     } else if (!currentUser) {
         return <Navigate to="/login" replace />;
-    } else if (findResult === "false") {
+    } else if (res === "false") {
         return <Navigate to="/signup" replace />;
     }
     return children;

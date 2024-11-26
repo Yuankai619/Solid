@@ -44,9 +44,9 @@ const findUser = async ({ payload }) => {
     try {
         const existingUser = await User.findOne({ googleId });
         if (existingUser) {
-            return { message: "true" };
+            return { res: "true" };
         }
-        return { message: "false" };
+        return { res: "false" };
     } catch (error) {
         throw error;
     }
