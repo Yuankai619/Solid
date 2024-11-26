@@ -3,7 +3,6 @@ import {
     createContext,
     useContext,
     useEffect,
-    useCallback,
 } from "react";
 import PropTypes from "prop-types";
 import { GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth";
@@ -18,16 +17,13 @@ export function AuthProvider({ children }) {
     const [currentUser, setCurrentUser] = useState(null);
     const [isLoading, setisLoading] = useState(true);
     const [token, setToken] = useState(null);
-
+    const [googleId, setGoogleId] = useState(null);
     // login by google
     const loginWithGoogle = async () => {
         setisLoading(true);
         const provider = new GoogleAuthProvider();
         try {
             const result = await signInWithPopup(auth, provider);
-            const userToken = await auth.currentUser.getIdToken();
-            setCurrentUser(result.user);
-            setToken(userToken);
             console.log("Google login success: ", result);
         } catch (error) {
             console.error("Google login error: ", error);
@@ -46,8 +42,12 @@ export function AuthProvider({ children }) {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             console.log("Auth state changed: ", user);
             setCurrentUser(user);
+            setGoogleId(user.uid);
+            setCurrentUser(user);
+            user.getIdToken().then((token) => {
+                setToken(token);
+            });
             setisLoading(false);
-            console.log("Auth isLoading changed: ", isLoading);
         });
         return unsubscribe;
     }, []);
@@ -56,6 +56,7 @@ export function AuthProvider({ children }) {
         currentUser,
         isLoading,
         token,
+        googleId,
         loginWithGoogle,
         logout,
     };

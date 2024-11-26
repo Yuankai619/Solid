@@ -22,4 +22,5 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-**/firebase.js
+firebase.js
+.env.development

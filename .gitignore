@@ -2,3 +2,4 @@ node_modules/
 package-lock.json
 solid-main/backend/.env
 .env
+firebase.env.json

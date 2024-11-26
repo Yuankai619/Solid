@@ -3,7 +3,14 @@ import User from "../models/user.model.js";
 
 const signup = async ({ payload }) => {
     console.log("payload", payload);
-    const { userName, realName, email, studentId = "", password } = payload;
+    const { userName, realName, email, studentId = "", password, avatarUrl, googleId } = payload;
+    console.log("userName", userName);
+    console.log("realName", realName);
+    console.log("email", email);
+    console.log("studentId", studentId);
+    console.log("password", password);
+    console.log("avatarUrl", avatarUrl);
+    console.log("googleId", googleId);
     try {
         const existingUser = await User.findOne({ email });
         if (existingUser) {
@@ -32,6 +39,19 @@ const signup = async ({ payload }) => {
     }
 };
 
+const findUser = async ({ payload }) => {
+    const { googleId } = payload;
+    try {
+        const existingUser = await User.findOne({ googleId });
+        if (existingUser) {
+            return { message: "true" };
+        }
+        return { message: "false" };
+    } catch (error) {
+        throw error;
+    }
+};
+
 export default {
-    signup,
+    signup, findUser
 };
