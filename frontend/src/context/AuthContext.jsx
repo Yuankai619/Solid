@@ -41,12 +41,14 @@ export function AuthProvider({ children }) {
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             console.log("Auth state changed: ", user);
-            setCurrentUser(user);
-            setGoogleId(user.uid);
-            setCurrentUser(user);
-            user.getIdToken().then((token) => {
-                setToken(token);
-            });
+            if (user) {
+                setCurrentUser(user);
+                setGoogleId(user.uid);
+                setCurrentUser(user);
+                user.getIdToken().then((token) => {
+                    setToken(token);
+                });
+            }
             setisLoading(false);
         });
         return unsubscribe;
