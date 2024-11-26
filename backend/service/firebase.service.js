@@ -1,9 +1,13 @@
-var admin = require("firebase-admin");
+import admin from "firebase-admin";
+import fs from "fs";
+import path from "path";
 
-var serviceAccount = require("../config/firebase.env.json");
+const serviceAccount = JSON.parse(
+    fs.readFileSync(path.resolve('backend/config/firebase.env.json'), 'utf8')
+);
 
 admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount)
+    credential: admin.credential.cert(serviceAccount),
 });
 
-module.exports = admin;
+export default admin;
