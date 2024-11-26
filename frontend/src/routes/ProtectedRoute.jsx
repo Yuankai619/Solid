@@ -12,11 +12,11 @@ const ProtectedRoute = ({ children }) => {
     } = useQuery({
         queryKey: ["findUser", googleId],
         queryFn: async () => {
-            console.log("queryFn debug");
             const res = await FindUser(googleId, token);
             return res;
         },
         refetchOnWindowFocus: false,
+        staleTime: Infinity,
 
     })
 

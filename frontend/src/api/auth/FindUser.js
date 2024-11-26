@@ -1,8 +1,5 @@
 import { API } from "../axios.config";
 export const FindUser = async (googleId, token) => {
-    console.log("fetch FindUser: ", googleId);
-    console.log("fetch FindUser token: ", token);
-
     try {
         const res = await API.post(
             `/v1/auth/user/find`,
