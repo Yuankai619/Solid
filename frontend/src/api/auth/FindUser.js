@@ -1,17 +1,20 @@
 import { API } from "../axios.config";
-import { useAuth } from "../../context/AuthContext";
-export const FindUser = async (googleId) => {
+export const FindUser = async (googleId, token) => {
     console.log("fetch FindUser: ", googleId);
-    return Promise.resolve("false"); // 模拟返回值
-    const { token } = useAuth();
+    console.log("fetch FindUser token: ", token);
+
     try {
-        // const res = await API.post(`/auth/user/find`, {
-        //     googleId: googleId,
-        //     headers: {
-        //         "Authorization": `Bearer ${token}`
-        //     }
-        // });
-        // return res.data;
+        const res = await API.post(
+            `/v1/auth/user/find`,
+            { googleId }, // 請求體只包含 googleId
+            {
+                headers: {
+                    "Authorization": `Bearer ${token}` // headers 作為第三個參數
+                }
+            }
+        );
+
+        return res.data;
     } catch (error) {
         console.error("Find user error: ", error);
         return Promise.resolve("false");
