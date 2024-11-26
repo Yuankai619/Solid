@@ -10,7 +10,6 @@ import { useTheme } from '@mui/material/styles';
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 
-
 function SignupPage() {
   useEffect(() => {
     document.body.style.background = "#222222";
@@ -141,5 +140,3 @@ function SignupPage() {
 }
 
 export default SignupPage;
-
-

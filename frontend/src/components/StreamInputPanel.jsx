@@ -4,7 +4,7 @@ import SendIcon from '@mui/icons-material/Send';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import axios from 'axios';
 import io from 'socket.io-client'
-let socket = io.connect(`${import.meta.env.REACT_APP_API_URL}`)
+// let socket = io.connect(`${import.meta.env.REACT_APP_API_URL}`)
 
 function StreamInputPanel({ classID, classState }) {
     const [content, setContent] = useState('');

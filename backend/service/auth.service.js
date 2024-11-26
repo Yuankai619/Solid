@@ -21,6 +21,8 @@ const signup = async ({ payload }) => {
             email,
             studentId,
             password: hashedPassword,
+            avatarUrl,
+            googleId,
         });
 
         await newUser.save();
@@ -28,7 +30,7 @@ const signup = async ({ payload }) => {
     } catch (error) {
         throw error;
     }
-}
+};
 
 export default {
     signup,
