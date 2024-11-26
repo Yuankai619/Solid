@@ -4,8 +4,8 @@ import { useAuth } from "../context/AuthContext";
 import { useQuery } from "@tanstack/react-query";
 import { FindUser } from "../api/auth/FindUser";
 const ProtectedRoute = ({ children }) => {
-    const { currentUser, isLoading, googleId } = useAuth();
-    console.log("ProtectedRoute googleId: ", googleId);
+    const { currentUser, isLoading, googleId, token } = useAuth();
+
     const {
         data: findResult,
         isLoading: isFetching,
@@ -13,7 +13,7 @@ const ProtectedRoute = ({ children }) => {
         queryKey: ["findUser", googleId],
         queryFn: async () => {
             console.log("queryFn debug");
-            const res = await FindUser(googleId);
+            const res = await FindUser(googleId, token);
             return res;
         },
         refetchOnWindowFocus: false,
@@ -21,7 +21,6 @@ const ProtectedRoute = ({ children }) => {
     })
 
 
-    console.log("ProtectedRoute findResult: ", findResult);
     if (isLoading || isFetching) {
         return <div>loadiing....</div>;
     } else if (!currentUser) {
