@@ -89,7 +89,7 @@ function LoginPage() {
         <ThemeProvider theme={LoginContainerTheme}>
             <AnimatedBackground />
             <Box py={"5dvh"}>
-                <h1 className="login-title">Solid</h1>
+                <h1 className="login-title">HandsUp Free</h1>
             </Box>
             <Container>
                 <Box my={"40px"}>
@@ -141,7 +141,7 @@ function LoginPage() {
                 <Box
                     display="flex"
                     justifyContent="center"
-                    // alignItems="center"
+                // alignItems="center"
                 >
                     <Link
                         href="https://docs.google.com/presentation/d/e/2PACX-1vRXgz1DscDJOS8eBcKqrvovk-OpGnak85o9xU8weQQVB4bW983VNFTw51hNT5chvdvUVMxRmaBJb9fB/pub?start=false&loop=false&delayms=3000"
