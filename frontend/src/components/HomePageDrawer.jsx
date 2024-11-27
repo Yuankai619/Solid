@@ -1,50 +1,41 @@
-import React, { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { ThemeProvider } from '@mui/material/styles';
-import axios from 'axios';
+import { useUserInfo } from "../context/UserInfoContext";
+import { useAuth } from "../context/AuthContext";
 import {
     Typography, Box, Drawer, List, ListItem, ListItemButton,
     ListItemIcon, ListItemText, Avatar
 } from '@mui/material';
-import HomeIcon from '@mui/icons-material/Home';
-import SettingsIcon from '@mui/icons-material/Settings';
-import BarChartIcon from '@mui/icons-material/BarChart';
+
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
-import LoginChecker from "../checker/LoginChecker";
 import HomePageDrawerTheme from '../themes/HomePageDrawerTheme';
 
-function HomePageDrawer({ clickLogout ,...props}) {
-    const [imgUrl, setImgUrl] = useState('');
-    const [usernameUrl, setusernameUrl] = useState('');
-    const [studentIdUrl, setstudentIdUrl] = useState('');
-    
+import PropTypes from "prop-types";
+
+function HomePageDrawer({ _drawerOpen, _toggleDrawer }) {
+    const { userInfo, refetchUserInfo } = useUserInfo();
+    const { logout } = useAuth();
+    const userName = userInfo?.userName;
+    const studentId = userInfo?.studentId;
+    const avatarUrl = userInfo?.avatarUrl;
     useEffect(() => {
-        GetUserInfo();
-    }, []);
-    const GetUserInfo = async () => {
-        axios({
-          method: "GET",
-          headers: {
-            'Content-Type': 'application/json',
-          },  
-          withCredentials: true,
-          url: `${process.env.REACT_APP_API_URL}/api/getUserInfo`
-        })  
-        .then((res) =>{
-            //console.log(res.data);
-            setImgUrl(res.data.thumbnail);
-            setusernameUrl(res.data.username);
-            setstudentIdUrl(res.data.studentID);
-        })
-        .catch((error) => {
-          
-        });
-    };
+        console.log("HomePageDrawer mounted");
+        async () => {
+            if (!userInfo) {
+                console.log("HomePageDrawer: userInfo is null");
+                refetchUserInfo();
+            }
+        }
+    }, [userInfo, refetchUserInfo]);
+    const handleLogout = async () => {
+        await logout();
+    }
     const navigate = useNavigate();
     return (
         <ThemeProvider theme={HomePageDrawerTheme}>
-            <Drawer open={props._drawerOpen} onClose={props._toggleDrawer(false)}>
+            <Drawer open={_drawerOpen} onClose={_toggleDrawer(false)}>
                 <Box
                     sx={{
                         display: 'flex',
@@ -56,10 +47,10 @@ function HomePageDrawer({ clickLogout ,...props}) {
                     <Box sx={{ flexGrow: 1 }}>
                         <List>
                             <ListItem>
-                                <Avatar  src={imgUrl} style={{ marginRight: '22px', width: '50px', height: '50px' }} /> 
+                                <Avatar src={avatarUrl} style={{ marginRight: '22px', width: '50px', height: '50px' }} />
                                 <Box>
-                                    <Typography style={{ fontSize: "18px", fontWeight: "bold" }} >{usernameUrl}</Typography>
-                                    <Typography style={{ fontSize: "12px", color: "#999999" }}>ID: {studentIdUrl}</Typography>
+                                    <Typography style={{ fontSize: "18px", fontWeight: "bold" }} >{userName}</Typography>
+                                    <Typography style={{ fontSize: "12px", color: "#999999" }}>ID: {studentId}</Typography>
                                 </Box>
                             </ListItem>
                             {/* <ListItemButton onClick={() => navigate('/home')}>
@@ -74,7 +65,7 @@ function HomePageDrawer({ clickLogout ,...props}) {
                                 <ListItemIcon><BarChartIcon style={{ color: "#EEEEEE" }} /></ListItemIcon>
                                 <ListItemText primary="Statistics" />
                             </ListItemButton> */}
-                            <ListItemButton onClick={clickLogout}>
+                            <ListItemButton onClick={handleLogout}>
                                 <ListItemIcon><ExitToAppIcon style={{ color: "#EEEEEE" }} /></ListItemIcon>
                                 <ListItemText primary="Logout" />
                             </ListItemButton>
@@ -94,4 +85,8 @@ function HomePageDrawer({ clickLogout ,...props}) {
         </ThemeProvider>
     );
 }
+HomePageDrawer.propTypes = {
+    _drawerOpen: PropTypes.bool.isRequired,
+    _toggleDrawer: PropTypes.func.isRequired,
+};
 export default HomePageDrawer;

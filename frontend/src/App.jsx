@@ -5,6 +5,7 @@ import { routesConfig } from "./routes/routesConfig";
 import { AuthProvider } from "./context/AuthContext.jsx";
 import ProcessedRoutes from "./routes/ProcessedRoutes";
 import { ClassDataProvider } from "./context/ClassDataContext.jsx";
+import { UserInfoProvider } from "./context/UserInfoContext.jsx";
 function App() {
     const queryClient = new QueryClient();
     const router = createBrowserRouter(ProcessedRoutes(routesConfig), {
@@ -15,12 +16,14 @@ function App() {
     return (
         <QueryClientProvider client={queryClient}>
             <AuthProvider>
-                <ClassDataProvider>
-                    <RouterProvider router={router} />
-                </ClassDataProvider>
+                <UserInfoProvider>
+                    <ClassDataProvider>
+                        <RouterProvider router={router} />
+                    </ClassDataProvider>
+                </UserInfoProvider>
             </AuthProvider>
             <ReactQueryDevtools />
-        </QueryClientProvider>
+        </QueryClientProvider >
     );
 }
 
