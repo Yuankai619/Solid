@@ -21,10 +21,14 @@ import AnimatedBackground from "../components/AnimatedBackground";
 function LoginPage() {
     const { loginWithGoogle, currentUser, isLoading } = useAuth();
     const navigate = useNavigate();
+    useEffect(() => {
+        if (!isLoading && currentUser) {
+            navigate("/home");
+        }
+    }, [currentUser, isLoading, navigate]);
+
     if (isLoading) {
-        return <div>loadiing....</div>;
-    } else if (currentUser) {
-        navigate("/home");
+        return <div>loading....</div>;
     }
     // useEffect(() => {
     //     // document.body.style.background = "linear-gradient(-45deg, #000000,#A13E97, #632A7E)";
@@ -78,8 +82,6 @@ function LoginPage() {
     const handleSubmit = async () => {
         if (!currentUser) {
             await loginWithGoogle();
-        } else {
-            navigate("/home");
         }
     };
 

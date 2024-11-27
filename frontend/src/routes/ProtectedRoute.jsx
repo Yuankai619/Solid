@@ -20,12 +20,12 @@ const ProtectedRoute = ({ children }) => {
 
     })
     const res = findResult?.message.res
-
     if (isLoading || isFetching) {
         return <div>loadiing....</div>;
     } else if (!currentUser) {
         return <Navigate to="/login" replace />;
     } else if (res === "false") {
+        console.log("navaigate to signup");
         return <Navigate to="/signup" replace />;
     }
     return children;

@@ -20,7 +20,7 @@ export const routesConfig = [
     {
         path: "/signup",
         element: <SignupPage />,
-        protected: true
+        protected: false
     }
 ];
 
