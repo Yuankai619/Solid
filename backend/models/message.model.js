@@ -3,17 +3,27 @@ import mongoose from "mongoose";
 const messageSchema = new mongoose.Schema(
     {
         senderId: {
-            type: String,
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
             required: true,
         },
-        receiverId: {
-            type: String,
+        conversationId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Conversation",
             required: true,
         },
         content: {
             type: String,
             required: true,
         },
+        isAnonymous: {
+            type: String,
+            required: true,
+        },
+        score: {
+            type: String,
+            required: true,
+        }
     },
     { timestamps: true }
 );

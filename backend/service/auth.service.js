@@ -52,6 +52,7 @@ const findUser = async ({ payload }) => {
         }
         return existingUser;
     } catch (error) {
+        console.error("Find user error: ", error);
         throw error;
     }
 };
