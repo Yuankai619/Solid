@@ -8,6 +8,7 @@ import PropTypes from "prop-types";
 import { GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth";
 import { auth } from "../config/firebase";
 import { onAuthStateChanged } from "firebase/auth";
+import { set } from "mongoose";
 const AuthContext = createContext();
 
 // eslint-disable-next-line react-refresh/only-export-components
@@ -18,6 +19,8 @@ export function AuthProvider({ children }) {
     const [isLoading, setisLoading] = useState(true);
     const [token, setToken] = useState(null);
     const [googleId, setGoogleId] = useState(null);
+    const [gmail, setGmail] = useState(null);
+    const [avatarUrl, setAvatarUrl] = useState(null);
     // login by google
     const loginWithGoogle = async () => {
         setisLoading(true);
@@ -41,12 +44,16 @@ export function AuthProvider({ children }) {
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             console.log("Auth state changed: ", user);
-            setCurrentUser(user);
-            setGoogleId(user.uid);
-            setCurrentUser(user);
-            user.getIdToken().then((token) => {
-                setToken(token);
-            });
+            if (user) {
+                setCurrentUser(user);
+                setGoogleId(user.uid);
+                setCurrentUser(user);
+                setGmail(user.email);
+                setAvatarUrl(user.photoURL);
+                user.getIdToken().then((token) => {
+                    setToken(token);
+                });
+            }
             setisLoading(false);
         });
         return unsubscribe;
@@ -57,6 +64,8 @@ export function AuthProvider({ children }) {
         isLoading,
         token,
         googleId,
+        gmail,
+        avatarUrl,
         loginWithGoogle,
         logout,
     };

@@ -21,10 +21,14 @@ import AnimatedBackground from "../components/AnimatedBackground";
 function LoginPage() {
     const { loginWithGoogle, currentUser, isLoading } = useAuth();
     const navigate = useNavigate();
+    useEffect(() => {
+        if (!isLoading && currentUser) {
+            navigate("/home");
+        }
+    }, [currentUser, isLoading, navigate]);
+
     if (isLoading) {
-        return <div>loadiing....</div>;
-    } else if (currentUser) {
-        navigate("/home");
+        return <div>loading....</div>;
     }
     // useEffect(() => {
     //     // document.body.style.background = "linear-gradient(-45deg, #000000,#A13E97, #632A7E)";
@@ -78,8 +82,6 @@ function LoginPage() {
     const handleSubmit = async () => {
         if (!currentUser) {
             await loginWithGoogle();
-        } else {
-            navigate("/home");
         }
     };
 
@@ -89,7 +91,7 @@ function LoginPage() {
         <ThemeProvider theme={LoginContainerTheme}>
             <AnimatedBackground />
             <Box py={"5dvh"}>
-                <h1 className="login-title">Solid</h1>
+                <h1 className="login-title">HandsUp Free</h1>
             </Box>
             <Container>
                 <Box my={"40px"}>
@@ -141,7 +143,7 @@ function LoginPage() {
                 <Box
                     display="flex"
                     justifyContent="center"
-                    // alignItems="center"
+                // alignItems="center"
                 >
                     <Link
                         href="https://docs.google.com/presentation/d/e/2PACX-1vRXgz1DscDJOS8eBcKqrvovk-OpGnak85o9xU8weQQVB4bW983VNFTw51hNT5chvdvUVMxRmaBJb9fB/pub?start=false&loop=false&delayms=3000"
