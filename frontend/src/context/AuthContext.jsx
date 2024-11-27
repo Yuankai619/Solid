@@ -9,6 +9,7 @@ import { GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth";
 import { auth } from "../config/firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import { set } from "mongoose";
+
 const AuthContext = createContext();
 
 // eslint-disable-next-line react-refresh/only-export-components
@@ -21,6 +22,7 @@ export function AuthProvider({ children }) {
     const [googleId, setGoogleId] = useState(null);
     const [gmail, setGmail] = useState(null);
     const [avatarUrl, setAvatarUrl] = useState(null);
+
     // login by google
     const loginWithGoogle = async () => {
         setisLoading(true);
@@ -35,7 +37,14 @@ export function AuthProvider({ children }) {
 
     const logout = async () => {
         try {
-            await signOut();
+            setisLoading(true);
+            await signOut(auth);
+            setCurrentUser(null);
+            setToken(null);
+            setGoogleId(null);
+            setGmail(null);
+            setAvatarUrl(null);
+
         } catch (error) {
             console.error("Logout error: ", error);
         }
