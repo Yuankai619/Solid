@@ -3,7 +3,8 @@ import User from "../models/user.model.js";
 
 const register = async ({ payload }) => {
     console.log("payload", payload);
-    const { userName, realName, email, studentId = "", avatarUrl, googleId } = payload;
+    const { userName, realName, email, studentId, avatarUrl, googleId } = payload;
+    console.log("studentId", studentId);
     try {
         const existingUser = await User.findOne({ email });
         console.log("existingUser", existingUser);
@@ -44,11 +45,14 @@ const findUser = async ({ payload }) => {
     const { googleId } = payload;
     try {
         const existingUser = await User.findOne({ googleId });
-        if (existingUser) {
-            return { res: "true" };
+        if (!existingUser) {
+            const error = new Error("User not found");
+            error.status = 404;
+            throw error;
         }
-        return { res: "false" };
+        return existingUser;
     } catch (error) {
+        console.error("Find user error: ", error);
         throw error;
     }
 };
