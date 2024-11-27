@@ -15,8 +15,9 @@ import PrebuildDialog from '../components/PrebuildDialog';
 import LoginChecker from '../checker/LoginChecker';
 import { ClassDataProvider } from '../context/ClassDataContext';
 import { useClassDataContext } from '../context/ClassDataContext';
-
+import { useAuth } from "../context/AuthContext";
 function Home() {
+  const { logout } = useAuth();
   // window.location.reload();
   // window.location.assign('/home');//刷新當前頁
   const navigate = useNavigate();
@@ -38,9 +39,9 @@ function Home() {
       document.body.style.overflow = '';
     };
   }, [navigate]);
-  
+
   const { curIndex, handleChangeIndex } = useClassDataContext();
-  
+
   const [classIdError, classIdErrorError] = useState(false);
   const [inputClassId, setinputClassId] = useState('');
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -63,43 +64,36 @@ function Home() {
     setDialogOpen(!dialogOpen);
   }
 
-  const handleLogout = () => {
-    axios({
-      method: 'get',
-      url: `${process.env.REACT_APP_API_URL}/auth/logout`,
-      withCredentials: true
-    }).then((res) => {
-      console.log(res.data.logoutState);
-      navigate('/login');
-    });
+  const handleLogout = async () => {
+    await logout();
   }
-  // setTimeout(()=>{}, 10500);
+
   console.log("Debug: curIndex:", curIndex);
   return (
-    <div style = {{ padding: 0, margin: "0px" }} >
-    <Box sx={{ backgroundColor: '#444' }}>
-      <HomePageDrawer
-        _drawerOpen={drawerOpen} _toggleDrawer={toggleDrawer} clickLogout={handleLogout}
-      />
-      <HomeSwipeablePanel
-       _theme={theme}
-      />
-      <HomeSpeedDial
-        actions={actions}  dialogOpen={dialogOpen} setDialogOpen={handleChangeDialog}
-      />
+    <div style={{ padding: 0, margin: "0px" }} >
+      <Box sx={{ backgroundColor: '#444' }}>
+        <HomePageDrawer
+          _drawerOpen={drawerOpen} _toggleDrawer={toggleDrawer} clickLogout={handleLogout}
+        />
+        <HomeSwipeablePanel
+          _theme={theme}
+        />
+        <HomeSpeedDial
+          actions={actions} dialogOpen={dialogOpen} setDialogOpen={handleChangeDialog}
+        />
         {curIndex === 0 && (
-        <JoinClassByIdDialog
-          dialogOpen={dialogOpen} setDialogOpen={handleChangeDialog}
+          <JoinClassByIdDialog
+            dialogOpen={dialogOpen} setDialogOpen={handleChangeDialog}
 
-        />
-      )}
+          />
+        )}
         {curIndex === 1 && (
-        <PrebuildDialog
-          dialogOpen={dialogOpen} setDialogOpen={handleChangeDialog}
-        />
-      )}
-      <HomeAppBar _toggleDrawer={toggleDrawer} />
-    </Box>
+          <PrebuildDialog
+            dialogOpen={dialogOpen} setDialogOpen={handleChangeDialog}
+          />
+        )}
+        <HomeAppBar _toggleDrawer={toggleDrawer} />
+      </Box>
     </div>
   );
 }
