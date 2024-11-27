@@ -8,7 +8,6 @@ import PropTypes from "prop-types";
 import { GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth";
 import { auth } from "../config/firebase";
 import { onAuthStateChanged } from "firebase/auth";
-import { set } from "mongoose";
 
 const AuthContext = createContext();
 
@@ -51,6 +50,7 @@ export function AuthProvider({ children }) {
     };
 
     useEffect(() => {
+        console.log("AuthProvider mounted");
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             console.log("Auth state changed: ", user);
             if (user) {

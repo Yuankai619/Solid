@@ -9,7 +9,6 @@ import JoinClassByIdDialog from '../components/JoinClassByIdDialog';
 import HomeAppBar from '../components/HomeAppBar';
 import EditNoteIcon from '@mui/icons-material/EditNote';
 import FlashOnIcon from '@mui/icons-material/FlashOn';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import PrebuildDialog from '../components/PrebuildDialog';
 import LoginChecker from '../checker/LoginChecker';
@@ -21,24 +20,24 @@ function Home() {
   // window.location.reload();
   // window.location.assign('/home');//刷新當前頁
   const navigate = useNavigate();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isLoginCheckComplete, setIsLoginCheckComplete] = useState(false);
+  // const [isLoggedIn, setIsLoggedIn] = useState(false);
+  // const [isLoginCheckComplete, setIsLoginCheckComplete] = useState(false);
 
-  useEffect(() => {
-    const checkLogin = async () => {
-      const result = await LoginChecker();
-      setIsLoggedIn(result.isLoggedIn);
-      setIsLoginCheckComplete(true);
-      if (result.redirectTo) {
-        navigate(result.redirectTo);
-      }
-    };
-    document.body.style.overflow = 'hidden';
-    checkLogin();
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, [navigate]);
+  // useEffect(() => {
+  //   const checkLogin = async () => {
+  //     const result = await LoginChecker();
+  //     setIsLoggedIn(result.isLoggedIn);
+  //     setIsLoginCheckComplete(true);
+  //     if (result.redirectTo) {
+  //       navigate(result.redirectTo);
+  //     }
+  //   };
+  //   document.body.style.overflow = 'hidden';
+  //   checkLogin();
+  //   return () => {
+  //     document.body.style.overflow = '';
+  //   };
+  // }, [navigate]);
 
   const { curIndex, handleChangeIndex } = useClassDataContext();
 

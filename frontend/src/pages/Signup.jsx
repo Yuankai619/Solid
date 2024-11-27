@@ -7,10 +7,11 @@ import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useMutation } from "@tanstack/react-query";
 import { Register } from "../api/auth/Register";
+import { useUserInfo } from "../context/UserInfoContext";
 
 function SignupPage() {
   const [userName, setUserName] = useState('');
@@ -35,6 +36,7 @@ function SignupPage() {
     };
   }, []);
   const { googleId, token, gmail, avatarUrl } = useAuth();
+  const { refetchUserInfo } = useUserInfo();
   const { mutate: signupMutation } = useMutation({
     mutationFn: async (payload) => {
       try {
@@ -47,8 +49,9 @@ function SignupPage() {
       }
     },
     onSuccess: () => {
+      refetchUserInfo();
       console.log('Signup success');
-      navigate('/home');
+      navigate("/home");
     },
 
   });

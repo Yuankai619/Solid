@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { ThemeProvider } from '@mui/material/styles';
+import { useUserInfo } from "../context/UserInfoContext";
+import { useAuth } from "../context/AuthContext";
 import axios from 'axios';
 import {
     Typography, Box, Drawer, List, ListItem, ListItemButton,
@@ -14,33 +16,39 @@ import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import LoginChecker from "../checker/LoginChecker";
 import HomePageDrawerTheme from '../themes/HomePageDrawerTheme';
 
-function HomePageDrawer({ clickLogout ,...props}) {
-    const [imgUrl, setImgUrl] = useState('');
-    const [usernameUrl, setusernameUrl] = useState('');
-    const [studentIdUrl, setstudentIdUrl] = useState('');
-    
+function HomePageDrawer({ clickLogout, ...props }) {
+    const { userInfo, refetchUserInfo } = useUserInfo();
+    const userName = userInfo?.userName;
+    const studentId = userInfo?.studentId;
+    const avatarUrl = userInfo?.avatarUrl;
     useEffect(() => {
-        GetUserInfo();
-    }, []);
-    const GetUserInfo = async () => {
-        axios({
-          method: "GET",
-          headers: {
-            'Content-Type': 'application/json',
-          },  
-          withCredentials: true,
-          url: `${process.env.REACT_APP_API_URL}/api/getUserInfo`
-        })  
-        .then((res) =>{
-            //console.log(res.data);
-            setImgUrl(res.data.thumbnail);
-            setusernameUrl(res.data.username);
-            setstudentIdUrl(res.data.studentID);
-        })
-        .catch((error) => {
-          
-        });
-    };
+        console.log("HomePageDrawer mounted");
+        async () => {
+            if (!userInfo) {
+                console.log("HomePageDrawer: userInfo is null");
+                refetchUserInfo();
+            }
+        }
+    }, [userInfo, refetchUserInfo]);
+    // const GetUserInfo = async () => {
+    //     axios({
+    //         method: "GET",
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //         },
+    //         withCredentials: true,
+    //         url: `${process.env.REACT_APP_API_URL}/api/getUserInfo`
+    //     })
+    //         .then((res) => {
+    //             //console.log(res.data);
+    //             setImgUrl(res.data.thumbnail);
+    //             setusernameUrl(res.data.username);
+    //             setstudentIdUrl(res.data.studentID);
+    //         })
+    //         .catch((error) => {
+
+    //         });
+    // };
     const navigate = useNavigate();
     return (
         <ThemeProvider theme={HomePageDrawerTheme}>
@@ -56,10 +64,10 @@ function HomePageDrawer({ clickLogout ,...props}) {
                     <Box sx={{ flexGrow: 1 }}>
                         <List>
                             <ListItem>
-                                <Avatar  src={imgUrl} style={{ marginRight: '22px', width: '50px', height: '50px' }} /> 
+                                <Avatar src={avatarUrl} style={{ marginRight: '22px', width: '50px', height: '50px' }} />
                                 <Box>
-                                    <Typography style={{ fontSize: "18px", fontWeight: "bold" }} >{usernameUrl}</Typography>
-                                    <Typography style={{ fontSize: "12px", color: "#999999" }}>ID: {studentIdUrl}</Typography>
+                                    <Typography style={{ fontSize: "18px", fontWeight: "bold" }} >{userName}</Typography>
+                                    <Typography style={{ fontSize: "12px", color: "#999999" }}>ID: {studentId}</Typography>
                                 </Box>
                             </ListItem>
                             {/* <ListItemButton onClick={() => navigate('/home')}>
