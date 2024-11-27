@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Box from '@mui/material/Box';
 import { useTheme } from '@mui/material/styles';
 import DialpadIcon from '@mui/icons-material/Dialpad';
@@ -9,38 +9,11 @@ import JoinClassByIdDialog from '../components/JoinClassByIdDialog';
 import HomeAppBar from '../components/HomeAppBar';
 import EditNoteIcon from '@mui/icons-material/EditNote';
 import FlashOnIcon from '@mui/icons-material/FlashOn';
-import { useNavigate } from 'react-router-dom';
 import PrebuildDialog from '../components/PrebuildDialog';
-import LoginChecker from '../checker/LoginChecker';
 import { ClassDataProvider } from '../context/ClassDataContext';
 import { useClassDataContext } from '../context/ClassDataContext';
-import { useAuth } from "../context/AuthContext";
 function Home() {
-  const { logout } = useAuth();
-  // window.location.reload();
-  // window.location.assign('/home');//刷新當前頁
-  const navigate = useNavigate();
-  // const [isLoggedIn, setIsLoggedIn] = useState(false);
-  // const [isLoginCheckComplete, setIsLoginCheckComplete] = useState(false);
-
-  // useEffect(() => {
-  //   const checkLogin = async () => {
-  //     const result = await LoginChecker();
-  //     setIsLoggedIn(result.isLoggedIn);
-  //     setIsLoginCheckComplete(true);
-  //     if (result.redirectTo) {
-  //       navigate(result.redirectTo);
-  //     }
-  //   };
-  //   document.body.style.overflow = 'hidden';
-  //   checkLogin();
-  //   return () => {
-  //     document.body.style.overflow = '';
-  //   };
-  // }, [navigate]);
-
   const { curIndex, handleChangeIndex } = useClassDataContext();
-
   const [classIdError, classIdErrorError] = useState(false);
   const [inputClassId, setinputClassId] = useState('');
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -63,16 +36,12 @@ function Home() {
     setDialogOpen(!dialogOpen);
   }
 
-  const handleLogout = async () => {
-    await logout();
-  }
 
-  console.log("Debug: curIndex:", curIndex);
   return (
     <div style={{ padding: 0, margin: "0px" }} >
       <Box sx={{ backgroundColor: '#444' }}>
         <HomePageDrawer
-          _drawerOpen={drawerOpen} _toggleDrawer={toggleDrawer} clickLogout={handleLogout}
+          _drawerOpen={drawerOpen} _toggleDrawer={toggleDrawer}
         />
         <HomeSwipeablePanel
           _theme={theme}
