@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import authRoutes from "./routes/auth.routes.js";
+import conversionRoutes from "./routes/conversation.routes.js";
 import connectToMongoDB from "./repository/connectToMongoDB.js";
 const app = express();
 dotenv.config();
@@ -14,6 +15,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/conversations", conversionRoutes);
 
 app.listen(PORT, () => {
     connectToMongoDB();
