@@ -3,7 +3,7 @@ import { register, findUser } from "../controller/auth.controller.js";
 import ProtectRoute from "../middleware/ProtectRoute.js";
 const router = express.Router();
 
-router.post("/register", ProtectRoute, register);
-router.get("/owner/{owenerId}", ProtectRoute, findUser);
+router.post("/", ProtectRoute, register);
+router.post("/user/find", ProtectRoute, findUser);
 
 export default router;
