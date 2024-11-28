@@ -29,7 +29,6 @@ export const ConversationProvider = ({ children }) => {
         queryKey: CONVERSATIONS_QUERY_KEY,
         queryFn: async () => {
             const ret = await getOwnerConversations(userId, token);
-            console.log("getOwnerConversations:", ret);
             return ret.data;
         },
         enabled: !!userId && !!token,

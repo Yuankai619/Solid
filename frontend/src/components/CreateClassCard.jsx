@@ -22,7 +22,7 @@ function CreateClassCard({ data }) {
   const shortId = _id.slice(-6);
 
 
-  const { handleChangeCreatedClassState, handleDeleteCreatedClass } = useClassDataContext();
+  const { handleChangeCreatedClassState } = useClassDataContext();
   const { handleDeleteConversation } = useConversationContext();
   const [menuState, setMenuState] = useState(state);
   const [allowNavigate, setAllowNavigate] = useState(true);
@@ -48,7 +48,6 @@ function CreateClassCard({ data }) {
   };
   const handleDelete = (event) => {
     event.stopPropagation();
-    console.log("delete conversation: ", _id);
     handleClose();
     handleDeleteConversation(_id);
   };
@@ -56,7 +55,7 @@ function CreateClassCard({ data }) {
     <ThemeProvider theme={CreateClassCardTheme}>
       <Box sx={{ minWidth: 275 }} >
         <Card variant="outlined" sx={{ cursor: 'pointer' }} >
-          <Link style={{ textDecoration: 'none', color: 'inherit' }} to={`/room/${_id}`} onClick={(e) => {
+          <Link style={{ textDecoration: 'none', color: 'inherit' }} to={`/conversation/${_id}`} onClick={(e) => {
             if (!allowNavigate) {
               e.preventDefault(); // 如果不允许跳转，则阻止 Link 的默认行为
             }

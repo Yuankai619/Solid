@@ -20,17 +20,17 @@ function Discussion() {
 
 
 
-    useEffect(() => {
-        socket.emit('join_room', ClassID);
-        socket.on('refresh', (data) => {
-            setTimeout(function () {
-                // 在這裡寫入您希望在等待後執行的程式碼
-                fetchClassData();
-                //console.log('0.1 秒已過');
-            }, 120);
-            //    document.location.reload();
-        })
-    }, [socket]);
+    // useEffect(() => {
+    //     socket.emit('join_room', ClassID);
+    //     socket.on('refresh', (data) => {
+    //         setTimeout(function () {
+    //             // 在這裡寫入您希望在等待後執行的程式碼
+    //             fetchClassData();
+    //             //console.log('0.1 秒已過');
+    //         }, 120);
+    //         //    document.location.reload();
+    //     })
+    // }, [socket]);
 
     useEffect(() => {
         const checkLogin = async () => {
@@ -61,28 +61,28 @@ function Discussion() {
     ]);
 
     //fetch class data
-    const fetchClassData = async () => {
-        try {
-            console.log(ClassID);
-            const response = await axios({
-                method: "POST",
-                headers: { 'Content-Type': 'application/json', },
-                data: JSON.stringify({
-                    classID: ClassID
-                }),
-                withCredentials: true,
-                url: `${process.env.REACT_APP_API_URL}/course/loadClassAll`
-            });
-            // console.log(response);
-            setClassData(response.data.info);
-            setMessageData(response.data.message);
-        } catch (error) {
-            console.error('Error fetching class data:', error);
-        }
-    };
-    useEffect(() => {
-        fetchClassData();
-    }, []);
+    // const fetchClassData = async () => {
+    //     try {
+    //         console.log(ClassID);
+    //         const response = await axios({
+    //             method: "POST",
+    //             headers: { 'Content-Type': 'application/json', },
+    //             data: JSON.stringify({
+    //                 classID: ClassID
+    //             }),
+    //             withCredentials: true,
+    //             url: `${process.env.REACT_APP_API_URL}/course/loadClassAll`
+    //         });
+    //         // console.log(response);
+    //         setClassData(response.data.info);
+    //         setMessageData(response.data.message);
+    //     } catch (error) {
+    //         console.error('Error fetching class data:', error);
+    //     }
+    // };
+    // useEffect(() => {
+    //     fetchClassData();
+    // }, []);
 
     // const scrollRef = useRef(null);//預設載入時滾動條在最下面
     // useEffect(() => {
