@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate, Link } from 'react-router-dom';
 import {
   Box,
@@ -11,15 +11,18 @@ import {
   CardHeader
 } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import {  ThemeProvider } from '@mui/material/styles';
+import { ThemeProvider } from '@mui/material/styles';
 import CreateClassCardTheme from '../themes/CreateClassCardTheme';
 import { useClassDataContext } from '../context/ClassDataContext';
-
+import PropTypes from 'prop-types';
 
 function CreateClassCard({ data }) {
+  const { title, state, _id } = data;
+  const shortId = _id.substring(0, 6);
+
   const { handleChangeCreatedClassState, handleDeleteCreatedClass } = useClassDataContext();
-  const [menuState, setMenuState] = useState(data.state.toString());
-  const [allowNavigate, setAllowNavigate] = useState(true); // 控制在 Menu 打開時是否允許跳轉
+  const [menuState, setMenuState] = useState(state);
+  const [allowNavigate, setAllowNavigate] = useState(true);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
@@ -27,30 +30,30 @@ function CreateClassCard({ data }) {
     event.preventDefault();
     event.stopPropagation();
     setAnchorEl(event.currentTarget);
-    setAllowNavigate(false); // 打开 Menu 时禁止跳转F
+    setAllowNavigate(false);
   };
 
   const handleClose = () => {
     setAnchorEl(null);
     setAllowNavigate(true);
   };
-  
+
   const handleChangeState = (event) => {
     event.stopPropagation();
-    handleChangeCreatedClassState(data.id, menuState == 'true' ? 'false' : 'true');
+    handleChangeCreatedClassState(_id, menuState == 'true' ? 'false' : 'true');
     setMenuState(menuState == 'true' ? 'false' : 'true');
   };
   const handleDelete = (event) => {
     event.stopPropagation();
     // console.log(data.id)
     handleClose();
-    handleDeleteCreatedClass(data.id);
+    handleDeleteCreatedClass(_id);
   };
   return (
     <ThemeProvider theme={CreateClassCardTheme}>
       <Box sx={{ minWidth: 275 }} >
         <Card variant="outlined" sx={{ cursor: 'pointer' }} >
-          <Link style={{ textDecoration: 'none', color: 'inherit' }} to={`/room/${data.classID}`} onClick={(e) => {
+          <Link style={{ textDecoration: 'none', color: 'inherit' }} to={`/room/${_id}`} onClick={(e) => {
             if (!allowNavigate) {
               e.preventDefault(); // 如果不允许跳转，则阻止 Link 的默认行为
             }
@@ -64,7 +67,7 @@ function CreateClassCard({ data }) {
                   <MoreVertIcon />
                 </IconButton>
               }
-              title={data.title}
+              title={title}
             />
             <Menu
               id="long-menu"
@@ -92,11 +95,11 @@ function CreateClassCard({ data }) {
             <React.Fragment>
 
               <CardContent onClick={(e) => { if (!allowNavigate) e.stopPropagation(); }}>
-                <Typography sx={{ fontSize: 15, fontWeight: 600, marginTop: '12px' }} color={menuState == 'true'? '#2D6CB6' : '#999999'} component="div">
+                <Typography sx={{ fontSize: 15, fontWeight: 600, marginTop: '12px' }} color={menuState == 'true' ? '#2D6CB6' : '#999999'} component="div">
                   state: {menuState == 'true' ? 'open' : 'close'}
                 </Typography>
                 <Typography sx={{ fontSize: 18, fontWeight: 600, }} color="#000" >
-                  Class ID: {data.classID}
+                  Class ID: {shortId}
                 </Typography>
               </CardContent>
             </React.Fragment>
@@ -106,5 +109,14 @@ function CreateClassCard({ data }) {
     </ThemeProvider>
   )
 }
+
+CreateClassCard.propTypes = {
+  data: PropTypes.shape({
+    title: PropTypes.string,
+    state: PropTypes.string,
+    _id: PropTypes.string
+  }).isRequired
+};
+
 
 export default CreateClassCard;

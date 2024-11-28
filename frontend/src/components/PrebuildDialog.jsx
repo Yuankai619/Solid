@@ -16,43 +16,58 @@ import {
 } from "@mui/material";
 import InputText from "./InputText";
 import PrebuildDialogTheme from "../themes/PrebuildDialogTheme";
-import { useClassDataContext } from "../context/ClassDataContext";
-import { useMutation } from "@tanstack/react-query";
+import { useConversationContext } from "../context/ConversationContext";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useUserInfo } from "../context/UserInfoContext";
 import { useAuth } from "../context/AuthContext";
 import { createConversation } from "../api/conversation/CreateConversation";
+import { getOwnerConversations } from "../api/conversation/GetOwnerConversations";
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
 function PrebuildDialog(props) {
-    const { userInfo, refetchUserInfo } = useUserInfo();
-    const { googleId, token } = useAuth();
+    const { userInfo } = useUserInfo();
+    const { handleCreateConversation } = useConversationContext();
+    // const { googleId, token } = useAuth();
     const userId = userInfo?._id;
-    const userName = userInfo?.userName;
-    const studentId = userInfo?.studentId;
-    const avatarUrl = userInfo?.avatarUrl;
-    useEffect(() => {
-        console.log("PrebuildDialog mounted");
-        async () => {
-            if (!userInfo) {
-                console.error("userInfo is null");
-                refetchUserInfo();
-            }
-        };
-    }, [userInfo, refetchUserInfo]);
+    // const userName = userInfo?.userName;
+    // const studentId = userInfo?.studentId;
+    // const avatarUrl = userInfo?.avatarUrl;
+    // const queryClient = useQueryClient();
+    // useEffect(() => {
+    //     console.log("PrebuildDialog mounted");
+    //     async () => {
+    //         if (!userInfo) {
+    //             console.error("userInfo is null");
+    //             refetchUserInfo();
+    //         }
+    //     };
+    // }, [userInfo, refetchUserInfo]);
 
-    const { handleNewCreatedClass } = useClassDataContext();
 
-    const { mutateAsync: create } = useMutation({
-        mutationFn: async (payload) => {
-            const res = await createConversation(payload, token);
-            return res;
-        },
-        onError: (error) => {
-            console.error("Create conversation error:", error);
-        },
-    });
+
+
+
+    // const { mutateAsync: create } = useMutation({
+    //     mutationFn: async (payload) => {
+    //         const res = await createConversation(payload, token);
+    //         return res;
+    //     },
+    //     onError: (error) => {
+    //         console.error("Create conversation error:", error);
+    //     },
+    //     onSettled: () => {
+    //         queryClient.invalidateQueries(CONVERSATIONS_QUERY_KEY);
+    //     },
+    // });
+
+    // useEffect(() => {
+    //     if (isSuccess) {
+    //         handleNewCreatedConversation(conversations);
+    //     }
+    // }, [isSuccess, conversations, handleNewCreatedConversation]);
+
     const handleCreate = async () => {
         console.log("handleCreate");
         if (!roomTitle) {
@@ -69,42 +84,8 @@ function PrebuildDialog(props) {
             messages: [],
         };
         console.log("create conversation payload: ", payload);
-        await create(payload);
-        // try {
-        //     const courseCreationResponse = await axios.post(
-        //         `${process.env.REACT_APP_API_URL}/course/create`,
-        //         JSON.stringify({
-        //             userID: userID,
-        //             description: description,
-        //             roomTitle: roomTitle,
-        //             state: state.gilad,
-        //             username: username,
-        //             googleid: googleId,
-        //         }),
-        //         {
-        //             headers: { "Content-Type": "application/json" },
-        //             withCredentials: true,
-        //         }
-        //     );
+        await handleCreateConversation(payload);
 
-        //     // console.log('Course created:', courseCreationResponse.data.classID);
-
-        //     const addUserClassResponse = await axios.post(
-        //         `${process.env.REACT_APP_API_URL}/course/addClassToUser`,
-        //         JSON.stringify({
-        //             classID: courseCreationResponse.data.classID,
-        //         }),
-        //         {
-        //             headers: { "Content-Type": "application/json" },
-        //             withCredentials: true,
-        //         }
-        //     );
-
-        //     // console.log('Class added to user:', addUserClassResponse.data);
-        //     handleNewCreatedClass(courseCreationResponse.data);
-        // } catch (error) {
-        //     console.error("Error in handleCreate:", error);
-        // }
     };
 
     //switch setting

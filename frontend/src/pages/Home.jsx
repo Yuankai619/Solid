@@ -12,6 +12,7 @@ import FlashOnIcon from '@mui/icons-material/FlashOn';
 import PrebuildDialog from '../components/PrebuildDialog';
 import { ClassDataProvider } from '../context/ClassDataContext';
 import { useClassDataContext } from '../context/ClassDataContext';
+import { Container } from '@mui/material';
 function Home() {
   const { curIndex, handleChangeIndex } = useClassDataContext();
   const [classIdError, classIdErrorError] = useState(false);
@@ -38,31 +39,29 @@ function Home() {
 
 
   return (
-    <div style={{ padding: 0, margin: "0px" }} >
-      <Box sx={{ backgroundColor: '#444' }}>
-        <HomePageDrawer
-          _drawerOpen={drawerOpen} _toggleDrawer={toggleDrawer}
-        />
-        <HomeSwipeablePanel
-          _theme={theme}
-        />
-        <HomeSpeedDial
-          actions={actions} dialogOpen={dialogOpen} setDialogOpen={handleChangeDialog}
-        />
-        {curIndex === 0 && (
-          <JoinClassByIdDialog
-            dialogOpen={dialogOpen} setDialogOpen={handleChangeDialog}
 
-          />
-        )}
-        {curIndex === 1 && (
-          <PrebuildDialog
-            dialogOpen={dialogOpen} setDialogOpen={handleChangeDialog}
-          />
-        )}
-        <HomeAppBar _toggleDrawer={toggleDrawer} />
-      </Box>
-    </div>
+    <Box sx={{ backgroundColor: '#444', height: '100dvh' }}>
+      <HomePageDrawer
+        _drawerOpen={drawerOpen} _toggleDrawer={toggleDrawer}
+      />
+      <HomeSwipeablePanel />
+      <HomeSpeedDial
+        actions={actions} dialogOpen={dialogOpen} setDialogOpen={handleChangeDialog}
+      />
+      {curIndex === 0 && (
+        <JoinClassByIdDialog
+          dialogOpen={dialogOpen} setDialogOpen={handleChangeDialog}
+
+        />
+      )}
+      {curIndex === 1 && (
+        <PrebuildDialog
+          dialogOpen={dialogOpen} setDialogOpen={handleChangeDialog}
+        />
+      )}
+      <HomeAppBar _toggleDrawer={toggleDrawer} />
+    </Box>
+
   );
 }
 export default Home;
