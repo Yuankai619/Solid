@@ -44,9 +44,6 @@ export const ConversationProvider = ({ children }) => {
         },
         onSuccess: (res) => {
             queryClient.setQueryData(CONVERSATIONS_QUERY_KEY, (old) => {
-                // const oldConversations = old;
-                console.log("oldConversations:", old);
-                console.log("newConversation:", res.data);
                 return [res.data, ...old];
             });
         },
