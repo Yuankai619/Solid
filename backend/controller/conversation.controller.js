@@ -38,3 +38,32 @@ export const findByOwner = async (req, res) => {
         }
     }
 }
+
+export const deleteByOwner = async (req, res) => {
+    console.log("deleteByOwner req data: ", req.params.userId, req.params.conversationId, req.body);
+    try {
+        const conversation = await conversationService.deleteConversationByOwner(
+            req.params.conversationId,
+            req.body.userId,
+            req.body.googleId,
+        );
+        return res.status(200).json(conversation);
+    } catch (error) {
+        if (error.status === 404) {
+            return res.status(404).json({
+                success: false,
+                message: error.message
+            });
+        } else if (error.status === 400) {
+            return res.status(400).json({
+                success: false,
+                message: error.message
+            });
+        } else {
+            return res.status(500).json({
+                success: false,
+                message: "Internal server error"
+            });
+        }
+    }
+}

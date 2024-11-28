@@ -1,6 +1,7 @@
 import HomePage from "../pages/Home";
 import LoginPage from "../pages/Login";
 import SignupPage from "../pages/Signup";
+import Discussion from "../pages/Discussion";
 export const routesConfig = [
     {
         path: "/",
@@ -21,6 +22,11 @@ export const routesConfig = [
         path: "/signup",
         element: <SignupPage />,
         protected: false
+    },
+    {
+        path: "conversation/:conversationId",
+        element: <Discussion />,
+        protected: true
     }
 ];
 

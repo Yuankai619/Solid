@@ -53,7 +53,42 @@ const findConversationByOwner = async (userId) => {
     }
 }
 
+const deleteConversationByOwner = async (conversationId, userId, googleId) => {
+    try {
+        console.log("deleteConversationByOwner req data:  ", userId, conversationId, googleId);
+        if (!mongoose.Types.ObjectId.isValid(userId) || !mongoose.Types.ObjectId.isValid(conversationId)) {
+            const error = new Error("Invalid userId or conversationId format");
+            error.status = 400;
+            throw error;
+        }
+
+        const conversation = await Conversation.findOne({
+            _id: conversationId,
+            ownerId: userId
+        }).populate("ownerId", "googleId");
+        console.log("conversation: ", conversation);
+        if (!conversation || conversation.ownerId.googleId !== googleId) {
+            const error = new Error('Conversation not found or unauthorized');
+            error.status = 404;
+            throw error;
+        }
+
+        await conversation.deleteOne({ _id: conversationId });
+
+        return {
+            status: "success",
+            data: {
+                _id: conversationId,
+            }
+        };
+    } catch (error) {
+        console.error("Delete conversation error: ", error);
+        throw error;
+    }
+}
+
 export default {
     createConversation,
-    findConversationByOwner
+    findConversationByOwner,
+    deleteConversationByOwner
 };

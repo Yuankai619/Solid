@@ -15,12 +15,15 @@ import { ThemeProvider } from '@mui/material/styles';
 import CreateClassCardTheme from '../themes/CreateClassCardTheme';
 import { useClassDataContext } from '../context/ClassDataContext';
 import PropTypes from 'prop-types';
+import { useConversationContext } from "../context/ConversationContext";
 
 function CreateClassCard({ data }) {
   const { title, state, _id } = data;
-  const shortId = _id.substring(0, 6);
+  const shortId = _id.slice(-6);
 
-  const { handleChangeCreatedClassState, handleDeleteCreatedClass } = useClassDataContext();
+
+  const { handleChangeCreatedClassState } = useClassDataContext();
+  const { handleDeleteConversation } = useConversationContext();
   const [menuState, setMenuState] = useState(state);
   const [allowNavigate, setAllowNavigate] = useState(true);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -45,15 +48,14 @@ function CreateClassCard({ data }) {
   };
   const handleDelete = (event) => {
     event.stopPropagation();
-    // console.log(data.id)
     handleClose();
-    handleDeleteCreatedClass(_id);
+    handleDeleteConversation(_id);
   };
   return (
     <ThemeProvider theme={CreateClassCardTheme}>
       <Box sx={{ minWidth: 275 }} >
         <Card variant="outlined" sx={{ cursor: 'pointer' }} >
-          <Link style={{ textDecoration: 'none', color: 'inherit' }} to={`/room/${_id}`} onClick={(e) => {
+          <Link style={{ textDecoration: 'none', color: 'inherit' }} to={`/conversation/${_id}`} onClick={(e) => {
             if (!allowNavigate) {
               e.preventDefault(); // 如果不允许跳转，则阻止 Link 的默认行为
             }

@@ -33,7 +33,7 @@ function HomeSwipeablePanel() {
                 <JoinedClassCardContainer conversations={joinedClassData} />
             )}
 
-            {curIndex == 1 && !createdConversations && (
+            {curIndex == 1 && !createdConversations.length && (
                 <Typography
                     variant="h5"
                     component="div"

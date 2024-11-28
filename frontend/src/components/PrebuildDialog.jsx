@@ -17,11 +17,7 @@ import {
 import InputText from "./InputText";
 import PrebuildDialogTheme from "../themes/PrebuildDialogTheme";
 import { useConversationContext } from "../context/ConversationContext";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useUserInfo } from "../context/UserInfoContext";
-import { useAuth } from "../context/AuthContext";
-import { createConversation } from "../api/conversation/CreateConversation";
-import { getOwnerConversations } from "../api/conversation/GetOwnerConversations";
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -29,45 +25,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 function PrebuildDialog(props) {
     const { userInfo } = useUserInfo();
     const { handleCreateConversation } = useConversationContext();
-    // const { googleId, token } = useAuth();
     const userId = userInfo?._id;
-    // const userName = userInfo?.userName;
-    // const studentId = userInfo?.studentId;
-    // const avatarUrl = userInfo?.avatarUrl;
-    // const queryClient = useQueryClient();
-    // useEffect(() => {
-    //     console.log("PrebuildDialog mounted");
-    //     async () => {
-    //         if (!userInfo) {
-    //             console.error("userInfo is null");
-    //             refetchUserInfo();
-    //         }
-    //     };
-    // }, [userInfo, refetchUserInfo]);
-
-
-
-
-
-    // const { mutateAsync: create } = useMutation({
-    //     mutationFn: async (payload) => {
-    //         const res = await createConversation(payload, token);
-    //         return res;
-    //     },
-    //     onError: (error) => {
-    //         console.error("Create conversation error:", error);
-    //     },
-    //     onSettled: () => {
-    //         queryClient.invalidateQueries(CONVERSATIONS_QUERY_KEY);
-    //     },
-    // });
-
-    // useEffect(() => {
-    //     if (isSuccess) {
-    //         handleNewCreatedConversation(conversations);
-    //     }
-    // }, [isSuccess, conversations, handleNewCreatedConversation]);
-
     const handleCreate = async () => {
         console.log("handleCreate");
         if (!roomTitle) {
@@ -83,7 +41,6 @@ function PrebuildDialog(props) {
             participants: [],
             messages: [],
         };
-        console.log("create conversation payload: ", payload);
         await handleCreateConversation(payload);
 
     };
