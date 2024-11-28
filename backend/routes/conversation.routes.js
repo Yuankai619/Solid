@@ -5,5 +5,5 @@ const router = express.Router();
 
 router.post("/", ProtectRoute, create);
 router.get("/owner/:userId", ProtectRoute, findByOwner);
-router.delete("/ower/:userId/:conversationId", ProtectRoute, deleteByOwner);
+router.delete("/:conversationId", ProtectRoute, deleteByOwner);
 export default router;

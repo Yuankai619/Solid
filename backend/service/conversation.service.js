@@ -53,8 +53,9 @@ const findConversationByOwner = async (userId) => {
     }
 }
 
-const deleteConversationByOwner = async (userId, conversationId, googleId) => {
+const deleteConversationByOwner = async (conversationId, userId, googleId) => {
     try {
+        console.log("deleteConversationByOwner req data:  ", userId, conversationId, googleId);
         if (!mongoose.Types.ObjectId.isValid(userId) || !mongoose.Types.ObjectId.isValid(conversationId)) {
             const error = new Error("Invalid userId or conversationId format");
             error.status = 400;
@@ -76,7 +77,9 @@ const deleteConversationByOwner = async (userId, conversationId, googleId) => {
 
         return {
             status: "success",
-            message: "Conversation deleted successfully"
+            data: {
+                _id: conversationId,
+            }
         };
     } catch (error) {
         console.error("Delete conversation error: ", error);
