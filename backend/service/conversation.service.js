@@ -166,10 +166,49 @@ const findConversationByParticipant = async (userId) => {
     }
 }
 
+const getConversationInfo = async (conversationId, userId) => {
+    try {
+        console.log("getConversationInfo conversationId: ", conversationId, "userId: ", userId);
+        if (!mongoose.Types.ObjectId.isValid(userId) || !mongoose.Types.ObjectId.isValid(conversationId)) {
+            const error = new Error("Invalid userId");
+            error.status = 400;
+            throw error;
+        }
+        const [conversation, userExists] = await Promise.all([
+            Conversation.findById(conversationId).select("ownerId title state participants description"),
+            User.exists({ _id: userId })
+        ]);
+
+        if (!conversation) {
+            const error = new Error("Conversation not found");
+            error.status = 404;
+            throw error;
+        }
+
+        if (!userExists) {
+            const error = new Error("User not found");
+            error.status = 404;
+            throw error;
+        }
+
+        if (!conversation.participants.includes(userId)) {
+            const error = new Error("User is not a participant of this conversation");
+            error.status = 400;
+            throw error;
+        }
+
+        return conversation;
+    } catch (error) {
+        console.error("Get conversation info error: ", error);
+        throw error;
+    }
+}
+
 export default {
     createConversation,
     findConversationByOwner,
     deleteConversationByOwner,
     joinConversation,
     findConversationByParticipant,
+    getConversationInfo
 };
