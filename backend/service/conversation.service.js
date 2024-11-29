@@ -66,7 +66,6 @@ const deleteConversationByOwner = async (conversationId, userId, googleId) => {
             _id: conversationId,
             ownerId: userId
         }).populate("ownerId", "googleId");
-        console.log("conversation: ", conversation);
         if (!conversation || conversation.ownerId.googleId !== googleId) {
             const error = new Error('Conversation not found or unauthorized');
             error.status = 404;
@@ -86,9 +85,55 @@ const deleteConversationByOwner = async (conversationId, userId, googleId) => {
         throw error;
     }
 }
+const joinConversation = async (conversationId, userId) => {
+    try {
+        if (!mongoose.Types.ObjectId.isValid(userId) || !mongoose.Types.ObjectId.isValid(conversationId)) {
+            const error = new Error("Invalid userId or conversationId format");
+            error.status = 400;
+            throw error;
+        }
+        const regex = new RegExp(`^${conversationId}`);
+        const [conversation, userExists] = await Promise.all([
+            Conversation.findOne({ _id: { $regex: regex } }).select("title state _id"),
+            User.exists({ _id: userId })
+        ]);
+        if (!conversation) {
+            const error = new Error("Conversation not found");
+            error.status = 404;
+            throw error;
+        }
+
+        if (!userExists) {
+            const error = new Error("User not found");
+            error.status = 404;
+            throw error;
+        }
+        if (conversation.participants.includes(userId)) {
+            const error = new Error("User already in conversation");
+            error.status = 400;
+            throw error;
+        }
+
+        conversation.participants.push(userId);
+        await conversation.save();
+
+        return {
+            status: "success",
+            data: {
+                title: conversation.title,
+                state: conversation.state,
+                _id: conversation._id,
+            }
+        };
+    } catch (error) {
+        console.error("Join conversation error: ", error);
+        throw error;
+    }
+}
 
 export default {
     createConversation,
     findConversationByOwner,
-    deleteConversationByOwner
+    deleteConversationByOwner,
+    joinConversation,
 };

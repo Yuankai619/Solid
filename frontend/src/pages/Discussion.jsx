@@ -13,8 +13,7 @@ import io from 'socket.io-client'
 
 function Discussion() {
     const navigate = useNavigate();
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [isLoginCheckComplete, setIsLoginCheckComplete] = useState(false);
+
     const location = useLocation();
     const ClassID = location.pathname.split('/')[2];
 
@@ -33,23 +32,8 @@ function Discussion() {
     // }, [socket]);
 
     useEffect(() => {
-        const checkLogin = async () => {
-            const result = await LoginChecker();
-            setIsLoggedIn(result.isLoggedIn);
-            setIsLoginCheckComplete(true);
-            if (result.redirectTo) {
-                window.location.assign(result.redirectTo);//刷新當前頁
-            }
-        };
         document.body.style.overflow = 'hidden';
-        document.body.style.background = "#222222";
-        checkLogin();
-        return () => {
-            console.log('return');
-            // document.body.style.background = '';
-            document.body.style.overflow = '';
-            document.body.style.background = "#444";
-        };
+        document.body.style.background = "#666";
     }, []);
     //test Data
     const [classData, setClassData] = useState([]);
@@ -92,7 +76,7 @@ function Discussion() {
     // }, [messageData]);
     // console.log("fetch ClassData.State: ", classData.state)
     return (
-        <div style={{ padding: 0, margin: "0px" }}>
+        <div style={{ padding: 0, margin: "0px", }}>
             <StreamAppBar data={classData} />
             <div style={{ paddingTop: '70px' }}>
                 <Container sx={{ position: 'fixed', height: (classData.state == 'true' ? 'calc(100dvh - 252px)' : '90dvh'), overflow: "auto", px: "0px", paddingBottom: "32px" }} maxWidth="100%">
@@ -105,9 +89,12 @@ function Discussion() {
                     ))}
                 </Container>
             </div>
-            {(classData.state == 'true') &&
+            {/* {(classData.state == 'true') &&
                 <StreamInputPanel classID={ClassID} />
-            }
+            } */}
+
+            <StreamInputPanel classID={ClassID} />
+
         </div>
     );
 

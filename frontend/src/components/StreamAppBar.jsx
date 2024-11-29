@@ -57,14 +57,13 @@ function formatDate(date) {
 }
 function StreamAppBar({ data }) {
     const navigate = useNavigate();
-    const [anchorEl, setAnchorEl] = useState(null); // 用于定位 Menu
+    const [anchorEl, setAnchorEl] = useState(null);
 
-    // 打开 Menu 的处理函数
     const handleMenuClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
 
-    // 关闭 Menu 的处理函数
+
     const handleClose = () => {
         setAnchorEl(null);
     };
@@ -116,7 +115,7 @@ function StreamAppBar({ data }) {
                             },
                         }}
                     >
-                        <MenuItem 
+                        <MenuItem
                             sx={
                                 {
                                     cursor: 'default',
@@ -135,9 +134,9 @@ function StreamAppBar({ data }) {
                                     Class title: {data.title}
                                 </Typography>
                                 <Typography>
-                                    Create Date: 
+                                    Create Date:
                                 </Typography>
-                                <Typography sx={{fontWeight:"500"}}>
+                                <Typography sx={{ fontWeight: "500" }}>
                                     {formatDate(createDate)}
                                 </Typography>
                                 <Typography>

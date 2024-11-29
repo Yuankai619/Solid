@@ -79,7 +79,7 @@ router.post('/loadClassAll', Auth, async (req, res) => {
     if (!course) {
         console.log('載入課程',_classID,'中的資訊失敗')
         return res.status(404).send('找不到對應的課程');
-    }
+    } 
 
     // 回傳課程的所有資料
     console.log('載入課程',_classID,'中的資訊成功')
@@ -259,35 +259,35 @@ router.post('/deleteClass',Auth, async(req,res) =>{
 // })
 
 
-router.get('/getCreatedClass', Auth, async (req, res) => {
-    const _id = req.session.passport.user._id;
-    try {
-        const user = await User.findById(_id);
-        let createdClass = user.createdClass;
+// router.get('/getCreatedClass', Auth, async (req, res) => {
+//     const _id = req.session.passport.user._id;
+//     try {
+//         const user = await User.findById(_id);
+//         let createdClass = user.createdClass;
 
-        const coursesInfo = [];
-        for (let i = 0; i < createdClass.length; i++) {
-            const classID = createdClass[i].classID;
-            const course = await Course.findOne({ 'info.classID': classID });
-            if (!course) {
-                // 如果課程不存在，從 createdClass 中刪除該課程ID
-                createdClass = createdClass.filter(item => item.classID !== classID);
-            } else {
-                coursesInfo.push(course.info);
-            }
-        }
+//         const coursesInfo = [];
+//         for (let i = 0; i < createdClass.length; i++) {
+//             const classID = createdClass[i].classID;
+//             const course = await Course.findOne({ 'info.classID': classID });
+//             if (!course) {
+//                 // 如果課程不存在，從 createdClass 中刪除該課程ID
+//                 createdClass = createdClass.filter(item => item.classID !== classID);
+//             } else {
+//                 coursesInfo.push(course.info);
+//             }
+//         }
 
-        // 更新使用者的 createdClass
-        user.createdClass = createdClass;
-        await user.save();
+//         // 更新使用者的 createdClass
+//         user.createdClass = createdClass;
+//         await user.save();
 
-        res.send(coursesInfo);
-    } catch (err) {
-        console.log('在用戶創建的課程名單中查詢課程錯誤');
-        console.log(err);
-        res.send('查詢課程錯誤');
-    }
-});
+//         res.send(coursesInfo);
+//     } catch (err) {
+//         console.log('在用戶創建的課程名單中查詢課程錯誤');
+//         console.log(err);
+//         res.send('查詢課程錯誤');
+//     }
+// });
 
 
 // 返回USER加入的全部courseINFO
@@ -339,18 +339,18 @@ router.post('/deleteClassFromUser',Auth,(req,res)=>{
 })
 
 
-router.post('/addClassToUser',Auth,(req,res)=>{
-    const _id = req.session.passport.user._id;
-    const _classID = req.body.classID;
-    // console.log(_id);
-    // console.log(_classID);
-    User.findByIdAndUpdate(_id, { $push: { createdClass: { classID: _classID } } }).then(()=>{
-        console.log('success user update')
-        res.send('suc');
-    }).catch((err)=>{
-        console.log(err)
-    });
-})
+// router.post('/addClassToUser',Auth,(req,res)=>{
+//     const _id = req.session.passport.user._id;
+//     const _classID = req.body.classID;
+//     // console.log(_id);
+//     // console.log(_classID);
+//     User.findByIdAndUpdate(_id, { $push: { createdClass: { classID: _classID } } }).then(()=>{
+//         console.log('success user update')
+//         res.send('suc');
+//     }).catch((err)=>{
+//         console.log(err)
+//     });
+// })
 
 
 async function generateUniqueClassID() {
@@ -364,51 +364,51 @@ async function generateUniqueClassID() {
 }
 
 
-router.post('/create',Auth, (req, res) => {
-    const _userID = req.body.userID;
-    const _description = req.body.description;
-    const _title = req.body.roomTitle;
-    const _state = req.body.state;
-    const _username = req.body.username;
-    let _classID;
-    generateUniqueClassID().then(classID => {
-        _classID = classID;
-        console.log(_classID)
-        const newCourse = new Course({
-            info : 
-            {
-                classID  :  _classID,
-                authorID :  _userID,
-                state    :  _state,
-                title    :  _title,
-                description : _description,
-                createDate :  new Date()
-            },
-            member : 
-            [
-                { userid : _userID }
-            ],
-            message : 
-            [
+// router.post('/create',Auth, (req, res) => {
+//     const _userID = req.body.userID;
+//     const _description = req.body.description;
+//     const _title = req.body.roomTitle;
+//     const _state = req.body.state;
+//     const _username = req.body.username;
+//     let _classID;
+//     generateUniqueClassID().then(classID => {
+//         _classID = classID;
+//         console.log(_classID)
+//         const newCourse = new Course({
+//             info : 
+//             {
+//                 classID  :  _classID,
+//                 authorID :  _userID,
+//                 state    :  _state,
+//                 title    :  _title,
+//                 description : _description,
+//                 createDate :  new Date()
+//             },
+//             member : 
+//             [
+//                 { userid : _userID }
+//             ],
+//             message : 
+//             [
                 
-            ]
-        });
-        newCourse.save().then((err) => {
-            console.log('create class',_classID);
-            res.json({
-                id: _classID,
-                userID: _userID,
-                title: _title,
-                classID: _classID,
-                description: _description,
-                state: _state,  
-            })
-        }).catch(err => {
-            console.error(err);
-            res.status(500).send(err);
-        });
-    });
-});
+//             ]
+//         });
+//         newCourse.save().then((err) => {
+//             console.log('create class',_classID);
+//             res.json({
+//                 id: _classID,
+//                 userID: _userID,
+//                 title: _title,
+//                 classID: _classID,
+//                 description: _description,
+//                 state: _state,  
+//             })
+//         }).catch(err => {
+//             console.error(err);
+//             res.status(500).send(err);
+//         });
+//     });
+// });
 
 
 router.post('/addComment', Auth,(req, res) => {
