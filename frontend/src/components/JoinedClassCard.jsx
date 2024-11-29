@@ -11,6 +11,9 @@ import JoinedClassCardTheme from "../themes/JoinedClassCardTheme";
 import PropTypes from 'prop-types';
 function JoinedClassCard({ data }) {
   const { title, state, _id, ownerId } = data;
+  if (!title || !state || !_id || !ownerId) {
+    alert("error occured, please refresh the page");
+  }
   const shortId = _id.slice(-6);
   const { handleDeleteJoinedClass } = useClassDataContext();
   const [anchorEl, setAnchorEl] = useState(null);
@@ -95,7 +98,10 @@ function JoinedClassCard({ data }) {
 }
 JoinedClassCard.propTypes = {
   data: PropTypes.shape({
-    ownerId: PropTypes.string,
+    ownerId: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.object
+    ]).isRequired,
     title: PropTypes.string,
     state: PropTypes.string,
     _id: PropTypes.string,

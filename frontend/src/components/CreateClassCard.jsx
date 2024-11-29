@@ -19,6 +19,10 @@ import { useConversationContext } from "../context/ConversationContext";
 
 function CreateClassCard({ data }) {
   const { title, state, _id } = data;
+  if (!title || !state || !_id) {
+    alert("error occured, please refresh the page");
+  }
+
   const shortId = _id.slice(-6);
 
 

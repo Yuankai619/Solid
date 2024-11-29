@@ -33,7 +33,6 @@ export const ConversationProvider = ({ children }) => {
         queryKey: JOINED_CONVERSATIONS_QUERY_KEY,
         queryFn: async () => {
             const ret = await getParticipantConversation(userId, token);
-            console.debug("getParticipantConversation ret:", ret);
             return ret.data;
         },
         enabled: !!userId && !!token,
@@ -63,12 +62,11 @@ export const ConversationProvider = ({ children }) => {
     } = useMutation({
         mutationFn: async (conversationId) => {
             const res = await joinConversation(conversationId, userId, token);
-            console.debug("joinConversation res:", res);
             return res;
         },
         onSuccess: (res) => {
             queryClient.setQueryData(JOINED_CONVERSATIONS_QUERY_KEY, (old) => {
-                console.log("old:", old);
+                old = old || [];
                 return [res.data, ...old];
             });
         },
@@ -88,6 +86,7 @@ export const ConversationProvider = ({ children }) => {
         },
         onSuccess: (res) => {
             queryClient.setQueryData(CREATED_CONVERSATIONS_QUERY_KEY, (old) => {
+                old = old || [];
                 return [res.data, ...old];
             });
         },
