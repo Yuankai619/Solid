@@ -128,7 +128,6 @@ export const getInfo = async (req, res) => {
     try {
         const conversationInfo = await conversationService.getConversationInfo(
             req.params.conversationId,
-            req.body.userId
         );
         return res.status(200).json({
             success: true,

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
     AppBar, Tabs, Tab, Box, Toolbar, IconButton, Menu, MenuItem, Typography
@@ -8,6 +8,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 
 import { ThemeProvider, createTheme } from '@mui/material/styles';
+import PropTypes from 'prop-types';
 
 const StreamAppBarTheme = createTheme({
     typography: {
@@ -25,7 +26,7 @@ const StreamAppBarTheme = createTheme({
                 root: {
                     position: 'relative',
                     paddingBottom: 'env(safe-area-inset-bottom)',
-                    paddingBottom: '10px',
+                    // paddingBottom: '10px',
                 }
 
             },
@@ -56,6 +57,7 @@ function formatDate(date) {
     return `${year}-${month}-${day} ${hour}:${minute}`;
 }
 function StreamAppBar({ data }) {
+    const { _id, title, description, createdAt } = data;
     const navigate = useNavigate();
     const [anchorEl, setAnchorEl] = useState(null);
 
@@ -67,7 +69,7 @@ function StreamAppBar({ data }) {
     const handleClose = () => {
         setAnchorEl(null);
     };
-    var createDate = new Date(data.createDate);
+    var createDate = new Date(createdAt);
     return (
         <ThemeProvider theme={StreamAppBarTheme}>
             <AppBar style={{
@@ -91,7 +93,7 @@ function StreamAppBar({ data }) {
                         <ChevronLeftIcon style={{ color: "#EEEEEE", fontSize: "36px" }} />
                     </IconButton>
                     <Typography variant='h1' sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center', fontSize: '26px', fontWeight: "700" }}>
-                        {data.title}
+                        {title}
                     </Typography>
                     <IconButton
                         edge="start"
@@ -128,22 +130,21 @@ function StreamAppBar({ data }) {
                         >
                             <Box >
                                 <Typography>
-                                    Class ID: {data.classID}
+                                    Room ID: {_id.slice(-6)}
                                 </Typography>
                                 <Typography>
-                                    Class title: {data.title}
+                                    Converation title: {title}
                                 </Typography>
                                 <Typography>
-                                    Create Date:
+                                    Create Date: {formatDate(createDate)}
                                 </Typography>
                                 <Typography sx={{ fontWeight: "500" }}>
-                                    {formatDate(createDate)}
                                 </Typography>
                                 <Typography>
                                     Description:
                                 </Typography>
                                 <Typography sx={{ fontWeight: "500" }}>
-                                    {data.description}
+                                    {description}
                                 </Typography>
                             </Box>
                         </MenuItem>
@@ -154,4 +155,13 @@ function StreamAppBar({ data }) {
         </ThemeProvider>
     );
 }
+StreamAppBar.propTypes = {
+    data: PropTypes.shape({
+        _id: PropTypes.string.isRequired,
+        title: PropTypes.string.isRequired,
+        description: PropTypes.string,
+        createdAt: PropTypes.string.isRequired,
+    }).isRequired,
+};
+
 export default StreamAppBar;

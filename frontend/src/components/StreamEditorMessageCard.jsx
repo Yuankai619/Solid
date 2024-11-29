@@ -73,12 +73,12 @@ const StreamEditorMessageCardTheme = createTheme({
     },
 });
 function StreamEditorMessageCard({ data, classID }) {
-    useEffect(() => {
-        socket.emit('join_room', classID);
-        socket.on('refresh', (data) => {
-            console.log(data);
-        })
-    }, [socket])
+    // useEffect(() => {
+    //     socket.emit('join_room', classID);
+    //     socket.on('refresh', (data) => {
+    //         console.log(data);
+    //     })
+    // }, [socket])
     const [selected, setSelected] = useState(data.score); // Keep track of which button is selected    
     const correctEnable = "#3DECAD", correctDisable = "#00764B";
     const incorrectEnable = "#EE592A", incorrectDisable = "#76270E";
@@ -91,26 +91,26 @@ function StreamEditorMessageCard({ data, classID }) {
     };
     const avatarSrc = data.isAnonymous === 'true' ? undefined : data.userimg;
     const username = data.isAnonymous === 'true' ? 'Anonymous' : data.username;
-    const handleScoreUpdate = (selected) => {
-        axios({
-            method: "POST",
-            headers: { 'Content-Type': 'application/json', },
-            data: JSON.stringify({
-                classID: classID,
-                messageID: data.messageid,
-                score: selected
-            }),
-            withCredentials: true,
-            url: `${process.env.REACT_APP_API_URL}/course/scoreUpdate`
-        })
-            .then((res) => {
-                // comment here
-                // .json({  message: '訊息已成功加入',messageId: _uuid })
-                console.log(res.data)
-            })
-            .catch((error) => { console.error(error); });
-        socket.emit('send_message', classID);
-    };
+    // const handleScoreUpdate = (selected) => {
+    //     axios({
+    //         method: "POST",
+    //         headers: { 'Content-Type': 'application/json', },
+    //         data: JSON.stringify({
+    //             classID: classID,
+    //             messageID: data.messageid,
+    //             score: selected
+    //         }),
+    //         withCredentials: true,
+    //         url: `${process.env.REACT_APP_API_URL}/course/scoreUpdate`
+    //     })
+    //         .then((res) => {
+    //             // comment here
+    //             // .json({  message: '訊息已成功加入',messageId: _uuid })
+    //             console.log(res.data)
+    //         })
+    //         .catch((error) => { console.error(error); });
+    //     socket.emit('send_message', classID);
+    // };
     return (
         <ThemeProvider theme={StreamEditorMessageCardTheme}>
             <Card variant='outlined'>

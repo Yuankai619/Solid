@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Paper, TextField, IconButton, Switch, FormControlLabel } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { useAuth } from '../context/AuthContext';
 import axios from 'axios';
 import io from 'socket.io-client'
 // let socket = io.connect(`${import.meta.env.REACT_APP_API_URL}`)
@@ -50,6 +51,7 @@ const PrebuildDialogTheme = createTheme({
 });
 
 function StreamInputPanel({ conversationId }) {
+    const { token } = useAuth();
     const [content, setContent] = useState('');
     const [isAnonymous, setIsAnonymous] = useState(false);
     const [inputFocused, setInputFocused] = useState(false);
@@ -93,81 +95,81 @@ function StreamInputPanel({ conversationId }) {
         //         })
         //         .catch((error) => { console.error(error); });
         //     // socket.emit('send_message', classID);
-        // };
+    };
 
-        const handleToggleChange = (event) => {
-            setSendIconColor(sendIconColor === '#2D6CB6' ? '#EEEEEE' : '#2D6CB6');
-            setIsAnonymous(event.target.checked);
-        };
-        const handleInputFocus = (e) => {
-            e.stopPropagation();
-            setInputFocused(true);
-        };
-        const handleInputBlur = (e) => {
-            e.stopPropagation();
-            setInputFocused(false);
-        };
 
-        return (
-            <ThemeProvider theme={PrebuildDialogTheme}>
-                <Paper style={{
-                    position: 'fixed',
-                    backgroundColor: '#222222',
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
-                    padding: '0px 20px 20px 20px',
-                    transition: 'all 0.3s ease',
-                    transform: inputFocused ? 'translateTop(-50%)' : 'translateY(0)'
-                }}>
+    const handleToggleChange = (event) => {
+        setSendIconColor(sendIconColor === '#2D6CB6' ? '#EEEEEE' : '#2D6CB6');
+        setIsAnonymous(event.target.checked);
+    };
+    const handleInputFocus = (e) => {
+        e.stopPropagation();
+        setInputFocused(true);
+    };
+    const handleInputBlur = (e) => {
+        e.stopPropagation();
+        setInputFocused(false);
+    };
 
-                    <TextField
-                        multiline
-                        fullWidth
-                        variant="outlined"
-                        placeholder="type...?"
-                        value={content}
-                        onBlur={handleInputBlur}
-                        onFocus={handleInputFocus}
-                        rows={inputFocused ? 4 : 2}
-                        style={{
-                            margin: '10px 0',
-                        }}
-                        InputProps={{
-                            style: {
-                                padding: '15px', // 這裡增加padding來調整文字和框的間距
-                                color: '#EEEEEE',
-                            },
-                        }}
-                        onChange={(e) => setContent(e.target.value)}
-                        onKeyPress={(e) => {
-                            if (e.key === 'Enter' && !e.shiftKey) {
-                                // e.preventDefault(); // Prevents the default action of the enter key
-                                if (content.trim().length) { // 只有當content不只是空白或換行時
-                                    handleSubmit(e); // 觸發提交函數
-                                }
+    return (
+        <ThemeProvider theme={PrebuildDialogTheme}>
+            <Paper style={{
+                position: 'fixed',
+                backgroundColor: '#222222',
+                bottom: 0,
+                left: 0,
+                right: 0,
+                padding: '0px 20px 20px 20px',
+                transition: 'all 0.3s ease',
+                transform: inputFocused ? 'translateTop(-50%)' : 'translateY(0)'
+            }}>
+
+                <TextField
+                    multiline
+                    fullWidth
+                    variant="outlined"
+                    placeholder="type...?"
+                    value={content}
+                    onBlur={handleInputBlur}
+                    onFocus={handleInputFocus}
+                    rows={inputFocused ? 4 : 2}
+                    style={{
+                        margin: '10px 0',
+                    }}
+                    InputProps={{
+                        style: {
+                            padding: '15px', // 這裡增加padding來調整文字和框的間距
+                            color: '#EEEEEE',
+                        },
+                    }}
+                    onChange={(e) => setContent(e.target.value)}
+                    onKeyPress={(e) => {
+                        if (e.key === 'Enter' && !e.shiftKey) {
+                            // e.preventDefault(); // Prevents the default action of the enter key
+                            if (content.trim().length) { // 只有當content不只是空白或換行時
+                                handleSubmit(e); // 觸發提交函數
                             }
-                        }}
+                        }
+                    }}
+                />
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: "0px 6px 0px 20px" }}>
+                    <FormControlLabel
+                        control={
+                            <Switch
+                                checked={isAnonymous}
+                                onChange={handleToggleChange}
+                                name="anonymous"
+                            />
+                        }
+                        label="Anonymous"
                     />
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: "0px 6px 0px 20px" }}>
-                        <FormControlLabel
-                            control={
-                                <Switch
-                                    checked={isAnonymous}
-                                    onChange={handleToggleChange}
-                                    name="anonymous"
-                                />
-                            }
-                            label="Anonymous"
-                        />
-                        <IconButton aria-label="send" onClick={handleSubmit} disabled={!content.trim().length > 0}>
-                            <SendIcon sx={{ color: sendIconColor }} />
-                        </IconButton>
-                    </div>
-                </Paper>
-            </ThemeProvider>
-        );
-    }
+                    <IconButton aria-label="send" onClick={handleSubmit} disabled={!content.trim().length > 0}>
+                        <SendIcon sx={{ color: sendIconColor }} />
+                    </IconButton>
+                </div>
+            </Paper>
+        </ThemeProvider>
+    );
 }
 
 export default StreamInputPanel;

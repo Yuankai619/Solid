@@ -11,6 +11,7 @@ import PropTypes from "prop-types";
 
 const ConversationContext = createContext();
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useConversationContext = () => useContext(ConversationContext);
 
 export const ConversationProvider = ({ children }) => {
