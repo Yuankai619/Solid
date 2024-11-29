@@ -130,10 +130,39 @@ const joinConversation = async (conversationId, userId) => {
         throw error;
     }
 }
+const findConversationByParticipant = async (userId) => {
+    try {
+        if (!mongoose.Types.ObjectId.isValid(userId)) {
+            const error = new Error("Invalid userId format");
+            error.status = 400;
+            throw error;
+        }
+
+        const userExists = await User.exists({ _id: userId });
+        if (!userExists) {
+            const error = new Error("User not found");
+            error.status = 404;
+            throw error;
+        }
+
+        const conversations = await Conversation.find({
+            participants: { $in: [userId] }
+        })
+            .select("title state _id")
+            .sort({ updatedAt: -1 })
+            .lean();
+
+        return conversations;
+    } catch (error) {
+        console.error("Find conversation error: ", error);
+        throw error;
+    }
+}
 
 export default {
     createConversation,
     findConversationByOwner,
     deleteConversationByOwner,
     joinConversation,
+    findConversationByParticipant,
 };
