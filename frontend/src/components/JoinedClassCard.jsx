@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate, Link } from 'react-router-dom';
-import axios from 'axios';
 import {
   Box, Card, CardActions, CardContent, Button, IconButton, Typography,
   Menu, MenuItem, CardHeader
@@ -9,62 +8,43 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { ThemeProvider } from '@mui/material/styles';
 import { useClassDataContext } from '../context/ClassDataContext';
 import JoinedClassCardTheme from "../themes/JoinedClassCardTheme";
-
+import PropTypes from 'prop-types';
 function JoinedClassCard({ data }) {
+  const { title, state, _id, ownerId } = data;
+  const shortId = _id.slice(-6);
   const { handleDeleteJoinedClass } = useClassDataContext();
   const [anchorEl, setAnchorEl] = useState(null);
+  const ownerName = ownerId.userName;
   const open = Boolean(anchorEl);
 
   const handleClickMenu = (event) => {
     event.preventDefault();
     event.stopPropagation();
     setAnchorEl(event.currentTarget);
-    setAllowNavigate(false); 
+    setAllowNavigate(false);
   };
 
   const handleDelete = (event) => {
-    event.stopPropagation();    
+    event.stopPropagation();
     handleClose();
-    handleDeleteJoinedClass(data.id);
+    handleDeleteJoinedClass(_id);
   };
   const [allowNavigate, setAllowNavigate] = useState(true);
-  const [authorName, setAuthorName] = useState('');
   const handleClose = () => {
     setAnchorEl(null);
     setAllowNavigate(true);
   };
-  useEffect(() => {
-    async function fetchData() {
-      await GetUserInfo();
-    }
-    fetchData();
-  }, []); // 確保只在組件掛載時調用一次
-  const GetUserInfo = async () => {
-    try {
-      const response = await axios({
-        method: "post",
-        headers: {
-          'Content-Type': 'application/json',
-        }, data: JSON.stringify({
-          id: data.authorID
-        }),
-        withCredentials: true,
-        url: `${process.env.REACT_APP_API_URL}/course/getOnesInfo`
-      });
-      setAuthorName(response.data.authorName);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+
 
   return (
     <ThemeProvider theme={JoinedClassCardTheme}>
       <Box sx={{ minWidth: 275 }} >
         <Card variant="outlined" sx={{ cursor: 'pointer' }} >
-          <Link style={{ textDecoration: 'none', color: 'inherit' }} to={`/joinedroom/${data.classID}`} onClick={(e) => {
+          <Link style={{ textDecoration: 'none', color: 'inherit' }} to={`/conversation/${_id}`} onClick={(e) => {
             if (!allowNavigate) {
-              e.preventDefault(); 
-            }}}>
+              e.preventDefault();
+            }
+          }}>
             <CardHeader
               action={
                 <IconButton
@@ -74,7 +54,7 @@ function JoinedClassCard({ data }) {
                   <MoreVertIcon />
                 </IconButton>
               }
-              title={data.title}
+              title={title}
             />
             <Menu
               id="long-menu"
@@ -101,10 +81,10 @@ function JoinedClassCard({ data }) {
             </Menu>
             <CardContent >
               <Typography sx={{ fontSize: 15, fontWeight: 600, marginTop: '12px' }} color="#999" component="div">
-                owner: {authorName}
+                owner: {ownerName}
               </Typography>
               <Typography sx={{ fontSize: 18, fontWeight: 600, }} color="#000" >
-                Class ID: {data.classID}
+                Room ID: {shortId}
               </Typography>
             </CardContent>
           </Link>
@@ -113,5 +93,12 @@ function JoinedClassCard({ data }) {
     </ThemeProvider>
   )
 }
-
+JoinedClassCard.propTypes = {
+  data: PropTypes.shape({
+    ownerId: PropTypes.string,
+    title: PropTypes.string,
+    state: PropTypes.string,
+    _id: PropTypes.string,
+  }).isRequired
+};
 export default JoinedClassCard;

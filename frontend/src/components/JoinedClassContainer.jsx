@@ -1,10 +1,9 @@
-import React, { useState } from "react";
 import Container from '@mui/material/Container';
 import JoinedClassCard from './JoinedClassCard';
-import { useClassDataContext } from '../context/ClassDataContext';
+import Proptype from 'prop-types';
 function JoinedClassCardContainer({ conversations }) {
   return (
-    <Container sx={{ overflow: "auto", height: "92dvh", backgroundColor: "red" }}>
+    <Container sx={{ overflow: "auto", height: "92dvh" }}>
       {conversations.map((data, index) => (
         <JoinedClassCard
           key={index}
@@ -14,5 +13,7 @@ function JoinedClassCardContainer({ conversations }) {
     </Container>
   );
 }
-
+JoinedClassCardContainer.propTypes = {
+  conversations: Proptype.array.isRequired,
+};
 export default JoinedClassCardContainer;

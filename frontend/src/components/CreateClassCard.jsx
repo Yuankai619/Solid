@@ -101,7 +101,7 @@ function CreateClassCard({ data }) {
                   state: {menuState == 'true' ? 'open' : 'close'}
                 </Typography>
                 <Typography sx={{ fontSize: 18, fontWeight: 600, }} color="#000" >
-                  Class ID: {shortId}
+                  Room ID: {shortId}
                 </Typography>
               </CardContent>
             </React.Fragment>

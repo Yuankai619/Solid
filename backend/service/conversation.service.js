@@ -87,16 +87,20 @@ const deleteConversationByOwner = async (conversationId, userId, googleId) => {
 }
 const joinConversation = async (conversationId, userId) => {
     try {
-        if (!mongoose.Types.ObjectId.isValid(userId) || !mongoose.Types.ObjectId.isValid(conversationId)) {
-            const error = new Error("Invalid userId or conversationId format");
+        console.log("joinConversation conversationId: ", conversationId, "userId: ", userId);
+        if (!mongoose.Types.ObjectId.isValid(userId)) {
+            const error = new Error("Invalid userId");
             error.status = 400;
             throw error;
         }
-        const regex = new RegExp(`^${conversationId}`);
-        const [conversation, userExists] = await Promise.all([
-            Conversation.findOne({ _id: { $regex: regex } }).select("title state _id"),
+        const [conversations, userExists] = await Promise.all([
+            Conversation.find().select("ownerId title state _id participants"),
             User.exists({ _id: userId })
         ]);
+        const conversation = conversations.find(conv =>
+            conv._id.toString().endsWith(conversationId)
+        );
+
         if (!conversation) {
             const error = new Error("Conversation not found");
             error.status = 404;
@@ -120,9 +124,10 @@ const joinConversation = async (conversationId, userId) => {
         return {
             status: "success",
             data: {
+                ownerId: conversation.ownerId,
                 title: conversation.title,
                 state: conversation.state,
-                _id: conversation._id,
+                _id: conversation._id.toString().slice(-6),
             }
         };
     } catch (error) {
@@ -132,6 +137,7 @@ const joinConversation = async (conversationId, userId) => {
 }
 const findConversationByParticipant = async (userId) => {
     try {
+        console.log("findConversationByParticipant userId: ", userId);
         if (!mongoose.Types.ObjectId.isValid(userId)) {
             const error = new Error("Invalid userId format");
             error.status = 400;
@@ -148,7 +154,8 @@ const findConversationByParticipant = async (userId) => {
         const conversations = await Conversation.find({
             participants: { $in: [userId] }
         })
-            .select("title state _id")
+            .select("ownerId title state _id")
+            .populate("ownerId", "userName")
             .sort({ updatedAt: -1 })
             .lean();
 

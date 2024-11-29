@@ -1,5 +1,4 @@
-import { useState, useEffect } from "react";
-import { Box, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
 import CreateClassContainer from "./CreateClassContainer";
 import HomeSwipeablePanelTheme from "../themes/HomeSwipeablePanelTheme";
@@ -9,12 +8,11 @@ import { useConversationContext } from "../context/ConversationContext";
 
 
 function HomeSwipeablePanel() {
-    const { curIndex, handleChangeIndex, joinedClassData, createdClassData } =
-        useClassDataContext();
-    const { createdConversations } = useConversationContext();
+    const { curIndex } = useClassDataContext();
+    const { createdConversations, joinedConversations } = useConversationContext();
     return (
         <ThemeProvider theme={HomeSwipeablePanelTheme}>
-            {curIndex == 0 && !joinedClassData.length && (
+            {curIndex == 0 && !joinedConversations.length && (
                 <Typography
                     variant="h5"
                     component="div"
@@ -29,8 +27,8 @@ function HomeSwipeablePanel() {
                     You haven't joined any class yet.
                 </Typography>
             )}
-            {curIndex == 0 && joinedClassData.length && (
-                <JoinedClassCardContainer conversations={joinedClassData} />
+            {curIndex == 0 && joinedConversations.length && (
+                <JoinedClassCardContainer conversations={joinedConversations} />
             )}
 
             {curIndex == 1 && !createdConversations.length && (
@@ -48,7 +46,7 @@ function HomeSwipeablePanel() {
                     You haven't created any class yet.
                 </Typography>
             )}
-            {curIndex == 1 && createdConversations && (
+            {curIndex == 1 && createdConversations.length && (
                 <CreateClassContainer conversations={createdConversations} />
             )}
         </ThemeProvider>
