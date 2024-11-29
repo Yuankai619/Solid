@@ -96,6 +96,7 @@ export const ConversationProvider = ({ children }) => {
         },
     });
 
+    //delete conversation
     const {
         mutateAsync: handleDeleteConversation,
     } = useMutation({
