@@ -15,7 +15,8 @@ function Discussion() {
     const navigate = useNavigate();
 
     const location = useLocation();
-    const ClassID = location.pathname.split('/')[2];
+    const conversationId = location.pathname.split('/')[2];
+    console.log("enter discussion ,id: ", conversationId);
 
 
 
@@ -93,7 +94,7 @@ function Discussion() {
                 <StreamInputPanel classID={ClassID} />
             } */}
 
-            <StreamInputPanel classID={ClassID} />
+            <StreamInputPanel conversationId={conversationId} />
 
         </div>
     );
