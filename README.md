@@ -82,12 +82,8 @@ To run the project locally, follow these steps:
 
 1.  Clone the repository:
     ```bash
-    <<<<<<< HEAD
     https://github.com/Yuankai619/HandsUp-Free.git
-    =======
-    git clone https://github.com/yourusername/handsup-free.git
-    > > > > > > > d2066f9f19326c2258c7066c579c12d27b5ddc8a
-        ```
+    ```
 2.  Navigate to the frontend directory:
     ```bash
     cd handsup-free/frontend
