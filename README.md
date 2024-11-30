@@ -80,19 +80,23 @@ To run the project locally, follow these steps:
 
 ### Frontend:
 
-1. Clone the repository:
+1.  Clone the repository:
     ```bash
+    <<<<<<< HEAD
     https://github.com/Yuankai619/HandsUp-Free.git
-    ```
-2. Navigate to the frontend directory:
+    =======
+    git clone https://github.com/yourusername/handsup-free.git
+    > > > > > > > d2066f9f19326c2258c7066c579c12d27b5ddc8a
+        ```
+2.  Navigate to the frontend directory:
     ```bash
     cd handsup-free/frontend
     ```
-3. Install the dependencies:
+3.  Install the dependencies:
     ```bash
     npm install
     ```
-4. Start the development server:
+4.  Start the development server:
     ```bash
     npm run dev
     ```
