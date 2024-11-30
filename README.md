@@ -1,6 +1,4 @@
 # HandsUp Free
-<<<<<<< Updated upstream
-=======
 
 ## Introduction
 
@@ -180,4 +178,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ---
 
 This template should give you a clean and professional README for your GitHub project. Let me know if you'd like to tweak or add anything!
->>>>>>> Stashed changes
