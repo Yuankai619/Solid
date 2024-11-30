@@ -1,17 +1,65 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Paper, TextField, IconButton, Switch, FormControlLabel } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import axios from 'axios';
 import io from 'socket.io-client'
-let socket = io.connect(`${import.meta.env.REACT_APP_API_URL}`)
+import { useUserInfo } from '../context/UserInfoContext';
+import { useRoomData } from '../context/RoomDataContext';
 
-function StreamInputPanel({ classID, classState }) {
+
+// let socket = io.connect(`${import.meta.env.REACT_APP_API_URL}`)
+
+const PrebuildDialogTheme = createTheme({
+    typography: {
+        fontFamily: [
+            'Poppins',
+            'sans-serif',
+        ].join(','),
+    },
+    components: {
+        MuiTextField: {
+            styleOverrides: {
+                root: {
+                    '& .MuiInput-underline:before': {
+                        borderBottomColor: '#EEEEEE', // 在這裡替換為你想要的邊框顏色
+                    },
+                    '& .MuiInput-underline:hover:before': {
+                        borderBottomColor: '#222222', // 鼠標懸停時的邊框顏色
+                    },
+                    '& .MuiOutlinedInput-root': {
+                        '& fieldset': {
+                            borderColor: '#999999',
+                        },
+                        '&:hover fieldset': {
+                            borderColor: '#999999',
+                        },
+                        '&.Mui-focused fieldset': {
+                            borderColor: '#999999',
+                        },
+                    },
+                },
+            },
+        },
+        MuiFormControlLabel: {
+            styleOverrides: {
+                root: {
+                    '& .MuiFormControlLabel-label': {
+                        color: '#EEEEEE',
+                    },
+                },
+            },
+        },
+    }
+});
+
+function StreamInputPanel({ handleSendMessage }) {
+    const { userInfo } = useUserInfo();
     const [content, setContent] = useState('');
+    const { sendMessageMutation, isSendMessageSuccess } = useRoomData();
     const [isAnonymous, setIsAnonymous] = useState(false);
     const [inputFocused, setInputFocused] = useState(false);
     const [sendIconColor, setSendIconColor] = useState('#EEEEEE');
-
+    const userId = userInfo?._id;
     // useEffect(() => {
     //     socket.emit('join_room', classID);
     //     socket.on('refresh', (data) => {
@@ -19,37 +67,30 @@ function StreamInputPanel({ classID, classState }) {
     //     })
     // }, [socket])
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.stopPropagation();
         event.preventDefault();
+        //content cnanot be empty
         if (!content.trim().length) {
-            return; // 如果是，則不執行後續操作
+            return;
         }
-        // console.log(content);
-        // console.log(isAnonymous);
-        // console.log(classID);
-        //add comment
-        axios({
-            method: "POST",
-            headers: { 'Content-Type': 'application/json', },
-            data: JSON.stringify({
-                classID: classID,
-                isAnonymous: isAnonymous,
-                message: content,
-                score: "null"
-            }),
-            withCredentials: true,
-            url: `${import.meta.env.REACT_APP_API_URL}/course/sendMessage`
-        })
-            .then((res) => {
-                // comment here
-                setContent('');//clear inputext
-                // .json({  message: '訊息已成功加入',messageId: _uuid })
-                // console.log(res.data)
-            })
-            .catch((error) => { console.error(error); });
-        socket.emit('send_message', classID);
+        const payload = {
+            userId,
+            content,
+            isAnonymous,
+        };
+        setContent('');
+        await sendMessageMutation(payload);
+        // try {
+
+        // } catch (error) {
+        //     console.error('Error sending message:', error);
+        // }
     };
+    // useEffect(() => {
+    //     handleSendMessage(isSendMessageSuccess);
+    // }, [isSendMessageSuccess, handleSendMessage])
+
 
     const handleToggleChange = (event) => {
         setSendIconColor(sendIconColor === '#2D6CB6' ? '#EEEEEE' : '#2D6CB6');
@@ -63,49 +104,7 @@ function StreamInputPanel({ classID, classState }) {
         e.stopPropagation();
         setInputFocused(false);
     };
-    const PrebuildDialogTheme = createTheme({
-        typography: {
-            fontFamily: [
-                'Poppins',
-                'sans-serif',
-            ].join(','),
-        },
-        components: {
-            MuiTextField: {
-                styleOverrides: {
-                    root: {
-                        '& .MuiInput-underline:before': {
-                            borderBottomColor: '#EEEEEE', // 在這裡替換為你想要的邊框顏色
-                        },
-                        '& .MuiInput-underline:hover:before': {
-                            borderBottomColor: '#222222', // 鼠標懸停時的邊框顏色
-                        },
-                        '& .MuiOutlinedInput-root': {
-                            '& fieldset': {
-                                borderColor: '#999999',
-                            },
-                            '&:hover fieldset': {
-                                borderColor: '#999999',
-                            },
-                            '&.Mui-focused fieldset': {
-                                borderColor: '#999999',
-                            },
-                        },
-                    },
-                },
-            },
-            MuiFormControlLabel: {
-                styleOverrides: {
-                    root: {
-                        '& .MuiFormControlLabel-label': {
-                            color: '#EEEEEE',
-                        },
-                    },
-                },
-            },
-        }
-    });
-    console.log("input class State:  ", classState);
+
     return (
         <ThemeProvider theme={PrebuildDialogTheme}>
             <Paper style={{
@@ -123,7 +122,7 @@ function StreamInputPanel({ classID, classState }) {
                     multiline
                     fullWidth
                     variant="outlined"
-                    placeholder="type...?"
+                    placeholder="type here"
                     value={content}
                     onBlur={handleInputBlur}
                     onFocus={handleInputFocus}

@@ -14,21 +14,21 @@ const userSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
-        studenId: {
+        studentId: {
             type: String,
             required: false,
         },
         password: {
             type: String,
-            required: true,
+            required: false,
         },
-        thumbnail: {
+        avatarUrl: {
             type: String,
             required: false,
         },
         googleId: {
             type: String,
-            required: false,
+            required: true,
         },
     },
     { timestamps: true }

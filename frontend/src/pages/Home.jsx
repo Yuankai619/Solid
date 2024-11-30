@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Box from '@mui/material/Box';
 import { useTheme } from '@mui/material/styles';
 import DialpadIcon from '@mui/icons-material/Dialpad';
@@ -9,43 +9,17 @@ import JoinClassByIdDialog from '../components/JoinClassByIdDialog';
 import HomeAppBar from '../components/HomeAppBar';
 import EditNoteIcon from '@mui/icons-material/EditNote';
 import FlashOnIcon from '@mui/icons-material/FlashOn';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 import PrebuildDialog from '../components/PrebuildDialog';
-import LoginChecker from '../checker/LoginChecker';
 import { ClassDataProvider } from '../context/ClassDataContext';
 import { useClassDataContext } from '../context/ClassDataContext';
-
+import { Container } from '@mui/material';
+import { useSystem } from '../context/SystemContext';
 function Home() {
-  // window.location.reload();
-  // window.location.assign('/home');//刷新當前頁
-  const navigate = useNavigate();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isLoginCheckComplete, setIsLoginCheckComplete] = useState(false);
-
-  useEffect(() => {
-    const checkLogin = async () => {
-      const result = await LoginChecker();
-      setIsLoggedIn(result.isLoggedIn);
-      setIsLoginCheckComplete(true);
-      if (result.redirectTo) {
-        navigate(result.redirectTo);
-      }
-    };
-    document.body.style.overflow = 'hidden';
-    checkLogin();
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, [navigate]);
-  
   const { curIndex, handleChangeIndex } = useClassDataContext();
-  
   const [classIdError, classIdErrorError] = useState(false);
   const [inputClassId, setinputClassId] = useState('');
   const [dialogOpen, setDialogOpen] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
-
   const actions = [
     [{ icon: <DialpadIcon sx={{ color: '#EEEEEE' }} />, name: 'Join by ID' }],
     [{ icon: <EditNoteIcon sx={{ color: '#EEEEEE', fontSize: '32px' }} />, name: 'Prebuild' }],// { icon: <FlashOnIcon sx={{ color: '#EEEEEE', fontSize: '30px' }} />, name: 'Quick create' }],
@@ -63,44 +37,31 @@ function Home() {
     setDialogOpen(!dialogOpen);
   }
 
-  const handleLogout = () => {
-    axios({
-      method: 'get',
-      url: `${process.env.REACT_APP_API_URL}/auth/logout`,
-      withCredentials: true
-    }).then((res) => {
-      console.log(res.data.logoutState);
-      navigate('/login');
-    });
-  }
-  // setTimeout(()=>{}, 10500);
-  console.log("Debug: curIndex:", curIndex);
+
   return (
-    <div style = {{ padding: 0, margin: "0px" }} >
-    <Box sx={{ backgroundColor: '#444' }}>
+
+    <Box sx={{ backgroundColor: '#444', height: '100dvh' }}>
       <HomePageDrawer
-        _drawerOpen={drawerOpen} _toggleDrawer={toggleDrawer} clickLogout={handleLogout}
+        _drawerOpen={drawerOpen} _toggleDrawer={toggleDrawer}
       />
-      <HomeSwipeablePanel
-       _theme={theme}
-      />
+      <HomeSwipeablePanel />
       <HomeSpeedDial
-        actions={actions}  dialogOpen={dialogOpen} setDialogOpen={handleChangeDialog}
+        actions={actions} dialogOpen={dialogOpen} setDialogOpen={handleChangeDialog}
       />
-        {curIndex === 0 && (
+      {curIndex === 0 && (
         <JoinClassByIdDialog
           dialogOpen={dialogOpen} setDialogOpen={handleChangeDialog}
 
         />
       )}
-        {curIndex === 1 && (
+      {curIndex === 1 && (
         <PrebuildDialog
           dialogOpen={dialogOpen} setDialogOpen={handleChangeDialog}
         />
       )}
       <HomeAppBar _toggleDrawer={toggleDrawer} />
     </Box>
-    </div>
+
   );
 }
 export default Home;

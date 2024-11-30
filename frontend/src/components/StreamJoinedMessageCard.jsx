@@ -10,7 +10,7 @@ import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import StreamJoinedMessageCardTheme from '../themes/StreamJoinedMessageCardTheme';
 
 
-let socket = io.connect(`${import.meta.env.REACT_APP_API_URL}`)
+// let socket = io.connect(`${import.meta.env.REACT_APP_API_URL}`)
 
 function StreamJoinedMessageCard({ data, classID, onDelete, triggerRefresh, handleTriggerRefresh }) {
     useEffect(() => {

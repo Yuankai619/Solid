@@ -1,12 +1,11 @@
-import React, { useState } from "react";
 import Container from '@mui/material/Container';
 import CreateClassCard from "./CreateClassCard";
-import { useClassDataContext } from '../context/ClassDataContext';
-function CreateClassContainer() {
-  const { createdClassData } = useClassDataContext();
+import Proptype from 'prop-types';
+
+function CreateClassContainer({ conversations }) {
   return (
-    <Container >
-      {createdClassData.map((data,index) => (
+    <Container sx={{ overflow: "auto", height: "92dvh" }}>
+      {conversations.map((data, index) => (
         <CreateClassCard
           key={index}
           data={data}
@@ -15,5 +14,7 @@ function CreateClassContainer() {
     </Container>
   );
 }
-
+CreateClassContainer.propTypes = {
+  conversations: Proptype.array.isRequired,
+};
 export default CreateClassContainer;
