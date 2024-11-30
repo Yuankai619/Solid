@@ -20,6 +20,7 @@
     "firebase": "^11.0.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-intersection-observer": "^9.13.1",
     "react-router-dom": "^6.28.0",
     "react-social-login-buttons": "^4.1.0",
     "socket.io-client": "^4.8.1"

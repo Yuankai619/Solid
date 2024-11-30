@@ -3,7 +3,6 @@ import CreateClassCard from "./CreateClassCard";
 import Proptype from 'prop-types';
 
 function CreateClassContainer({ conversations }) {
-  console.log("CreateClassContainer conversations:", conversations);
   return (
     <Container sx={{ overflow: "auto", height: "92dvh" }}>
       {conversations.map((data, index) => (

@@ -19,6 +19,10 @@ import { useConversationContext } from "../context/ConversationContext";
 
 function CreateClassCard({ data }) {
   const { title, state, _id } = data;
+  if (!title || !state || !_id) {
+    alert("error occured, please refresh the page");
+  }
+
   const shortId = _id.slice(-6);
 
 
@@ -55,7 +59,7 @@ function CreateClassCard({ data }) {
     <ThemeProvider theme={CreateClassCardTheme}>
       <Box sx={{ minWidth: 275 }} >
         <Card variant="outlined" sx={{ cursor: 'pointer' }} >
-          <Link style={{ textDecoration: 'none', color: 'inherit' }} to={`/conversation/${_id}`} onClick={(e) => {
+          <Link style={{ textDecoration: 'none', color: 'inherit' }} to={`/conversation/${_id}/host`} onClick={(e) => {
             if (!allowNavigate) {
               e.preventDefault(); // 如果不允许跳转，则阻止 Link 的默认行为
             }
@@ -101,7 +105,7 @@ function CreateClassCard({ data }) {
                   state: {menuState == 'true' ? 'open' : 'close'}
                 </Typography>
                 <Typography sx={{ fontSize: 18, fontWeight: 600, }} color="#000" >
-                  Class ID: {shortId}
+                  Room ID: {shortId}
                 </Typography>
               </CardContent>
             </React.Fragment>

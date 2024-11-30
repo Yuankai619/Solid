@@ -24,7 +24,7 @@ export const routesConfig = [
         protected: false
     },
     {
-        path: "conversation/:conversationId",
+        path: "conversation/:conversationId/host",
         element: <Discussion />,
         protected: true
     }

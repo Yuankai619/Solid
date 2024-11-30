@@ -3,12 +3,15 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useUserInfo } from "../context/UserInfoContext";
 import { useAuth } from "../context/AuthContext";
 import { getOwnerConversations } from "../api/conversation/GetOwnerConversations";
+import { getParticipantConversation } from "../api/conversation/GetParticipantConversation";
+import { joinConversation } from "../api/conversation/JoinConversation";
 import { createConversation } from "../api/conversation/CreateConversation";
 import { deleteConversation } from "../api/conversation/DeleteConversation";
 import PropTypes from "prop-types";
 
 const ConversationContext = createContext();
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useConversationContext = () => useContext(ConversationContext);
 
 export const ConversationProvider = ({ children }) => {
@@ -19,14 +22,32 @@ export const ConversationProvider = ({ children }) => {
     const userId = userInfo?._id;
 
     //cache key
-    const CONVERSATIONS_QUERY_KEY = ['conversations', userId];
+    const CREATED_CONVERSATIONS_QUERY_KEY = ['createdConversations', userId];
+    const JOINED_CONVERSATIONS_QUERY_KEY = ['joinedConversations', userId];
 
+    //get joined conversations
+    const {
+        data: joinedConversations = [],
+        isLoading: joinedConversationsLoading,
+        refetch: refetchJoinedConversations,
+    } = useQuery({
+        queryKey: JOINED_CONVERSATIONS_QUERY_KEY,
+        queryFn: async () => {
+            const ret = await getParticipantConversation(userId, token);
+            return ret.data;
+        },
+        enabled: !!userId && !!token,
+        staleTime: Infinity,
+
+    });
+
+    //get created conversations
     const {
         data: createdConversations = [],
-        isLoading,
+        isLoading: createdConversationsLoading,
         refetch: refetchCreatedConversations,
     } = useQuery({
-        queryKey: CONVERSATIONS_QUERY_KEY,
+        queryKey: CREATED_CONVERSATIONS_QUERY_KEY,
         queryFn: async () => {
             const ret = await getOwnerConversations(userId, token);
             return ret.data;
@@ -35,6 +56,28 @@ export const ConversationProvider = ({ children }) => {
         staleTime: Infinity,
 
     });
+
+    //join conversation
+    const {
+        mutateAsync: handleJoinConversation,
+    } = useMutation({
+        mutationFn: async (conversationId) => {
+            const res = await joinConversation(conversationId, userId, token);
+            return res;
+        },
+        onSuccess: (res) => {
+            queryClient.setQueryData(JOINED_CONVERSATIONS_QUERY_KEY, (old) => {
+                old = old || [];
+                return [res.data, ...old];
+            });
+        },
+        onError: (error) => {
+            console.error("Join conversation error:", error);
+            alert(error.response.data.message);
+        },
+    });
+
+    //create conversation
     const {
         mutateAsync: handleCreateConversation,
     } = useMutation({
@@ -43,7 +86,8 @@ export const ConversationProvider = ({ children }) => {
             return res;
         },
         onSuccess: (res) => {
-            queryClient.setQueryData(CONVERSATIONS_QUERY_KEY, (old) => {
+            queryClient.setQueryData(CREATED_CONVERSATIONS_QUERY_KEY, (old) => {
+                old = old || [];
                 return [res.data, ...old];
             });
         },
@@ -53,6 +97,7 @@ export const ConversationProvider = ({ children }) => {
         },
     });
 
+    //delete conversation
     const {
         mutateAsync: handleDeleteConversation,
     } = useMutation({
@@ -62,20 +107,25 @@ export const ConversationProvider = ({ children }) => {
             return res.data._id;
         },
         onSuccess: (res) => {
-            queryClient.setQueryData(CONVERSATIONS_QUERY_KEY, (old) => {
+            queryClient.setQueryData(CREATED_CONVERSATIONS_QUERY_KEY, (old) => {
                 return old.filter((item) => item._id !== res);
             });
         },
         onError: (error) => {
             console.error("Delete conversation error:", error);
             alert("Delete conversation error,please try again later");
+            throw error;
         },
     });
 
     const value = {
+        joinedConversations,
+        joinedConversationsLoading,
+        refetchJoinedConversations,
         createdConversations,
-        isLoading,
+        createdConversationsLoading,
         refetchCreatedConversations,
+        handleJoinConversation,
         handleCreateConversation,
         handleDeleteConversation,
     };

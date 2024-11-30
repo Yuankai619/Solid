@@ -7,6 +7,9 @@ import ProcessedRoutes from "./routes/ProcessedRoutes";
 import { ClassDataProvider } from "./context/ClassDataContext.jsx";
 import { UserInfoProvider } from "./context/UserInfoContext.jsx";
 import { ConversationProvider } from "./context/ConversationContext.jsx";
+import { SystemProvider } from "./context/SystemContext.jsx";
+import { RoomDataProvider } from "./context/RoomDataContext.jsx";
+import { Room } from "@mui/icons-material";
 function App() {
     const queryClient = new QueryClient();
     const router = createBrowserRouter(ProcessedRoutes(routesConfig), {
@@ -19,9 +22,13 @@ function App() {
             <AuthProvider>
                 <UserInfoProvider>
                     <ConversationProvider>
-                        <ClassDataProvider>
-                            <RouterProvider router={router} />
-                        </ClassDataProvider>
+                        <SystemProvider>
+                            <RoomDataProvider>
+                                <ClassDataProvider>
+                                    <RouterProvider router={router} />
+                                </ClassDataProvider>
+                            </RoomDataProvider>
+                        </SystemProvider>
                     </ConversationProvider>
                 </UserInfoProvider>
             </AuthProvider>

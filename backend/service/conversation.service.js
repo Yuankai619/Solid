@@ -66,7 +66,6 @@ const deleteConversationByOwner = async (conversationId, userId, googleId) => {
             _id: conversationId,
             ownerId: userId
         }).populate("ownerId", "googleId");
-        console.log("conversation: ", conversation);
         if (!conversation || conversation.ownerId.googleId !== googleId) {
             const error = new Error('Conversation not found or unauthorized');
             error.status = 404;
@@ -86,9 +85,115 @@ const deleteConversationByOwner = async (conversationId, userId, googleId) => {
         throw error;
     }
 }
+const joinConversation = async (conversationId, userId) => {
+    try {
+        console.log("joinConversation conversationId: ", conversationId, "userId: ", userId);
+        if (!mongoose.Types.ObjectId.isValid(userId)) {
+            const error = new Error("Invalid userId");
+            error.status = 400;
+            throw error;
+        }
+        const [conversations, userExists] = await Promise.all([
+            Conversation.find().select("ownerId title state _id participants"),
+            User.exists({ _id: userId })
+        ]);
+        const conversation = conversations.find(conv =>
+            conv._id.toString().endsWith(conversationId)
+        );
+
+        if (!conversation) {
+            const error = new Error("Conversation not found");
+            error.status = 404;
+            throw error;
+        }
+
+        if (!userExists) {
+            const error = new Error("User not found");
+            error.status = 404;
+            throw error;
+        }
+        if (conversation.participants.includes(userId)) {
+            const error = new Error("User already in conversation");
+            error.status = 400;
+            throw error;
+        }
+
+        conversation.participants.push(userId);
+        await conversation.save();
+
+        return {
+            status: "success",
+            data: {
+                ownerId: conversation.ownerId,
+                title: conversation.title,
+                state: conversation.state,
+                _id: conversation._id.toString().slice(-6),
+            }
+        };
+    } catch (error) {
+        console.error("Join conversation error: ", error);
+        throw error;
+    }
+}
+const findConversationByParticipant = async (userId) => {
+    try {
+        console.log("findConversationByParticipant userId: ", userId);
+        if (!mongoose.Types.ObjectId.isValid(userId)) {
+            const error = new Error("Invalid userId format");
+            error.status = 400;
+            throw error;
+        }
+
+        const userExists = await User.exists({ _id: userId });
+        if (!userExists) {
+            const error = new Error("User not found");
+            error.status = 404;
+            throw error;
+        }
+
+        const conversations = await Conversation.find({
+            participants: { $in: [userId] }
+        })
+            .select("ownerId title state _id")
+            .populate("ownerId", "userName")
+            .sort({ updatedAt: -1 })
+            .lean();
+
+        return conversations;
+    } catch (error) {
+        console.error("Find conversation error: ", error);
+        throw error;
+    }
+}
+
+const getConversationInfo = async (conversationId) => {
+    try {
+        console.log("getConversationInfo conversationId: ", conversationId);
+        if (!mongoose.Types.ObjectId.isValid(conversationId)) {
+            const error = new Error("Invalid userId");
+            error.status = 400;
+            throw error;
+        }
+        const conversation = Conversation.findById(conversationId).select("_id, ownerId title state participants description createdAt");
+
+        if (!conversation) {
+            const error = new Error("Conversation not found");
+            error.status = 404;
+            throw error;
+        }
+
+        return conversation;
+    } catch (error) {
+        console.error("Get conversation info error: ", error);
+        throw error;
+    }
+}
 
 export default {
     createConversation,
     findConversationByOwner,
-    deleteConversationByOwner
+    deleteConversationByOwner,
+    joinConversation,
+    findConversationByParticipant,
+    getConversationInfo
 };
