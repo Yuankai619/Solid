@@ -2,9 +2,11 @@ import { useEffect, useState } from 'react';
 import { Paper, TextField, IconButton, Switch, FormControlLabel } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import { useAuth } from '../context/AuthContext';
-import axios from 'axios';
 import io from 'socket.io-client'
+import { useUserInfo } from '../context/UserInfoContext';
+import { useRoomData } from '../context/RoomDataContext';
+
+
 // let socket = io.connect(`${import.meta.env.REACT_APP_API_URL}`)
 
 const PrebuildDialogTheme = createTheme({
@@ -50,13 +52,14 @@ const PrebuildDialogTheme = createTheme({
     }
 });
 
-function StreamInputPanel({ conversationId }) {
-    const { token } = useAuth();
+function StreamInputPanel({ handleSendMessage }) {
+    const { userInfo } = useUserInfo();
     const [content, setContent] = useState('');
+    const { sendMessageMutation, isSendMessageSuccess } = useRoomData();
     const [isAnonymous, setIsAnonymous] = useState(false);
     const [inputFocused, setInputFocused] = useState(false);
     const [sendIconColor, setSendIconColor] = useState('#EEEEEE');
-
+    const userId = userInfo?._id;
     // useEffect(() => {
     //     socket.emit('join_room', classID);
     //     socket.on('refresh', (data) => {
@@ -64,38 +67,29 @@ function StreamInputPanel({ conversationId }) {
     //     })
     // }, [socket])
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.stopPropagation();
         event.preventDefault();
         //content cnanot be empty
         if (!content.trim().length) {
             return;
         }
-        // console.log(content);
-        // console.log(isAnonymous);
-        // console.log(classID);
-        //add comment
-        //     axios({
-        //         method: "POST",
-        //         headers: { 'Content-Type': 'application/json', },
-        //         data: JSON.stringify({
-        //             classID: classID,
-        //             isAnonymous: isAnonymous,
-        //             message: content,
-        //             score: "null"
-        //         }),
-        //         withCredentials: true,
-        //         url: `${import.meta.env.REACT_APP_API_URL}/course/sendMessage`
-        //     })
-        //         .then((res) => {
-        //             // comment here
-        //             setContent('');//clear inputext
-        //             // .json({  message: '訊息已成功加入',messageId: _uuid })
-        //             // console.log(res.data)
-        //         })
-        //         .catch((error) => { console.error(error); });
-        //     // socket.emit('send_message', classID);
+        const payload = {
+            userId,
+            content,
+            isAnonymous,
+        };
+        setContent('');
+        await sendMessageMutation(payload);
+        // try {
+
+        // } catch (error) {
+        //     console.error('Error sending message:', error);
+        // }
     };
+    // useEffect(() => {
+    //     handleSendMessage(isSendMessageSuccess);
+    // }, [isSendMessageSuccess, handleSendMessage])
 
 
     const handleToggleChange = (event) => {
@@ -128,7 +122,7 @@ function StreamInputPanel({ conversationId }) {
                     multiline
                     fullWidth
                     variant="outlined"
-                    placeholder="type...?"
+                    placeholder="type here"
                     value={content}
                     onBlur={handleInputBlur}
                     onFocus={handleInputFocus}

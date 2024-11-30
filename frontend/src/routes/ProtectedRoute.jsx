@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { useAuth } from "../context/AuthContext";
 import { useQuery } from "@tanstack/react-query";
 import { FindUser } from "../api/auth/FindUser";
-import { useEffect } from "react";
+
 const ProtectedRoute = ({ children }) => {
     const { currentUser, isLoading, googleId, token } = useAuth();
     const {
@@ -20,7 +20,8 @@ const ProtectedRoute = ({ children }) => {
         refetchOnWindowFocus: false,
         staleTime: Infinity,
         retry: false,
-    })
+    });
+
 
     if (isLoading || isFetching) {
         return <div>loadiing....</div>;

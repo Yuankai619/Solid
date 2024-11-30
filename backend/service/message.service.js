@@ -1,19 +1,19 @@
 import mongoose from "mongoose";
 import Conversation from "../models/conversation.model.js";
 import User from "../models/user.model.js";
-
-const sendMessage = async ({ payload }) => {
+import Message from "../models/message.model.js";
+const sendMessage = async (payload, conversationId) => {
     try {
-        const { conversationId } = payload.params;
-        const { senderId, content, isAnonymous } = payload.body;
-        if (!mongoose.Types.ObjectId.isValid(senderId) || !mongoose.Types.ObjectId.isValid(conversationId)) {
+        console.log("send message payload: ", payload, "conversationId: ", conversationId);
+        const { userId, content, isAnonymous } = payload;
+        if (!mongoose.Types.ObjectId.isValid(userId) || !mongoose.Types.ObjectId.isValid(conversationId)) {
             const error = new Error("Invalid senderId or conversationId format");
             error.status = 400;
             throw error;
         }
         const [conversation, userExists] = await Promise.all([
             Conversation.findById(conversationId).select("ownerId state participants"),
-            User.findById(senderId),
+            User.findById(userId),
         ]);
 
         if (!conversation) {
@@ -32,23 +32,21 @@ const sendMessage = async ({ payload }) => {
             error.status = 400;
             throw error;
         }
-        if (!conversation.participants.includes(senderId)) {
+        if (!conversation.participants.includes(userId) && conversation.ownerId.toString() !== userId) {
             const error = new Error("User is not a participant of this conversation");
             error.status = 400;
             throw error;
         }
         const newMessage = new Message({
-            senderId,
+            senderId: userId,
             conversationId,
             content,
             isAnonymous,
             score: "null",
         });
 
-        const [savedMessage] = await Promise.all([
-            newMessage.save(),
-            conversation.updateOne({ $push: { messages: newMessage._id } }),
-        ]);
+        const savedMessage = await newMessage.save();
+        await conversation.updateOne({ $push: { messages: newMessage._id } });
         const populatedMessage = await Message.findById(savedMessage._id).populate("senderId", "userName avatarUrl");
         return {
             status: "success",
@@ -60,7 +58,43 @@ const sendMessage = async ({ payload }) => {
     }
 };
 
+const getMessages = async (conversationId, page, limit) => {
+    try {
+        console.log("get messages conversationId: ", conversationId, "page: ", page, "limit: ", limit);
+        if (!mongoose.Types.ObjectId.isValid(conversationId)) {
+            const error = new Error("Invalid conversationId format");
+            error.status = 400;
+            throw error;
+        }
+        const conversation = await Conversation.findById(conversationId).select("messages");
+        if (!conversation) {
+            const error = new Error("Conversation not found");
+            error.status = 404;
+            throw error;
+        }
+        const messages = await Message.find({ _id: { $in: conversation.messages } })
+            .sort({ createdAt: -1 })
+            .skip((page - 1) * limit)
+            .limit(limit)
+            .populate("senderId", "userName avatarUrl");
 
+        const totalMessages = conversation.messages.length;
+        console.log("totalMessages: ", totalMessages);
+        return {
+            status: "success",
+            data: {
+                messages,
+                currentPage: page,
+                totalPages: Math.ceil(totalMessages / limit),
+                hasMore: totalMessages > page * limit,
+            }
+        };
+    } catch (error) {
+        console.error("Get messages error: ", error);
+        throw error;
+    }
+};
 export default {
     sendMessage,
+    getMessages
 };

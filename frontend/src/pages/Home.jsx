@@ -13,13 +13,13 @@ import PrebuildDialog from '../components/PrebuildDialog';
 import { ClassDataProvider } from '../context/ClassDataContext';
 import { useClassDataContext } from '../context/ClassDataContext';
 import { Container } from '@mui/material';
+import { useSystem } from '../context/SystemContext';
 function Home() {
   const { curIndex, handleChangeIndex } = useClassDataContext();
   const [classIdError, classIdErrorError] = useState(false);
   const [inputClassId, setinputClassId] = useState('');
   const [dialogOpen, setDialogOpen] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
-
   const actions = [
     [{ icon: <DialpadIcon sx={{ color: '#EEEEEE' }} />, name: 'Join by ID' }],
     [{ icon: <EditNoteIcon sx={{ color: '#EEEEEE', fontSize: '32px' }} />, name: 'Prebuild' }],// { icon: <FlashOnIcon sx={{ color: '#EEEEEE', fontSize: '30px' }} />, name: 'Quick create' }],

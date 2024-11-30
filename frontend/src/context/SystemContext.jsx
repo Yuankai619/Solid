@@ -13,7 +13,7 @@ const SystemContext = createContext();
 export const useSystem = () => useContext(SystemContext);
 
 export function SystemProvider({ children }) {
-    const [curConversationId, setCurConversationId] = useState([null]);
+    const [curConversationId, setCurConversationId] = useState(null);
     const handleSetCurConversationId = (_id) => {
         setCurConversationId(_id);
     }

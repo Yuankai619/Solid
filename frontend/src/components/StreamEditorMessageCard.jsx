@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import { useState, useEffect } from 'react';
 import io from 'socket.io-client';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Card, CardContent, Typography, Avatar, Button } from '@mui/material';
@@ -72,14 +71,17 @@ const StreamEditorMessageCardTheme = createTheme({
         },
     },
 });
-function StreamEditorMessageCard({ data, classID }) {
+function StreamEditorMessageCard({ data }) {
+    const { score, senderId, isAnonymous, content } = data;
+    const avatarUrl = senderId?.avatarUrl;
+    const userName = senderId?.userName;
     // useEffect(() => {
     //     socket.emit('join_room', classID);
     //     socket.on('refresh', (data) => {
     //         console.log(data);
     //     })
     // }, [socket])
-    const [selected, setSelected] = useState(data.score); // Keep track of which button is selected    
+    const [selected, setSelected] = useState(score); // Keep track of which button is selected    
     const correctEnable = "#3DECAD", correctDisable = "#00764B";
     const incorrectEnable = "#EE592A", incorrectDisable = "#76270E";
     const handleButtonClick = (button) => {
@@ -89,8 +91,8 @@ function StreamEditorMessageCard({ data, classID }) {
         handleScoreUpdate(newSelected);
         // console.log("selected: ",newSelected);
     };
-    const avatarSrc = data.isAnonymous === 'true' ? undefined : data.userimg;
-    const username = data.isAnonymous === 'true' ? 'Anonymous' : data.username;
+    const avatarSrc = isAnonymous === 'true' ? undefined : avatarUrl;
+    const username = isAnonymous === 'true' ? 'Anonymous' : userName;
     // const handleScoreUpdate = (selected) => {
     //     axios({
     //         method: "POST",
@@ -142,7 +144,7 @@ function StreamEditorMessageCard({ data, classID }) {
                         </Button>
                     </div>
                     <Typography variant="body1">
-                        {data.message}
+                        {content}
                     </Typography>
                 </CardContent>
             </Card>
