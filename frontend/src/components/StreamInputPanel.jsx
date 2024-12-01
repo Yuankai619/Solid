@@ -52,10 +52,10 @@ const PrebuildDialogTheme = createTheme({
     }
 });
 
-function StreamInputPanel({ handleSendMessage }) {
+function StreamInputPanel({ handleSendEvent }) {
     const { userInfo } = useUserInfo();
     const [content, setContent] = useState('');
-    const { sendMessageMutation, isSendMessageSuccess } = useRoomData();
+    const { sendMessageMutation } = useRoomData();
     const [isAnonymous, setIsAnonymous] = useState(false);
     const [inputFocused, setInputFocused] = useState(false);
     const [sendIconColor, setSendIconColor] = useState('#EEEEEE');
@@ -81,15 +81,8 @@ function StreamInputPanel({ handleSendMessage }) {
         };
         setContent('');
         await sendMessageMutation(payload);
-        // try {
-
-        // } catch (error) {
-        //     console.error('Error sending message:', error);
-        // }
+        handleSendEvent();
     };
-    // useEffect(() => {
-    //     handleSendMessage(isSendMessageSuccess);
-    // }, [isSendMessageSuccess, handleSendMessage])
 
 
     const handleToggleChange = (event) => {

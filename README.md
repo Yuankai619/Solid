@@ -14,9 +14,27 @@ Key Features:
 
 In traditional classrooms, students often hesitate to answer questions, even when they know the answers, due to fear of embarrassment or being singled out. Additionally, teachers often only call on students in the front rows, leaving others with fewer opportunities to participate. HandsUp Free was created to address these issues, promoting equal participation and allowing students to answer questions freely and anonymously.
 
+## Previous Version Demo
+
+[https://www.youtube.com/watch?v=2ZzjDLvxDAM](https://www.youtube.com/watch?v=2ZzjDLvxDAM)
+
+## Detail Features Notes
+
+[HandsUp Free Feature Notes](https://docs.google.com/presentation/d/1dY1nb_hz9sfKGWLgmrRZbKo1sCTNKKOH5hrr3aSfE80/edit?usp=sharing)
+
 ---
 
 ## Tech Stack
+
+![Vite](https://img.shields.io/badge/vite-%23646CFF.svg?style=for-the-badge&logo=vite&logoColor=white)
+![React](https://img.shields.io/badge/React-20232a.svg?logo=react&logoColor=61DAFB)
+![MUI](https://img.shields.io/badge/MUI-%230081CB.svg?style=for-the-badge&logo=mui&logoColor=white)
+![Socket.io](https://img.shields.io/badge/Socket.io-black?style=for-the-badge&logo=socket.io&badgeColor=010101)
+![Firebase](https://img.shields.io/badge/firebase-%23039BE5.svg?style=for-the-badge&logo=firebase)
+![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white)
+![Express.js](https://img.shields.io/badge/express.js-%23404d59.svg?style=for-the-badge&logo=express&logoColor=%2361DAFB)
+![Nodemon](https://img.shields.io/badge/NODEMON-%23323330.svg?style=for-the-badge&logo=nodemon&logoColor=%BBDEAD)
+![MongoDB](https://img.shields.io/badge/MongoDB-%234ea94b.svg?style=for-the-badge&logo=mongodb&logoColor=white)
 
 ### Frontend:
 
@@ -27,7 +45,7 @@ In traditional classrooms, students often hesitate to answer questions, even whe
 -   **Tanstack-Query** - For data fetching and state management.
 -   **React-Router-Dom** - Routing library for single-page applications.
 -   **Socket.io-client** - Enables real-time communication for the Q&A feature.
--   **Firebase** - User authentication and session management.
+-   **Firebase** - Google Authentication and session management.
 
 ### Backend:
 
@@ -62,19 +80,19 @@ To run the project locally, follow these steps:
 
 ### Frontend:
 
-1. Clone the repository:
+1.  Clone the repository:
     ```bash
-    git clone https://github.com/yourusername/handsup-free.git
+    https://github.com/Yuankai619/HandsUp-Free.git
     ```
-2. Navigate to the frontend directory:
+2.  Navigate to the frontend directory:
     ```bash
     cd handsup-free/frontend
     ```
-3. Install the dependencies:
+3.  Install the dependencies:
     ```bash
     npm install
     ```
-4. Start the development server:
+4.  Start the development server:
     ```bash
     npm run dev
     ```
@@ -87,7 +105,7 @@ To run the project locally, follow these steps:
     ```
 2. Navigate to the backend directory:
     ```bash
-    cd handsup-free/backend
+    cd handsup-free
     ```
 3. Install the dependencies:
     ```bash
@@ -95,17 +113,55 @@ To run the project locally, follow these steps:
     ```
 4. Start the server:
     ```bash
-    npm run dev
+    npm run server
     ```
 
 ### Environment Variables:
 
 Ensure you have the following environment variables set for Firebase and MongoDB:
 
--   `FIREBASE_API_KEY`
--   `FIREBASE_AUTH_DOMAIN`
--   `FIREBASE_PROJECT_ID`
--   `MONGODB_URI`
+#### Frontend:
+
+`.env`
+
+```bash
+VITE_API_URL = http://localhost:3000
+```
+
+`src/config/firebase.js`
+
+```javascript
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAuth } from "firebase/auth";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+    //your firebase config
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+
+export const auth = getAuth(app);
+```
+
+#### Backend:
+
+`.env`
+
+```bash
+PORT = 3000
+MONGODB_URI = //your mongodb uri
+```
+
+`config/firebase-env.json`
+
+```json
+//your firebase config
+```
 
 ---
 

@@ -127,7 +127,7 @@ export function RoomDataProvider({ children }) {
             return [...acc, ...page.messages];
         }
         return acc;
-    }, []).sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt)) ?? [];
+    }, []) ?? [];
     const value = {
         conversationInfo,
         isConversationInfoLoading,
