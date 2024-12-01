@@ -18,6 +18,7 @@ const StreamEditorMessageCardTheme = createTheme({
         MuiCard: {
             styleOverrides: {
                 root: {
+                    flexShrink: 0,
                     position: 'relative',
                     backgroundColor: "#222222",
                     overflow: 'hidden',

@@ -78,8 +78,10 @@ const getMessages = async (conversationId, page, limit) => {
             .limit(limit)
             .populate("senderId", "userName avatarUrl");
 
+        // messages.reverse();
+
         const totalMessages = conversation.messages.length;
-        console.log("totalMessages: ", totalMessages);
+
         return {
             status: "success",
             data: {

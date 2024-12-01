@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import StreamInputPanel from '../components/StreamInputPanel';
 import StreamAppBar from '../components/StreamAppBar';
 import Box from '@mui/material/Box';
@@ -13,6 +13,7 @@ import io from 'socket.io-client'
 import { useAuth } from '../context/AuthContext';
 import { useInView } from 'react-intersection-observer';
 import { useQueryClient } from '@tanstack/react-query';
+import { set } from 'mongoose';
 
 // let socket = io.connect(`${import.meta.env.REACT_APP_API_URL}`)
 
@@ -23,10 +24,6 @@ function Discussion() {
     const location = useLocation();
     const conversationId = location.pathname.split('/')[2];
     const containerRef = useRef(null);
-    const [isInitialLoad, setIsInitialLoad] = useState(true);
-    const [isSendMessage, setIsSendMessage] = useState(false);
-    const [scrollPosition, setScrollPosition] = useState(0);
-    const queryClient = useQueryClient();
     const {
         conversationInfo,
         isConversationInfoLoading,
@@ -39,16 +36,10 @@ function Discussion() {
     } = useRoomData();
 
     // 設置 intersection observer
-    const { ref, inView } = useInView({
-        // threshold: 0.1, // 當元素出現 10% 時觸發
-        // rootMargin: '100px 0px', // 提前 100px 觸發
-
-    });
+    const { ref, inView } = useInView({});
 
     useEffect(() => {
         setCurConversationId(conversationId);
-        console.debug("set curConversationId: ", curConversationId);
-
     }, [conversationId, setCurConversationId, curConversationId, fetchNextPage]);
 
     useEffect(() => {
@@ -57,53 +48,10 @@ function Discussion() {
     }, []);
 
     useEffect(() => {
-        if (!containerRef.current || allMessages.length === 0) return;
-
-        if (isInitialLoad) {
-            console.debug("isInitialLoad: ", isInitialLoad);
-            containerRef.current.scrollTop = containerRef.current.scrollHeight;
-            setIsInitialLoad(false);
-        }
-    }, [allMessages.length, isInitialLoad]);
-
-
-    console.debug("inView: ", inView, "hasNextPage: ", hasNextPage);
-    useEffect(() => {
         if (inView && hasNextPage && !isFetchingNextPage) {
-            console.debug("isFetchingNextPage: ", isFetchingNextPage);
             fetchNextPage();
         }
     }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
-    // useEffect(() => {
-    //     if (inView && hasNextPage && !isFetchingNextPage) {
-    //         const currentScrollPosition = containerRef.current?.scrollTop || 0;
-    //         fetchNextPage().then(() => {
-    //             // 保持滾動位置
-    //             if (containerRef.current) {
-    //                 const newScrollHeight = containerRef.current.scrollHeight;
-    //                 const oldScrollHeight = containerRef.current.scrollTop + containerRef.current.clientHeight;
-    //                 containerRef.current.scrollTop = newScrollHeight - oldScrollHeight + currentScrollPosition;
-    //             }
-    //         });
-    //     }
-    // }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
-    const handleScroll = (e) => {
-        const container = containerRef.current;
-        if (!container || isFetchingNextPage) return;
-
-        setScrollPosition(container.scrollTop);
-    };
-
-    const scrollToBottom = () => {
-        if (containerRef.current) {
-            console.log("scrollToBottom");
-            containerRef.current.scrollTop = containerRef.current.scrollHeight;
-        }
-    };
-
-    // useEffect(() => {
-    //     scrollToBottom();
-    // }, [isSendMessage]);
 
     if (curConversationId == undefined || curConversationId == null || isConversationInfoLoading || conversationInfo == undefined) {
         return <div>Loading...</div>
@@ -113,8 +61,6 @@ function Discussion() {
     }
 
     const { state } = conversationInfo;
-
-
 
     // useEffect(() => {
     //     socket.emit('join_room', ClassID);
@@ -127,31 +73,25 @@ function Discussion() {
     //         //    document.location.reload();
     //     })
     // }, [socket]);
-
-
-
-    // console.log("fetch ClassData.State: ", classData.state)
-
+    const scrooToBottom = () => {
+        containerRef.current.scrollTop = 0;
+    }
     return (
         <div style={{ padding: 0, margin: "0px", }}>
             <StreamAppBar data={conversationInfo} />
             <div style={{ paddingTop: '70px' }}>
                 <Container
+                    ref={containerRef}
                     sx={{
                         position: 'fixed',
                         height: (state === 'true' ? '61dvh' : '90dvh'),
                         overflow: "auto", px: "0px", marginButtom: "32px",
-                        // display: "flex",
-                        // flexDirection: "column-reverse",
+                        display: "flex",
+                        flexDirection: "column-reverse",
                     }}
                     // onScroll={handleScroll}
                     maxWidth="100%"
                 >
-                    {(hasNextPage) && (
-                        <div ref={ref} style={{ backgroundColor: "red", paddingButtom: "200px" }}>
-                            {isFetchingNextPage && 'Loading more...'}
-                        </div>
-                    )}
 
 
                     {allMessages.map((message, index) => (
@@ -162,9 +102,14 @@ function Discussion() {
                         />
                     ))}
 
+                    {(hasNextPage) && (
+                        <div ref={ref} style={{ padding: "10px", display: "flex", justifyContent: "center" }}>
+                            {isFetchingNextPage && 'Loading more...'}
+                        </div>
+                    )}
                 </Container>
             </div>
-            {/* {state === "true" && <StreamInputPanel handleSendMessage={setIsSendMessage} />} */}
+            {state === "true" && <StreamInputPanel handleSendEvent={scrooToBottom} />}
 
         </div >
     );
