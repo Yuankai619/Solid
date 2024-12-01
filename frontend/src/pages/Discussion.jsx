@@ -1,10 +1,8 @@
-import { useState, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import StreamInputPanel from '../components/StreamInputPanel';
 import StreamAppBar from '../components/StreamAppBar';
-import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
-import { useParams, useLocation } from 'react-router-dom';
-import LoginChecker from '../checker/LoginChecker';
+import { useLocation } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import StreamEditorMessageCard from '../components/StreamEditorMessageCard';
 import { useRoomData } from '../context/RoomDataContext';
@@ -12,8 +10,6 @@ import { useSystem } from '../context/SystemContext';
 import io from 'socket.io-client'
 import { useAuth } from '../context/AuthContext';
 import { useInView } from 'react-intersection-observer';
-import { useQueryClient } from '@tanstack/react-query';
-import { set } from 'mongoose';
 
 // let socket = io.connect(`${import.meta.env.REACT_APP_API_URL}`)
 
@@ -35,7 +31,6 @@ function Discussion() {
         isFetchingNextPage
     } = useRoomData();
 
-    // 設置 intersection observer
     const { ref, inView } = useInView({});
 
     useEffect(() => {
@@ -89,7 +84,6 @@ function Discussion() {
                         display: "flex",
                         flexDirection: "column-reverse",
                     }}
-                    // onScroll={handleScroll}
                     maxWidth="100%"
                 >
 

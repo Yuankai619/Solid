@@ -34,7 +34,6 @@ export function RoomDataProvider({ children }) {
         queryKey: ['conversationInfo', curConversationId],
         queryFn: async () => {
             const res = await getInfo(curConversationId, token);
-            console.log('conversationInfo:', res.data);
             return res.data;
         },
         refetchOnWindowFocus: false,
@@ -57,7 +56,6 @@ export function RoomDataProvider({ children }) {
                 5,
                 token
             );
-            console.debug('messagesData:', ret.data, "pageParam:", pageParam);
             return {
                 messages: ret.data.messages || [],
                 pagination: {
@@ -69,7 +67,6 @@ export function RoomDataProvider({ children }) {
         },
         getNextPageParam: (lastPage) => {
             if (!lastPage || !lastPage.pagination) return undefined;
-            // console.debug('getNextPageParam:', lastPage.pagination);
             const currentPage = parseInt(lastPage.pagination.currentPage, 10);
             const totalPages = parseInt(lastPage.pagination.totalPages, 10);
             return currentPage < totalPages ? currentPage + 1 : undefined;
@@ -85,13 +82,11 @@ export function RoomDataProvider({ children }) {
         isSuccess: isSendMessageSuccess,
     } = useMutation({
         mutationFn: async (payload) => {
-            console.debug('sendMessageMutation:', payload);
             const res = await sendMessage(
                 payload,
                 curConversationId,
                 token,
             );
-            console.debug('sendMessageMutation:', res.data);
             return res.data;
         },
         onSuccess: (newMessage) => {
@@ -105,7 +100,6 @@ export function RoomDataProvider({ children }) {
                         ...newPages[0],
                         messages: [newMessage, ...newPages[0].messages]
                     };
-                    console.debug('onSuccess:', newPages);
                     return {
                         ...oldData,
                         pages: newPages
