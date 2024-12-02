@@ -10,7 +10,7 @@ import { useSystem } from '../context/SystemContext';
 import io from 'socket.io-client'
 import { useAuth } from '../context/AuthContext';
 import { useInView } from 'react-intersection-observer';
-
+import { useQueryClient } from '@tanstack/react-query';
 // let socket = io.connect(`${import.meta.env.REACT_APP_API_URL}`)
 
 function Discussion() {
@@ -20,6 +20,7 @@ function Discussion() {
     const location = useLocation();
     const conversationId = location.pathname.split('/')[2];
     const containerRef = useRef(null);
+    const queryClient = useQueryClient();
     const {
         conversationInfo,
         isConversationInfoLoading,
@@ -28,7 +29,8 @@ function Discussion() {
         isLoadingMessages,
         fetchNextPage,
         hasNextPage,
-        isFetchingNextPage
+        isFetchingNextPage,
+        refetchMessages,
     } = useRoomData();
 
     const { ref, inView } = useInView({});
@@ -38,6 +40,7 @@ function Discussion() {
     }, [conversationId, setCurConversationId, curConversationId, fetchNextPage]);
 
     useEffect(() => {
+        // queryClient.invalidateQueries(['messages', curConversationId]);
         document.body.style.overflow = 'hidden';
         document.body.style.background = "#444";
     }, []);

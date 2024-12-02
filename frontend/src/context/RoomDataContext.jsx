@@ -38,6 +38,7 @@ export function RoomDataProvider({ children }) {
         },
         refetchOnWindowFocus: false,
         enabled: isEnable,
+        gcTime: 3000,
     })
 
     const {
@@ -47,6 +48,7 @@ export function RoomDataProvider({ children }) {
         isFetchingNextPage,
         isLoading: isLoadingMessages,
         error: messagesError,
+        refetch: refetchMessages,
     } = useInfiniteQuery({
         queryKey: ['messages', curConversationId],
         queryFn: async ({ pageParam }) => {
@@ -133,6 +135,7 @@ export function RoomDataProvider({ children }) {
         isLoadingMessages,
         messagesError,
         allMessages,
+        refetchMessages,
         sendMessageMutation,
         isSendingMessage,
         isSendMessageSuccess

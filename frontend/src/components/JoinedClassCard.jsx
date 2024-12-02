@@ -17,7 +17,6 @@ function JoinedClassCard({ data }) {
   const shortId = _id.slice(-6);
   const { handleDeleteJoinedClass } = useClassDataContext();
   const [anchorEl, setAnchorEl] = useState(null);
-  const ownerName = ownerId.userName;
   const open = Boolean(anchorEl);
 
   const handleClickMenu = (event) => {
@@ -84,7 +83,7 @@ function JoinedClassCard({ data }) {
             </Menu>
             <CardContent >
               <Typography sx={{ fontSize: 15, fontWeight: 600, marginTop: '12px' }} color="#999" component="div">
-                owner: {ownerName}
+                owner: {ownerId.userName}
               </Typography>
               <Typography sx={{ fontSize: 18, fontWeight: 600, }} color="#000" >
                 Room ID: {shortId}
