@@ -2,6 +2,7 @@ import HomePage from "../pages/Home";
 import LoginPage from "../pages/Login";
 import SignupPage from "../pages/Signup";
 import Discussion from "../pages/Discussion";
+import JoinedDisscussion from "../pages/JoinedDisscussion";
 export const routesConfig = [
     {
         path: "/",
@@ -26,6 +27,11 @@ export const routesConfig = [
     {
         path: "conversation/:conversationId/host",
         element: <Discussion />,
+        protected: true
+    },
+    {
+        path: "conversation/:conversationId",
+        element: <JoinedDisscussion />,
         protected: true
     }
 ];

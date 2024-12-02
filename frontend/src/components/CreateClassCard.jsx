@@ -61,7 +61,7 @@ function CreateClassCard({ data }) {
         <Card variant="outlined" sx={{ cursor: 'pointer' }} >
           <Link style={{ textDecoration: 'none', color: 'inherit' }} to={`/conversation/${_id}/host`} onClick={(e) => {
             if (!allowNavigate) {
-              e.preventDefault(); // 如果不允许跳转，则阻止 Link 的默认行为
+              e.preventDefault();
             }
           }}>
             <CardHeader

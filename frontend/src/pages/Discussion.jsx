@@ -1,10 +1,8 @@
-import { useState, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import StreamInputPanel from '../components/StreamInputPanel';
 import StreamAppBar from '../components/StreamAppBar';
-import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
-import { useParams, useLocation } from 'react-router-dom';
-import LoginChecker from '../checker/LoginChecker';
+import { useLocation } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import StreamEditorMessageCard from '../components/StreamEditorMessageCard';
 import { useRoomData } from '../context/RoomDataContext';
@@ -13,8 +11,6 @@ import io from 'socket.io-client'
 import { useAuth } from '../context/AuthContext';
 import { useInView } from 'react-intersection-observer';
 import { useQueryClient } from '@tanstack/react-query';
-import { set } from 'mongoose';
-
 // let socket = io.connect(`${import.meta.env.REACT_APP_API_URL}`)
 
 function Discussion() {
@@ -24,6 +20,7 @@ function Discussion() {
     const location = useLocation();
     const conversationId = location.pathname.split('/')[2];
     const containerRef = useRef(null);
+    const queryClient = useQueryClient();
     const {
         conversationInfo,
         isConversationInfoLoading,
@@ -32,10 +29,10 @@ function Discussion() {
         isLoadingMessages,
         fetchNextPage,
         hasNextPage,
-        isFetchingNextPage
+        isFetchingNextPage,
+        refetchMessages,
     } = useRoomData();
 
-    // 設置 intersection observer
     const { ref, inView } = useInView({});
 
     useEffect(() => {
@@ -43,6 +40,7 @@ function Discussion() {
     }, [conversationId, setCurConversationId, curConversationId, fetchNextPage]);
 
     useEffect(() => {
+        // queryClient.invalidateQueries(['messages', curConversationId]);
         document.body.style.overflow = 'hidden';
         document.body.style.background = "#444";
     }, []);
@@ -89,7 +87,6 @@ function Discussion() {
                         display: "flex",
                         flexDirection: "column-reverse",
                     }}
-                    // onScroll={handleScroll}
                     maxWidth="100%"
                 >
 
